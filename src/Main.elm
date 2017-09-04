@@ -30,12 +30,13 @@ type alias Model =
     , deck : List String
     , playerHand : List String
     , dealerHand : List String
+    , flash : String
     }
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( Model 0 [] [] [], shuffleDeck )
+    ( Model 0 [] [] [] "Welcome To BlackJack!", shuffleDeck )
 
 
 
@@ -119,6 +120,7 @@ view : Model -> Html Msg
 view model =
     div []
         [ h1 [] [ text "BlackJack" ]
+        , div [] [ text (toString model.flash) ]
         , div [] [ text (toString model.round) ]
         , h2 [] [ text "Player" ]
         , div [] [ text (toString model.playerHand) ]
