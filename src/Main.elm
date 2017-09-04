@@ -56,7 +56,7 @@ init =
 
 
 type Msg
-    = Roll
+    = NewGame
     | ShuffleDeck (Array.Array String)
 
 
@@ -68,7 +68,7 @@ shuffleDeck =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        Roll ->
+        NewGame ->
             ( model, shuffleDeck )
 
         ShuffleDeck cards ->
@@ -82,7 +82,13 @@ update msg model =
                 newDeck =
                     Array.toList (Array.slice 5 -1 cards)
             in
-                ( { model | deck = newDeck, dealerHand = dealerHand, playerHand = playerHand }, Cmd.none )
+                ( { model
+                    | deck = newDeck
+                    , dealerHand = dealerHand
+                    , playerHand = playerHand
+                  }
+                , Cmd.none
+                )
 
 
 
@@ -102,9 +108,13 @@ view : Model -> Html Msg
 view model =
     div []
         [ h1 []
-            [ text (toString model.dieFace) ]
-        , div
-            []
-            [ text (toString model) ]
-        , button [ onClick Roll ] [ text "Roll" ]
+            [ text "BlackJack" ]
+        , h2 [] [ text "Player" ]
+        , div [] [ text (toString model.playerHand) ]
+        , h2 [] [ text "Dealer" ]
+        , div [] [ text (toString model.dealerHand) ]
+        , button [ onClick NewGame ] [ text "New Game" ]
+        , button [ onClick NewGame ] [ text "Hit" ]
+        , button [ onClick NewGame ] [ text "Stand" ]
+        , button [ onClick NewGame ] [ text "Surrender" ]
         ]
