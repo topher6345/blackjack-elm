@@ -28,10 +28,6 @@ type alias Card =
     { face : Face, suit : Suit }
 
 
-type alias Score =
-    { soft : Int, hard : Int }
-
-
 type alias DealerHand =
     { invisible : Card, visible : List Card }
 
@@ -48,7 +44,7 @@ initDeck : List String
 initDeck =
     let
         stringify x =
-            (toString x.face) ++ (toString x.suit)
+            (toString x.face) ++ " " ++ (toString x.suit)
     in
         List.map stringify cards
 
