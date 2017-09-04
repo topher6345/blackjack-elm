@@ -12,6 +12,7 @@ import Random.Array
 import Card exposing (..)
 
 
+main : Program Never Model Msg
 main =
     Html.program
         { init = init
@@ -28,6 +29,8 @@ main =
 type alias Model =
     { dieFace : Int
     , deck : List String
+    , playerHand : List String
+    , dealerHand : List String
     }
 
 
@@ -45,7 +48,7 @@ initDeck =
 
 init : ( Model, Cmd Msg )
 init =
-    ( Model 0 initDeck, Cmd.none )
+    ( Model 0 [] [] [], shuffleDeck )
 
 
 
@@ -54,17 +57,22 @@ init =
 
 type Msg
     = Roll
-    | NewFace (Array.Array String)
+    | ShuffleDeck (Array.Array String)
+
+
+shuffleDeck : Cmd Msg
+shuffleDeck =
+    Random.generate ShuffleDeck (Random.Array.shuffle (Array.fromList initDeck))
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         Roll ->
-            ( model, Random.generate NewFace (Random.Array.shuffle (Array.fromList initDeck)) )
+            ( model, shuffleDeck )
 
-        NewFace newFace ->
-            ( { model | deck = Array.toList newFace }, Cmd.none )
+        ShuffleDeck newDeck ->
+            ( { model | deck = Array.toList newDeck }, Cmd.none )
 
 
 
