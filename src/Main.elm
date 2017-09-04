@@ -9,6 +9,7 @@ import Array
 import Random
 import Random.Array
 import Card exposing (..)
+import Score exposing (..)
 
 
 main : Program Never Model Msg
@@ -29,14 +30,30 @@ type alias Model =
     { round : Int
     , deck : List String
     , playerHand : List String
+    , playerScore : Score
     , dealerHand : List String
+    , dealerScore : Score
     , flash : String
     }
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( Model 0 [] [] [] "Welcome To BlackJack!", shuffleDeck )
+    let
+        initScore =
+            Score 0 0
+
+        model =
+            { round = 0
+            , deck = []
+            , playerHand = []
+            , playerScore = Score 0 0
+            , dealerHand = []
+            , dealerScore = Score 0 0
+            , flash = "Welcome To BlackJack!"
+            }
+    in
+        ( model, shuffleDeck )
 
 
 
@@ -75,6 +92,7 @@ update msg model =
                 ( { model
                     | playerHand = playerHand
                     , deck = newDeck
+                    , playerScore = scoreHand playerHand
                   }
                 , Cmd.none
                 )
@@ -98,6 +116,8 @@ update msg model =
                     , round = newRound
                     , dealerHand = dealerHand
                     , playerHand = playerHand
+                    , playerScore = scoreHand playerHand
+                    , dealerScore = scoreHand dealerHand
                   }
                 , Cmd.none
                 )
@@ -124,8 +144,10 @@ view model =
         , div [] [ text (toString model.round) ]
         , h2 [] [ text "Player" ]
         , div [] [ text (toString model.playerHand) ]
+        , div [] [ text (toString model.playerScore) ]
         , h2 [] [ text "Dealer" ]
         , div [] [ text (toString model.dealerHand) ]
+        , div [] [ text (toString model.dealerScore) ]
         , button [ onClick NewGame ] [ text "New Game" ]
         , button [ onClick Hit ] [ text "Hit" ]
         , button [ onClick NewGame ] [ text "Stand" ]

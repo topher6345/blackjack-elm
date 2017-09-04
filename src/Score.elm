@@ -68,6 +68,21 @@ scoreFace card =
             0
 
 
-scoreHand : a -> Score
-scoreHand xs =
-    Score 0 0
+extractFace : String -> String
+extractFace x =
+    Maybe.withDefault "" <| List.head <| String.words x
+
+
+scoreHand : List String -> Score
+scoreHand hand =
+    let
+        cards =
+            List.map extractFace hand
+
+        hard =
+            List.foldr (+) 0 <| List.map scoreHard cards
+
+        soft =
+            List.foldr (+) 0 <| List.map scoreSoft cards
+    in
+        Score soft hard
