@@ -27,7 +27,7 @@ main =
 
 
 type alias Model =
-    { dieFace : Int
+    { round : Int
     , deck : List String
     , playerHand : List String
     , dealerHand : List String
@@ -81,9 +81,13 @@ update msg model =
 
                 newDeck =
                     Array.toList (Array.slice 5 -1 cards)
+
+                newRound =
+                    model.round + 1
             in
                 ( { model
                     | deck = newDeck
+                    , round = newRound
                     , dealerHand = dealerHand
                     , playerHand = playerHand
                   }
@@ -107,8 +111,8 @@ subscriptions model =
 view : Model -> Html Msg
 view model =
     div []
-        [ h1 []
-            [ text "BlackJack" ]
+        [ h1 [] [ text "BlackJack" ]
+        , div [] [ text (toString model.round) ]
         , h2 [] [ text "Player" ]
         , div [] [ text (toString model.playerHand) ]
         , h2 [] [ text "Dealer" ]
