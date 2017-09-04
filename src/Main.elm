@@ -31,8 +31,10 @@ type alias Model =
     , deck : List String
     , playerHand : List String
     , playerScore : Score
+    , playerState : ScoreState
     , dealerHand : List String
     , dealerScore : Score
+    , dealerState : ScoreState
     , flash : String
     }
 
@@ -48,8 +50,10 @@ init =
             , deck = []
             , playerHand = []
             , playerScore = Score 0 0
+            , playerState = makeState (Score 0 0)
             , dealerHand = []
             , dealerScore = Score 0 0
+            , dealerState = makeState (Score 0 0)
             , flash = "Welcome To BlackJack!"
             }
     in
@@ -88,11 +92,15 @@ update msg model =
 
                 newDeck =
                     Array.toList <| Array.slice 2 -1 cards
+
+                score =
+                    scoreHand playerHand
             in
                 ( { model
                     | playerHand = playerHand
                     , deck = newDeck
-                    , playerScore = scoreHand playerHand
+                    , playerScore = score
+                    , playerState = makeState score
                   }
                 , Cmd.none
                 )
@@ -117,7 +125,9 @@ update msg model =
                     , dealerHand = dealerHand
                     , playerHand = playerHand
                     , playerScore = scoreHand playerHand
+                    , playerState = makeState <| scoreHand playerHand
                     , dealerScore = scoreHand dealerHand
+                    , dealerState = makeState <| scoreHand dealerHand
                   }
                 , Cmd.none
                 )
@@ -145,9 +155,11 @@ view model =
         , h2 [] [ text "Player" ]
         , div [] [ text (toString model.playerHand) ]
         , div [] [ text (toString model.playerScore) ]
+        , div [] [ text (toString model.playerState) ]
         , h2 [] [ text "Dealer" ]
         , div [] [ text (toString model.dealerHand) ]
         , div [] [ text (toString model.dealerScore) ]
+        , div [] [ text (toString model.dealerState) ]
         , button [ onClick NewGame ] [ text "New Game" ]
         , button [ onClick Hit ] [ text "Hit" ]
         , button [ onClick NewGame ] [ text "Stand" ]
