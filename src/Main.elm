@@ -71,8 +71,18 @@ update msg model =
         Roll ->
             ( model, shuffleDeck )
 
-        ShuffleDeck newDeck ->
-            ( { model | deck = Array.toList newDeck }, Cmd.none )
+        ShuffleDeck cards ->
+            let
+                playerHand =
+                    Array.toList (Array.slice 0 2 cards)
+
+                dealerHand =
+                    Array.toList (Array.slice 3 5 cards)
+
+                newDeck =
+                    Array.toList (Array.slice 5 -1 cards)
+            in
+                ( { model | deck = newDeck, dealerHand = dealerHand, playerHand = playerHand }, Cmd.none )
 
 
 
