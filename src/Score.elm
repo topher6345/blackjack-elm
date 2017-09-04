@@ -5,6 +5,12 @@ type alias Score =
     { soft : Int, hard : Int }
 
 
+type ScoreState
+    = Blackjack
+    | Under
+    | Bust
+
+
 scoreHard : String -> number
 scoreHard hand =
     case hand of
@@ -86,3 +92,20 @@ scoreHand hand =
             List.foldr (+) 0 <| List.map scoreSoft cards
     in
         Score soft hard
+
+
+makeState : Score -> ScoreState
+makeState score =
+    let
+        soft =
+            score.soft
+
+        hard =
+            score.hard
+    in
+        if soft > 21 then
+            Bust
+        else if soft == 21 || hard == 21 then
+            Blackjack
+        else
+            Under
