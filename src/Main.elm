@@ -1,5 +1,4 @@
--- Read more about this program in the official Elm guide:
--- https://guide.elm-lang.org/architecture/effects/random.html
+--BlackJack
 
 
 module Main exposing (..)
@@ -34,18 +33,6 @@ type alias Model =
     }
 
 
-initDeck : List String
-initDeck =
-    let
-        stringify x =
-            (toString x.face) ++ (toString x.suit)
-
-        cards =
-            List.map stringify Card.cards
-    in
-        cards
-
-
 init : ( Model, Cmd Msg )
 init =
     ( Model 0 [] [] [], shuffleDeck )
@@ -63,7 +50,8 @@ type Msg
 
 shuffleDeck : Cmd Msg
 shuffleDeck =
-    Random.generate ShuffleDeck (Random.Array.shuffle (Array.fromList initDeck))
+    Random.generate ShuffleDeck
+        (Random.Array.shuffle (Array.fromList Card.initDeck))
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -78,10 +66,10 @@ update msg model =
                     Array.fromList model.deck
 
                 playerHand =
-                    model.playerHand ++ (Array.toList (Array.slice 0 1 cards))
+                    model.playerHand ++ (Array.toList <| Array.slice 0 1 cards)
 
                 newDeck =
-                    Array.toList (Array.slice 2 -1 cards)
+                    Array.toList <| Array.slice 2 -1 cards
             in
                 ( { model
                     | playerHand = playerHand
@@ -93,13 +81,13 @@ update msg model =
         ShuffleDeck cards ->
             let
                 playerHand =
-                    Array.toList (Array.slice 0 2 cards)
+                    Array.toList <| Array.slice 0 2 cards
 
                 dealerHand =
-                    Array.toList (Array.slice 3 5 cards)
+                    Array.toList <| Array.slice 3 5 cards
 
                 newDeck =
-                    Array.toList (Array.slice 5 -1 cards)
+                    Array.toList <| Array.slice 5 -1 cards
 
                 newRound =
                     model.round + 1
