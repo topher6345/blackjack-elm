@@ -57,6 +57,7 @@ init =
 
 type Msg
     = NewGame
+    | Hit
     | ShuffleDeck (Array.Array String)
 
 
@@ -70,6 +71,24 @@ update msg model =
     case msg of
         NewGame ->
             ( model, shuffleDeck )
+
+        Hit ->
+            let
+                cards =
+                    Array.fromList model.deck
+
+                playerHand =
+                    model.playerHand ++ (Array.toList (Array.slice 0 1 cards))
+
+                newDeck =
+                    Array.toList (Array.slice 2 -1 cards)
+            in
+                ( { model
+                    | playerHand = playerHand
+                    , deck = newDeck
+                  }
+                , Cmd.none
+                )
 
         ShuffleDeck cards ->
             let
@@ -118,7 +137,7 @@ view model =
         , h2 [] [ text "Dealer" ]
         , div [] [ text (toString model.dealerHand) ]
         , button [ onClick NewGame ] [ text "New Game" ]
-        , button [ onClick NewGame ] [ text "Hit" ]
+        , button [ onClick Hit ] [ text "Hit" ]
         , button [ onClick NewGame ] [ text "Stand" ]
         , button [ onClick NewGame ] [ text "Surrender" ]
         ]
