@@ -99,12 +99,30 @@ update msg model =
 
                 score =
                     scoreHand dealerHand
+
+                dealerState =
+                    makeState score
+
+                flash =
+                    case dealerState of
+                        Blackjack ->
+                            "Dealer Wins!"
+
+                        Bust ->
+                            "You Win!"
+
+                        Under ->
+                            if score.soft > model.playerScore.hard then
+                                "Dealer Wins!"
+                            else
+                                model.flash
             in
                 ( { model
                     | dealerHand = dealerHand
                     , deck = newDeck
                     , dealerScore = score
-                    , dealerState = makeState score
+                    , dealerState = dealerState
+                    , flash = flash
                   }
                 , Cmd.none
                 )
@@ -122,11 +140,23 @@ update msg model =
 
                 score =
                     scoreHand playerHand
+
+                flash =
+                    case makeState <| scoreHand playerHand of
+                        Blackjack ->
+                            "You Win!"
+
+                        Under ->
+                            model.flash
+
+                        Bust ->
+                            "Bust!"
             in
                 ( { model
                     | playerHand = playerHand
                     , deck = newDeck
                     , playerScore = score
+                    , flash = flash
                     , playerState = makeState score
                   }
                 , Cmd.none
@@ -145,6 +175,17 @@ update msg model =
 
                 newRound =
                     model.round + 1
+
+                flash =
+                    case makeState <| scoreHand playerHand of
+                        Blackjack ->
+                            "You Win!"
+
+                        Under ->
+                            "Welcome To BlackJack!"
+
+                        Bust ->
+                            "Bust!"
             in
                 ( { model
                     | deck = newDeck
@@ -155,6 +196,7 @@ update msg model =
                     , playerState = makeState <| scoreHand playerHand
                     , dealerScore = scoreHand dealerHand
                     , dealerState = makeState <| scoreHand dealerHand
+                    , flash = flash
                   }
                 , Cmd.none
                 )
@@ -184,6 +226,7 @@ view model =
         , div [] [ text (toString model.playerScore) ]
         , div [] [ text (toString model.playerState) ]
         , h2 [] [ text "Dealer" ]
+        , div [] [ text (toString <| List.tail model.dealerHand) ]
         , div [] [ text (toString model.dealerHand) ]
         , div [] [ text (toString model.dealerScore) ]
         , div [] [ text (toString model.dealerState) ]
