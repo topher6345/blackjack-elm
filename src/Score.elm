@@ -11,26 +11,6 @@ type ScoreState
     | Bust
 
 
-scoreHard : String -> number
-scoreHard hand =
-    case hand of
-        "Ace" ->
-            11
-
-        _ ->
-            scoreFace hand
-
-
-scoreSoft : String -> number
-scoreSoft card =
-    case card of
-        "Ace" ->
-            1
-
-        _ ->
-            scoreFace card
-
-
 scoreFace : String -> number
 scoreFace card =
     case card of
@@ -82,30 +62,46 @@ extractFace x =
 scoreHand : List String -> Score
 scoreHand hand =
     let
-        cards =
+        faces =
             List.map extractFace hand
 
+        sum f =
+            List.foldr (+) 0 <| List.map f faces
+
         hard =
-            List.foldr (+) 0 <| List.map scoreHard cards
+            sum scoreHard
 
         soft =
-            List.foldr (+) 0 <| List.map scoreSoft cards
+            sum scoreSoft
     in
         Score soft hard
 
 
-makeState : Score -> ScoreState
-makeState score =
-    let
-        soft =
-            score.soft
+scoreHard : String -> number
+scoreHard hand =
+    case hand of
+        "Ace" ->
+            11
 
-        hard =
-            score.hard
-    in
-        if soft > 21 then
-            Bust
-        else if soft == 21 || hard == 21 then
-            Blackjack
-        else
-            Under
+        _ ->
+            scoreFace hand
+
+
+scoreSoft : String -> number
+scoreSoft card =
+    case card of
+        "Ace" ->
+            1
+
+        _ ->
+            scoreFace card
+
+
+makeState : Score -> ScoreState
+makeState { hard, soft } =
+    if soft > 21 then
+        Bust
+    else if soft == 21 || hard == 21 then
+        Blackjack
+    else
+        Under

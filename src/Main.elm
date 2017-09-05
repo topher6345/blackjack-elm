@@ -22,10 +22,6 @@ main =
         }
 
 
-
--- MODEL
-
-
 type alias Model =
     { round : Int
     , deck : List String
@@ -60,10 +56,6 @@ init =
         ( model, shuffleDeck )
 
 
-
--- UPDATE
-
-
 type Msg
     = NewGame
     | Hit
@@ -75,6 +67,39 @@ shuffleDeck : Cmd Msg
 shuffleDeck =
     Random.generate ShuffleDeck
         (Random.Array.shuffle (Array.fromList Card.initDeck))
+
+
+maybeDealerWin :
+    { b | flash : String, playerScore : { a | hard : comparable } }
+    -> { c | soft : comparable }
+    -> String
+maybeDealerWin model score =
+    if score.soft > model.playerScore.hard then
+        "Dealer Wins!"
+    else
+        model.flash
+
+
+standFlash :
+    { b | flash : String, playerScore : { a | hard : comparable } }
+    -> { c | soft : comparable }
+    -> ScoreState
+    -> String
+standFlash model score dealerState =
+    case dealerState of
+        Blackjack ->
+            "Dealer Wins!"
+
+        Bust ->
+            "You Win!"
+
+        Under ->
+            maybeDealerWin model score
+
+
+sliceList : Int -> Int -> Array.Array a -> List a
+sliceList x y c =
+    Array.toList <| Array.slice x y c
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -90,12 +115,12 @@ update msg model =
 
                 dealerHand =
                     if model.dealerScore.soft < 18 then
-                        model.dealerHand ++ (Array.toList <| Array.slice 0 1 cards)
+                        model.dealerHand ++ (sliceList 0 1 cards)
                     else
                         model.dealerHand
 
                 newDeck =
-                    Array.toList <| Array.slice 2 -1 cards
+                    sliceList 2 -1 cards
 
                 score =
                     scoreHand dealerHand
@@ -104,18 +129,7 @@ update msg model =
                     makeState score
 
                 flash =
-                    case dealerState of
-                        Blackjack ->
-                            "Dealer Wins!"
-
-                        Bust ->
-                            "You Win!"
-
-                        Under ->
-                            if score.soft > model.playerScore.hard then
-                                "Dealer Wins!"
-                            else
-                                model.flash
+                    standFlash model score dealerState
             in
                 ( { model
                     | dealerHand = dealerHand
@@ -133,10 +147,10 @@ update msg model =
                     Array.fromList model.deck
 
                 playerHand =
-                    model.playerHand ++ (Array.toList <| Array.slice 0 1 cards)
+                    model.playerHand ++ (sliceList 0 1 cards)
 
                 newDeck =
-                    Array.toList <| Array.slice 2 -1 cards
+                    sliceList 2 -1 cards
 
                 score =
                     scoreHand playerHand
@@ -164,17 +178,14 @@ update msg model =
 
         ShuffleDeck cards ->
             let
-                sliceToList x y =
-                    Array.toList <| Array.slice x y cards
-
                 playerHand =
-                    sliceToList 0 2
+                    sliceList 0 2 cards
 
                 dealerHand =
-                    sliceToList 3 5
+                    sliceList 3 5 cards
 
                 newDeck =
-                    sliceToList 5 -1
+                    sliceList 5 -1 cards
 
                 newRound =
                     model.round + 1
