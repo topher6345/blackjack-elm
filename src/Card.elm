@@ -36,10 +36,6 @@ type alias PlayerHand =
     List Card
 
 
-
---compareScores : Score -> Score -> Boolean
-
-
 initDeck : List String
 initDeck =
     let

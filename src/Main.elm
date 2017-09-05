@@ -164,14 +164,17 @@ update msg model =
 
         ShuffleDeck cards ->
             let
+                sliceToList x y =
+                    Array.toList <| Array.slice x y cards
+
                 playerHand =
-                    Array.toList <| Array.slice 0 2 cards
+                    sliceToList 0 2
 
                 dealerHand =
-                    Array.toList <| Array.slice 3 5 cards
+                    sliceToList 3 5
 
                 newDeck =
-                    Array.toList <| Array.slice 5 -1 cards
+                    sliceToList 5 -1
 
                 newRound =
                     model.round + 1
