@@ -12,6 +12,7 @@ import Card exposing (..)
 import Score exposing (..)
 
 
+main : Program Never Model Msg
 main =
     Html.program
         { init = init
@@ -265,6 +266,7 @@ showDeck model =
         []
 
 
+showDealerHand : Model -> List String
 showDealerHand model =
     if model.dealerHandVisible then
         model.dealerHand
