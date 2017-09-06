@@ -1,4 +1,4 @@
-# Blackjac in Elm
+# Blackjack in Elm
 
 ## Getting started
 

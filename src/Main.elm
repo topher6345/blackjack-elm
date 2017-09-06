@@ -50,7 +50,7 @@ init =
             , dealerHand = []
             , dealerScore = Score 0 0
             , dealerState = makeState (Score 0 0)
-            , deckVisible = True
+            , deckVisible = False
             , flash = "Welcome To BlackJack!"
             }
     in
@@ -61,6 +61,7 @@ type Msg
     = NewGame
     | Hit
     | Stand
+    | ToggleShowDeck
     | ShuffleDeck (Array.Array String)
 
 
@@ -113,6 +114,17 @@ dealNCards to from n =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
+        ToggleShowDeck ->
+            let
+                current =
+                    model.deckVisible
+            in
+                ( { model
+                    | deckVisible = not current
+                  }
+                , Cmd.none
+                )
+
         NewGame ->
             ( model, shuffleDeck )
 
@@ -259,5 +271,6 @@ view model =
         , button [ onClick Stand ] [ text "Stand" ]
         , button [ onClick NewGame ] [ text "Surrender" ]
         , h2 [] [ text "Deck" ]
+        , button [ onClick ToggleShowDeck ] [ text "Show/Hide Deck" ]
         , div [] [ text (toString <| showDeck model) ]
         ]
