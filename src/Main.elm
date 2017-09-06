@@ -31,6 +31,7 @@ type alias Model =
     , dealerScore : Score
     , dealerState : ScoreState
     , deckVisible : Bool
+    , dealerHandVisible : Bool
     , flash : String
     }
 
@@ -51,6 +52,7 @@ init =
             , dealerScore = Score 0 0
             , dealerState = makeState (Score 0 0)
             , deckVisible = False
+            , dealerHandVisible = False
             , flash = "Welcome To BlackJack!"
             }
     in
@@ -62,6 +64,7 @@ type Msg
     | Hit
     | Stand
     | ToggleShowDeck
+    | ToggleShowDealerHand
     | ShuffleDeck (Array.Array String)
 
 
@@ -121,6 +124,17 @@ update msg model =
             in
                 ( { model
                     | deckVisible = not current
+                  }
+                , Cmd.none
+                )
+
+        ToggleShowDealerHand ->
+            let
+                current =
+                    model.dealerHandVisible
+            in
+                ( { model
+                    | dealerHandVisible = not current
                   }
                 , Cmd.none
                 )
@@ -251,6 +265,13 @@ showDeck model =
         []
 
 
+showDealerHand model =
+    if model.dealerHandVisible then
+        model.dealerHand
+    else
+        []
+
+
 view : Model -> Html Msg
 view model =
     div []
@@ -260,12 +281,12 @@ view model =
         , h2 [] [ text "Player" ]
         , div [] [ text (toString model.playerHand) ]
         , div [] [ text (toString model.playerScore) ]
-        , div [] [ text (toString model.playerState) ]
+        , h3 [] [ text (toString model.playerState) ]
         , h2 [] [ text "Dealer" ]
-        , div [] [ text (toString <| List.tail model.dealerHand) ]
-        , div [] [ text (toString model.dealerHand) ]
-        , div [] [ text (toString model.dealerHand) ]
-        , div [] [ text (toString model.dealerState) ]
+        , div [] [ text (toString <| Maybe.withDefault [] <| List.tail model.dealerHand) ]
+        , button [ onClick ToggleShowDealerHand ] [ text "Show/Hide Dealer Hand" ]
+        , div [] [ text (toString <| showDealerHand model) ]
+        , h3 [] [ text (toString model.dealerState) ]
         , button [ onClick NewGame ] [ text "New Game" ]
         , button [ onClick Hit ] [ text "Hit" ]
         , button [ onClick Stand ] [ text "Stand" ]
