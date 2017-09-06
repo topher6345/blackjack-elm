@@ -102,6 +102,18 @@ sliceList x y c =
     Array.toList <| Array.slice x y c
 
 
+dealNCards : List a -> List a -> Int -> ( List a, List a )
+dealNCards to from n =
+    let
+        c1 =
+            List.take n from
+
+        c2 =
+            List.drop n from
+    in
+        ( to ++ c1, c2 )
+
+
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
@@ -110,31 +122,25 @@ update msg model =
 
         Stand ->
             let
-                cards =
-                    Array.fromList model.deck
-
-                dealerHand =
+                ( dealerHand, newDeck ) =
                     if model.dealerScore.soft < 18 then
-                        model.dealerHand ++ (sliceList 0 1 cards)
+                        dealNCards model.dealerHand model.deck 1
                     else
-                        model.dealerHand
+                        ( model.dealerHand, model.deck )
 
-                newDeck =
-                    sliceList 2 -1 cards
-
-                score =
+                dealerScore =
                     makeScoreFromHand dealerHand
 
                 dealerState =
-                    makeState score
+                    makeState dealerScore
 
                 flash =
-                    standFlash model score dealerState
+                    standFlash model dealerScore dealerState
             in
                 ( { model
                     | dealerHand = dealerHand
                     , deck = newDeck
-                    , dealerScore = score
+                    , dealerScore = dealerScore
                     , dealerState = dealerState
                     , flash = flash
                   }
@@ -143,20 +149,14 @@ update msg model =
 
         Hit ->
             let
-                cards =
-                    Array.fromList model.deck
-
-                playerHand =
-                    model.playerHand ++ (sliceList 0 1 cards)
-
-                newDeck =
-                    sliceList 2 -1 cards
+                ( playerHand, newDeck ) =
+                    dealNCards model.dealerHand model.deck 1
 
                 score =
                     makeScoreFromHand playerHand
 
                 flash =
-                    case makeState <| makeScoreFromHand playerHand of
+                    case makeState score of
                         Blackjack ->
                             "You Win!"
 
@@ -178,14 +178,14 @@ update msg model =
 
         ShuffleDeck cards ->
             let
-                playerHand =
-                    sliceList 0 2 cards
+                d1 =
+                    Array.toList cards
 
-                dealerHand =
-                    sliceList 3 5 cards
+                ( playerHand, d2 ) =
+                    dealNCards [] d1 2
 
-                newDeck =
-                    sliceList 5 -1 cards
+                ( dealerHand, d3 ) =
+                    dealNCards [] d2 2
 
                 newRound =
                     model.round + 1
@@ -202,7 +202,7 @@ update msg model =
                             "Bust!"
             in
                 ( { model
-                    | deck = newDeck
+                    | deck = d3
                     , round = newRound
                     , dealerHand = dealerHand
                     , playerHand = playerHand

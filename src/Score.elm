@@ -59,6 +59,14 @@ extractFace x =
     Maybe.withDefault "" <| List.head <| String.words x
 
 
+
+--softScoreFromHand :
+
+
+softScoreFromHand x =
+    (makeScoreFromHand x).soft
+
+
 makeScoreFromHand : List String -> Score
 makeScoreFromHand hand =
     let
