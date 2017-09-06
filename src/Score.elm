@@ -59,8 +59,8 @@ extractFace x =
     Maybe.withDefault "" <| List.head <| String.words x
 
 
-scoreHand : List String -> Score
-scoreHand hand =
+makeScoreFromHand : List String -> Score
+makeScoreFromHand hand =
     let
         faces =
             List.map extractFace hand

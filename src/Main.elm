@@ -123,7 +123,7 @@ update msg model =
                     sliceList 2 -1 cards
 
                 score =
-                    scoreHand dealerHand
+                    makeScoreFromHand dealerHand
 
                 dealerState =
                     makeState score
@@ -153,10 +153,10 @@ update msg model =
                     sliceList 2 -1 cards
 
                 score =
-                    scoreHand playerHand
+                    makeScoreFromHand playerHand
 
                 flash =
-                    case makeState <| scoreHand playerHand of
+                    case makeState <| makeScoreFromHand playerHand of
                         Blackjack ->
                             "You Win!"
 
@@ -191,7 +191,7 @@ update msg model =
                     model.round + 1
 
                 flash =
-                    case makeState <| scoreHand playerHand of
+                    case makeState <| makeScoreFromHand playerHand of
                         Blackjack ->
                             "You Win!"
 
@@ -206,10 +206,10 @@ update msg model =
                     , round = newRound
                     , dealerHand = dealerHand
                     , playerHand = playerHand
-                    , playerScore = scoreHand playerHand
-                    , playerState = makeState <| scoreHand playerHand
-                    , dealerScore = scoreHand dealerHand
-                    , dealerState = makeState <| scoreHand dealerHand
+                    , playerScore = makeScoreFromHand playerHand
+                    , playerState = makeState <| makeScoreFromHand playerHand
+                    , dealerScore = makeScoreFromHand dealerHand
+                    , dealerState = makeState <| makeScoreFromHand dealerHand
                     , flash = flash
                   }
                 , Cmd.none
