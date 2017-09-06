@@ -1,4 +1,4 @@
-# Elm project
+# Blackjac in Elm
 
 ## Getting started
 

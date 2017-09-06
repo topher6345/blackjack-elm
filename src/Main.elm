@@ -12,7 +12,6 @@ import Card exposing (..)
 import Score exposing (..)
 
 
-main : Program Never Model Msg
 main =
     Html.program
         { init = init
@@ -31,6 +30,7 @@ type alias Model =
     , dealerHand : List String
     , dealerScore : Score
     , dealerState : ScoreState
+    , deckVisible : Bool
     , flash : String
     }
 
@@ -50,6 +50,7 @@ init =
             , dealerHand = []
             , dealerScore = Score 0 0
             , dealerState = makeState (Score 0 0)
+            , deckVisible = True
             , flash = "Welcome To BlackJack!"
             }
     in
@@ -147,6 +148,12 @@ update msg model =
                 ( playerHand, newDeck ) =
                     dealNCards model.dealerHand model.deck 1
 
+                playerHand =
+                    model.playerHand ++ (sliceList 0 1 cards)
+
+                newDeck =
+                    sliceList 1 -1 cards
+
                 score =
                     makeScoreFromHand playerHand
 
@@ -224,6 +231,14 @@ subscriptions model =
 -- VIEW
 
 
+showDeck : Model -> List String
+showDeck model =
+    if model.deckVisible then
+        model.deck
+    else
+        []
+
+
 view : Model -> Html Msg
 view model =
     div []
@@ -237,10 +252,12 @@ view model =
         , h2 [] [ text "Dealer" ]
         , div [] [ text (toString <| List.tail model.dealerHand) ]
         , div [] [ text (toString model.dealerHand) ]
-        , div [] [ text (toString model.dealerScore) ]
+        , div [] [ text (toString model.dealerHand) ]
         , div [] [ text (toString model.dealerState) ]
         , button [ onClick NewGame ] [ text "New Game" ]
         , button [ onClick Hit ] [ text "Hit" ]
         , button [ onClick Stand ] [ text "Stand" ]
         , button [ onClick NewGame ] [ text "Surrender" ]
+        , h2 [] [ text "Deck" ]
+        , div [] [ text (toString <| showDeck model) ]
         ]
