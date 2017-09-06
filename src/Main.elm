@@ -97,11 +97,6 @@ standFlash model score dealerState =
             maybeDealerWin model score
 
 
-sliceList : Int -> Int -> Array.Array a -> List a
-sliceList x y c =
-    Array.toList <| Array.slice x y c
-
-
 dealNCards : List a -> List a -> Int -> ( List a, List a )
 dealNCards to from n =
     let
