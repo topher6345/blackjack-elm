@@ -175,12 +175,6 @@ update msg model =
                 ( playerHand, newDeck ) =
                     dealNCards model.dealerHand model.deck 1
 
-                playerHand =
-                    model.playerHand ++ (sliceList 0 1 cards)
-
-                newDeck =
-                    sliceList 1 -1 cards
-
                 score =
                     makeScoreFromHand playerHand
 
