@@ -8,8 +8,8 @@ import Html.Events exposing (..)
 import Array
 import Random
 import Random.Array
-import Card exposing (..)
-import Score exposing (..)
+import Card
+import Score exposing (Score, ScoreState)
 
 
 main : Program Never Model Msg
@@ -48,10 +48,10 @@ init =
             , deck = []
             , playerHand = []
             , playerScore = Score 0 0
-            , playerState = makeState (Score 0 0)
+            , playerState = Score.makeState (Score 0 0)
             , dealerHand = []
             , dealerScore = Score 0 0
-            , dealerState = makeState (Score 0 0)
+            , dealerState = Score.makeState (Score 0 0)
             , deckVisible = False
             , dealerHandVisible = False
             , flash = "Welcome To BlackJack!"
@@ -93,13 +93,13 @@ standFlash :
     -> String
 standFlash model score dealerState =
     case dealerState of
-        Blackjack ->
+        Score.Blackjack ->
             "Dealer Wins!"
 
-        Bust ->
+        Score.Bust ->
             "You Win!"
 
-        Under ->
+        Score.Under ->
             maybeDealerWin model score
 
 
@@ -152,10 +152,10 @@ update msg model =
                         ( model.dealerHand, model.deck )
 
                 dealerScore =
-                    makeScoreFromHand dealerHand
+                    Score.makeScoreFromHand dealerHand
 
                 dealerState =
-                    makeState dealerScore
+                    Score.makeState dealerScore
 
                 flash =
                     standFlash model dealerScore dealerState
@@ -176,17 +176,17 @@ update msg model =
                     dealNCards model.dealerHand model.deck 1
 
                 score =
-                    makeScoreFromHand playerHand
+                    Score.makeScoreFromHand playerHand
 
                 flash =
-                    case makeState score of
-                        Blackjack ->
+                    case Score.makeState score of
+                        Score.Blackjack ->
                             "You Win!"
 
-                        Under ->
+                        Score.Under ->
                             model.flash
 
-                        Bust ->
+                        Score.Bust ->
                             "Bust!"
             in
                 ( { model
@@ -194,7 +194,7 @@ update msg model =
                     , deck = newDeck
                     , playerScore = score
                     , flash = flash
-                    , playerState = makeState score
+                    , playerState = Score.makeState score
                   }
                 , Cmd.none
                 )
@@ -214,14 +214,14 @@ update msg model =
                     model.round + 1
 
                 flash =
-                    case makeState <| makeScoreFromHand playerHand of
-                        Blackjack ->
+                    case Score.makeState <| Score.makeScoreFromHand playerHand of
+                        Score.Blackjack ->
                             "You Win!"
 
-                        Under ->
+                        Score.Under ->
                             "Welcome To BlackJack!"
 
-                        Bust ->
+                        Score.Bust ->
                             "Bust!"
             in
                 ( { model
@@ -229,10 +229,10 @@ update msg model =
                     , round = newRound
                     , dealerHand = dealerHand
                     , playerHand = playerHand
-                    , playerScore = makeScoreFromHand playerHand
-                    , playerState = makeState <| makeScoreFromHand playerHand
-                    , dealerScore = makeScoreFromHand dealerHand
-                    , dealerState = makeState <| makeScoreFromHand dealerHand
+                    , playerScore = Score.makeScoreFromHand playerHand
+                    , playerState = Score.makeState <| Score.makeScoreFromHand playerHand
+                    , dealerScore = Score.makeScoreFromHand dealerHand
+                    , dealerState = Score.makeState <| Score.makeScoreFromHand dealerHand
                     , flash = flash
                   }
                 , Cmd.none
