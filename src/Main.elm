@@ -36,7 +36,33 @@ type alias Model =
     , deckVisible : Bool
     , dealerHandVisible : Bool
     , flash : String
+    , history : List Game
     }
+
+
+type alias Game =
+    { round : Int
+    , winner : String
+    , playerHand : List String
+    , playerScore : Score
+    , dealerHand : List String
+    , dealerScore : Score
+    }
+
+
+gameFromModel : Model -> Game
+gameFromModel model =
+    { round = model.round
+    , winner = model.flash
+    , playerHand = model.playerHand
+    , playerScore = model.playerScore
+    , dealerHand = model.dealerHand
+    , dealerScore = model.dealerScore
+    }
+
+
+type History
+    = List Game
 
 
 init : ( Model, Cmd Msg )
@@ -57,6 +83,7 @@ init =
             , deckVisible = False
             , dealerHandVisible = False
             , flash = "Welcome To BlackJack!"
+            , history = []
             }
     in
         ( model, shuffleDeck )
@@ -143,7 +170,18 @@ update msg model =
                 )
 
         NewGame ->
-            ( model, shuffleDeck )
+            let
+                game =
+                    gameFromModel model
+
+                games =
+                    model.history
+            in
+                ( { model
+                    | history = game :: games
+                  }
+                , shuffleDeck
+                )
 
         Stand ->
             let
@@ -305,6 +343,8 @@ view model =
             , button [ onClick ToggleShowDeck ] [ text "Show/Hide Deck" ]
             , div []
                 [ text (toString <| showDeck model) ]
+            , ol []
+                [ text (toString model.history) ]
             ]
         , div [ attribute "style" " flex-grow:1 " ]
             [ BasicStrategy.legend ]
