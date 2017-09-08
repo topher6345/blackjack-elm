@@ -59,12 +59,52 @@ extractFace x =
     Maybe.withDefault "" <| List.head <| String.words x
 
 
+cardsUnderBust : List String -> List Score
+cardsUnderBust deck =
+    List.filter (\x -> x.soft < 22) <| scanlScores <| List.map makeScore deck
+
+
 
 --softScoreFromHand :
+--foldl1 : (String -> String -> String) -> List String -> String
 
 
+scanlScores : List Score -> List Score
+scanlScores list =
+    let
+        head =
+            List.head list
+
+        tail =
+            List.tail list
+
+        score =
+            { soft = 0, hard = 0 }
+
+        f x y =
+            { soft = x.soft + y.soft, hard = x.hard + y.hard }
+    in
+        List.scanl f (Maybe.withDefault score head) (Maybe.withDefault [] tail)
+
+
+softScoreFromHand : List String -> Int
 softScoreFromHand x =
     (makeScoreFromHand x).soft
+
+
+makeScore : String -> Score
+makeScore string =
+    let
+        face =
+            extractFace string
+
+        hard =
+            scoreHard face
+
+        soft =
+            scoreSoft face
+    in
+        Score soft hard
 
 
 makeScoreFromHand : List String -> Score

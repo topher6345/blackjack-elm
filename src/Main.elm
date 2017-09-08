@@ -286,6 +286,7 @@ view model =
         , button [ onClick NewGame ] [ text "New Game" ]
         , button [ onClick Hit ] [ text "Hit" ]
         , button [ onClick Stand ] [ text "Stand" ]
+        , div [] [ text (toString <| cardsUnderBust model.deck) ]
         , button [ onClick NewGame ] [ text "Surrender" ]
         , h2 [] [ text "Deck" ]
         , button [ onClick ToggleShowDeck ] [ text "Show/Hide Deck" ]
