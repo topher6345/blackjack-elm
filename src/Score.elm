@@ -1,5 +1,7 @@
 module Score exposing (..)
 
+import Card
+
 
 type alias Score =
     { soft : Int, hard : Int }
@@ -54,11 +56,6 @@ scoreFace card =
             0
 
 
-extractFace : String -> String
-extractFace x =
-    Maybe.withDefault "" <| List.head <| String.words x
-
-
 cardsUnderBust : List String -> List Score
 cardsUnderBust deck =
     List.filter (\x -> x.soft < 22) <| scanlScores <| List.map makeScore deck
@@ -96,7 +93,7 @@ makeScore : String -> Score
 makeScore string =
     let
         face =
-            extractFace string
+            Card.extractFace string
 
         hard =
             scoreHard face
@@ -111,7 +108,7 @@ makeScoreFromHand : List String -> Score
 makeScoreFromHand hand =
     let
         faces =
-            List.map extractFace hand
+            List.map Card.extractFace hand
 
         sum f =
             List.foldr (+) 0 <| List.map f faces

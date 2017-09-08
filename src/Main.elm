@@ -5,11 +5,13 @@ module Main exposing (..)
 
 import Html exposing (..)
 import Html.Events exposing (..)
+import Html.Attributes exposing (..)
 import Array
 import Random
 import Random.Array
 import Card
 import Score exposing (Score, ScoreState)
+import BasicStrategy
 
 
 main : Program Never Model Msg
@@ -268,27 +270,44 @@ showDealerHand model =
         []
 
 
+showDealerScore : Model -> String
+showDealerScore model =
+    if model.dealerHandVisible then
+        toString model.dealerScore
+    else
+        ""
+
+
 view : Model -> Html Msg
 view model =
-    div []
-        [ h1 [] [ text "BlackJack" ]
-        , div [] [ text (toString model.flash) ]
-        , div [] [ text (toString model.round) ]
-        , h2 [] [ text "Player" ]
-        , div [] [ text (toString model.playerHand) ]
-        , div [] [ text (toString model.playerScore) ]
-        , h3 [] [ text (toString model.playerState) ]
-        , h2 [] [ text "Dealer" ]
-        , div [] [ text (toString <| Maybe.withDefault [] <| List.tail model.dealerHand) ]
-        , button [ onClick ToggleShowDealerHand ] [ text "Show/Hide Dealer Hand" ]
-        , div [] [ text (toString <| showDealerHand model) ]
-        , h3 [] [ text (toString model.dealerState) ]
-        , button [ onClick NewGame ] [ text "New Game" ]
-        , button [ onClick Hit ] [ text "Hit" ]
-        , button [ onClick Stand ] [ text "Stand" ]
-        , div [] [ text (toString <| cardsUnderBust model.deck) ]
-        , button [ onClick NewGame ] [ text "Surrender" ]
-        , h2 [] [ text "Deck" ]
-        , button [ onClick ToggleShowDeck ] [ text "Show/Hide Deck" ]
-        , div [] [ text (toString <| showDeck model) ]
+    div [ attribute "style" "display: flex;" ]
+        [ div [ attribute "style" " flex-grow:1 " ]
+            [ h1 [] [ text "🂠BlackJack🂠" ]
+            , h1 [] [ text "♠️♣️♥️♦️" ]
+            , div [] [ text (toString model.flash) ]
+            , button [ onClick NewGame ] [ text "New Game" ]
+            , div [] [ text ("Round: " ++ (toString model.round)) ]
+            , h2 [] [ text "Player" ]
+            , div [] [ text (toString model.playerHand) ]
+            , div [] [ text (toString model.playerScore) ]
+            , h3 [] [ text (toString model.playerState) ]
+            , h2 [] [ text "Dealer" ]
+            , div [] [ text (toString <| Maybe.withDefault [] <| List.tail model.dealerHand) ]
+            , button [ onClick ToggleShowDealerHand ] [ text "Show/Hide Dealer Hand" ]
+            , div [] [ text (toString <| showDealerHand model) ]
+            , div [] [ text (toString <| showDealerScore model) ]
+            , h3 [] [ text (toString model.dealerState) ]
+            , button [ onClick Hit ] [ text "Hit" ]
+            , button [ onClick Stand ] [ text "Stand" ]
+            , div [] [ text (toString <| Score.cardsUnderBust model.deck) ]
+            , button [ onClick NewGame ] [ text "Surrender" ]
+            , h2 [] [ text "Deck" ]
+            , button [ onClick ToggleShowDeck ] [ text "Show/Hide Deck" ]
+            , div []
+                [ text (toString <| showDeck model) ]
+            ]
+        , div [ attribute "style" " flex-grow:1 " ]
+            [ BasicStrategy.legend ]
+        , div [ attribute "style" " flex-grow:1 " ]
+            [ BasicStrategy.basicStrategy ]
         ]

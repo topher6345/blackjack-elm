@@ -72,3 +72,8 @@ cards =
             ]
     in
         List.concatMap (\face -> List.map (\suit -> Card face suit) suits) faces
+
+
+extractFace : String -> String
+extractFace x =
+    Maybe.withDefault "" <| List.head <| String.words x
