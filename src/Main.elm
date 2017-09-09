@@ -319,7 +319,7 @@ showDealerScore model =
 view : Model -> Html Msg
 view model =
     div [ attribute "style" "display: flex;" ]
-        [ div [ attribute "style" " flex-grow:1 " ]
+        [ div [ attribute "style" "flex-grow:1;max-width: 33%; " ]
             [ h1 [] [ text "🂠BlackJack🂠" ]
             , h1 [] [ text "♠️♣️♥️♦️" ]
             , div [] [ text (toString model.flash) ]
