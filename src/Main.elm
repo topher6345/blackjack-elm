@@ -349,5 +349,5 @@ view model =
         , div [ attribute "style" " flex-grow:1 " ]
             [ BasicStrategy.legend ]
         , div [ attribute "style" " flex-grow:1 " ]
-            [ BasicStrategy.basicStrategy ]
+            [ BasicStrategy.basicStrategy model.playerScore (Score.makeScoreFromHand <| Maybe.withDefault [] <| List.tail model.dealerHand) ]
         ]
