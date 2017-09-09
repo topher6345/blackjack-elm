@@ -96,11 +96,18 @@ dealerSoftScoreAttribute hasAce score value =
             attribute "style" ""
 
 
-basicStrategy : Score.Score -> Score.Score -> Html msg
-basicStrategy playerScore dealerScore =
+basicStrategy model =
     let
+        playerScore =
+            model.playerScore
+
         playerHasAce =
-            hasAce playerScore
+            hasAce model.playerScore
+
+        dealerScore =
+            Score.makeScoreFromHand <| Maybe.withDefault [] <| List.tail model.dealerHand
+
+        --playerSoftNonAceHand =
     in
         table [ attribute "border" "1", class "wikitable", attribute "style" "text-align:center" ]
             [ tbody []

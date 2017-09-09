@@ -142,6 +142,15 @@ scoreSoft card =
             scoreFace card
 
 
+handMinusAce : List String -> List String
+handMinusAce cards =
+    List.filter (\f -> not (f == "Ace")) (List.map Card.extractFace cards)
+
+
+scoreMinusAce cards =
+    List.map scoreHard <| handMinusAce cards
+
+
 makeState : Score -> ScoreState
 makeState { hard, soft } =
     if soft > 21 then
