@@ -9,6 +9,7 @@ import Score
 -- https://en.wikipedia.org/wiki/Blackjack#Blackjack_strategy
 
 
+legend : Html msg
 legend =
     dl []
         [ dd []
@@ -96,6 +97,23 @@ dealerSoftScoreAttribute hasAce score value =
             attribute "style" ""
 
 
+playerSoftScoreAttribute : Bool -> Int -> List Int -> Attribute msg
+playerSoftScoreAttribute hasAce score range =
+    case hasAce of
+        True ->
+            playerScoreAttributes score range
+
+        False ->
+            attribute "style" ""
+
+
+basicStrategy :
+    { a
+        | dealerHand : List String
+        , playerHand : List String
+        , playerScore : Score.Score
+    }
+    -> Html msg
 basicStrategy model =
     let
         playerScore =
@@ -103,6 +121,9 @@ basicStrategy model =
 
         playerHasAce =
             hasAce model.playerScore
+
+        playerScoreWithoutAce =
+            Score.scoreMinusAce model.playerHand
 
         dealerScore =
             Score.makeScoreFromHand <| Maybe.withDefault [] <| List.tail model.dealerHand
@@ -388,7 +409,7 @@ basicStrategy model =
                         [ text "A" ]
                     ]
                 , tr []
-                    [ th []
+                    [ th [ playerSoftScoreAttribute playerHasAce playerScoreWithoutAce <| List.range 9 9 ]
                         [ text "A,9" ]
                     , td [ attribute "style" "background:red; color:black" ]
                         [ text "S" ]
@@ -412,7 +433,7 @@ basicStrategy model =
                         [ text "S" ]
                     ]
                 , tr []
-                    [ th []
+                    [ th [ playerSoftScoreAttribute playerHasAce playerScoreWithoutAce <| List.range 8 8 ]
                         [ text "A,8" ]
                     , td [ attribute "style" "background:red; color:black" ]
                         [ text "S" ]
@@ -436,7 +457,7 @@ basicStrategy model =
                         [ text "S" ]
                     ]
                 , tr []
-                    [ th []
+                    [ th [ playerSoftScoreAttribute playerHasAce playerScoreWithoutAce <| List.range 7 7 ]
                         [ text "A,7" ]
                     , td [ attribute "style" "background:cyan; color:black" ]
                         [ text "Ds" ]
@@ -460,7 +481,7 @@ basicStrategy model =
                         [ text "H" ]
                     ]
                 , tr []
-                    [ th []
+                    [ th [ playerSoftScoreAttribute playerHasAce playerScoreWithoutAce <| List.range 6 6 ]
                         [ text "A,6" ]
                     , td [ attribute "style" "background:lime; color:black" ]
                         [ text "H" ]
@@ -484,7 +505,7 @@ basicStrategy model =
                         [ text "H" ]
                     ]
                 , tr []
-                    [ th []
+                    [ th [ playerSoftScoreAttribute playerHasAce playerScoreWithoutAce <| List.range 4 5 ]
                         [ text "A,4–A,5" ]
                     , td [ attribute "style" "background:lime; color:black" ]
                         [ text "H" ]
@@ -508,7 +529,7 @@ basicStrategy model =
                         [ text "H" ]
                     ]
                 , tr []
-                    [ th []
+                    [ th [ playerSoftScoreAttribute playerHasAce playerScoreWithoutAce <| List.range 2 3 ]
                         [ text "A,2–A,3" ]
                     , td [ attribute "style" "background:lime; color:black" ]
                         [ text "H" ]

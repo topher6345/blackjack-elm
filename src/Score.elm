@@ -148,7 +148,7 @@ handMinusAce cards =
 
 
 scoreMinusAce cards =
-    List.map scoreHard <| handMinusAce cards
+    Maybe.withDefault 0 <| List.head <| List.map scoreHard <| handMinusAce cards
 
 
 makeState : Score -> ScoreState
