@@ -56,9 +56,28 @@ scoreFace card =
             0
 
 
-cardsUnderBust : List String -> List Score
-cardsUnderBust deck =
+makeScoreCardTuple : String -> ( String, Score )
+makeScoreCardTuple c =
+    ( c, makeScore c )
+
+
+scoresUnderBust : List String -> List { hard : Int, soft : Int }
+scoresUnderBust deck =
     List.filter (\x -> x.soft < 22) <| scanlScores <| List.map makeScore deck
+
+
+dealerStandUnder : List String -> Int
+dealerStandUnder deck =
+    List.length <| scoresUnderBust deck
+
+
+cardsUnderBust : List String -> List String
+cardsUnderBust deck =
+    let
+        length =
+            List.length <| scoresUnderBust deck
+    in
+        List.take length deck
 
 
 

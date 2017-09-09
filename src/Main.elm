@@ -187,7 +187,7 @@ update msg model =
             let
                 ( dealerHand, newDeck ) =
                     if model.dealerScore.soft < 18 then
-                        dealNCards model.dealerHand model.deck 1
+                        dealNCards model.dealerHand model.deck (Score.dealerStandUnder (model.dealerHand ++ model.deck) - 2)
                     else
                         ( model.dealerHand, model.deck )
 
