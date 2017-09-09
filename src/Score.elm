@@ -147,8 +147,37 @@ handMinusAce cards =
     List.filter (\f -> not (f == "Ace")) (List.map Card.extractFace cards)
 
 
+scoreMinusAce : List String -> number
 scoreMinusAce cards =
     Maybe.withDefault 0 <| List.head <| List.map scoreHard <| handMinusAce cards
+
+
+isPair : List String -> Bool
+isPair xs =
+    let
+        safeHead z =
+            Maybe.withDefault "" <| List.head z
+
+        x =
+            safeHead xs
+
+        safeTail z =
+            Maybe.withDefault [] <| List.tail z
+
+        y =
+            safeHead <| safeTail xs
+    in
+        x == y
+
+
+handIsPair : List String -> Bool
+handIsPair fullCards =
+    if not ((List.length fullCards) == 2) then
+        False
+    else if isPair <| List.map Card.extractFace fullCards then
+        True
+    else
+        False
 
 
 makeState : Score -> ScoreState
