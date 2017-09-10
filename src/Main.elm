@@ -284,11 +284,18 @@ view model =
                         else
                             []
                 ]
-              --, ol []
-              --    [ text (toString model.history) ]
             ]
         , div [ attribute "style" " flex-grow:1 " ]
-            [ BasicStrategy.legend ]
+            [ BasicStrategy.legend
+            , h3 [] [ text "Game history" ]
+            , showHistory model.history
+            ]
         , div [ attribute "style" " flex-grow:1 " ]
             [ BasicStrategy.basicStrategy model ]
         ]
+
+
+showHistory history =
+    ol [ attribute "reversed" "true" ] <|
+        List.map (\x -> li [] [ text x ]) <|
+            List.map (\x -> x.winner) history
