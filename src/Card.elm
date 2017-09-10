@@ -47,11 +47,12 @@ type alias PlayerHand =
 
 initDeck : List String
 initDeck =
-    let
-        stringify x =
-            (toString x.face) ++ " " ++ (toString x.suit)
-    in
-        List.map stringify cards
+    List.map cardToString cards
+
+
+cardToString : Card -> String
+cardToString card =
+    (toString card.face) ++ " " ++ (toString card.suit)
 
 
 flatZip : List Suit -> List Face -> List Card

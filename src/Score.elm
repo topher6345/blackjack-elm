@@ -75,15 +75,11 @@ under22 x =
 
 dealStand : Int -> List String -> List String -> ( List String, List String )
 dealStand softScore dealerHand deck =
-    let
-        dealDealerStand hand deck =
-            Card.dealDealerStand hand deck <|
-                dealerStandHand hand deck
-    in
-        if softScore < 18 then
-            dealDealerStand dealerHand deck
-        else
-            ( dealerHand, deck )
+    if softScore < 18 then
+        Card.dealDealerStand dealerHand deck <|
+            dealerStandHand dealerHand deck
+    else
+        ( dealerHand, deck )
 
 
 scoresUnderBust : List String -> List Score
