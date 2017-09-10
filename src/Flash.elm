@@ -3,6 +3,7 @@ module Flash
         ( hitFlash
         , initFlash
         , initState
+        , isBlackjackHand
         , makeState
         , makeStateFromHand
         , playerCanHit
@@ -117,6 +118,21 @@ playerCanHit score =
 
         _ ->
             False
+
+
+isBlackjack : ScoreState -> Bool
+isBlackjack score =
+    case score of
+        Blackjack _ ->
+            True
+
+        _ ->
+            False
+
+
+isBlackjackHand : List String -> Bool
+isBlackjackHand hand =
+    isBlackjack <| makeState <| Score.makeScoreFromHand hand
 
 
 makeStateFromHand : List String -> ScoreState

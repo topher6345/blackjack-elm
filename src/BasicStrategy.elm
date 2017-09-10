@@ -152,31 +152,25 @@ playerSoftScoreAttribute hasAce score range =
             blankStyle
 
 
-basicStrategy :
-    { a
-        | dealerHand : List String
-        , playerHand : List String
-        , playerScore : Score.Score
-    }
-    -> Html msg
-basicStrategy model =
+basicStrategy : List String -> List String -> Html msg
+basicStrategy playerHand dealerHand =
     let
         -- Multiple call sites in table
         playerScore =
-            model.playerScore
+            Score.makeScoreFromHand playerHand
 
         -- Multiple call sites in table
         playerHasAce =
             Score.hasAce playerScore
 
         playerScoreWithoutAce =
-            Score.scoreMinusAce model.playerHand
+            Score.scoreMinusAce playerHand
 
         dealerScore =
-            Score.makeScoreFromHand <| Maybe.withDefault [] <| List.tail model.dealerHand
+            Score.makeScoreFromHand <| Maybe.withDefault [] <| List.tail dealerHand
 
         playerHandIsPair =
-            Score.handIsPair model.playerHand
+            Score.handIsPair playerHand
     in
         table [ attribute "border" "1", attribute "style" "text-align:center" ]
             [ tbody []

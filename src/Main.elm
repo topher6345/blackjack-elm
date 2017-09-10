@@ -206,6 +206,12 @@ update msg model =
             let
                 ( newDeck, dealerHand, playerHand ) =
                     Card.dealShuffled (Array.toList cards)
+
+                isBlackJack =
+                    (Flash.isBlackjackHand playerHand) || (Flash.isBlackjackHand dealerHand)
+
+                playerCanHit =
+                    Flash.playerCanHit
             in
                 ( { model
                     | dealerHand = dealerHand
@@ -213,8 +219,9 @@ update msg model =
                     , dealerState = Flash.makeStateFromHand dealerHand
                     , deck = newDeck
                     , flash = Flash.shuffleDeckFlash playerHand dealerHand
-                    , playerCanHit = Flash.playerCanHit <| Score.makeScoreFromHand playerHand
-                    , playerCanStand = Flash.playerCanHit <| Score.makeScoreFromHand playerHand
+                    , playerCanHit = not isBlackJack
+                    , playerCanStand = not isBlackJack
+                    , playerCanNewGame = isBlackJack
                     , playerHand = playerHand
                     , playerScore = Score.makeScoreFromHand playerHand
                     , playerState = Flash.makeStateFromHand playerHand
@@ -305,7 +312,7 @@ view model =
             , showHistory model.history
             ]
         , div [ attribute "style" " flex-grow:1 " ]
-            [ BasicStrategy.basicStrategy model ]
+            [ BasicStrategy.basicStrategy model.playerHand model.dealerHand ]
         ]
 
 
