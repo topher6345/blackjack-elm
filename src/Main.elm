@@ -111,25 +111,25 @@ maybeDealerWin : Score -> Score -> String
 maybeDealerWin playerScore dealerScore =
     if playerScore.hard < 22 then
         if dealerScore.soft > playerScore.hard then
-            "Dealer Wins!"
+            "Dealer has a higher hand - Dealer Wins!"
         else
-            "You Win!"
+            "You have a higher hand - You Win!"
     else if dealerScore.soft > playerScore.soft then
-        "Dealer Wins!"
+        "Dealer has a higher hand - Dealer Wins!"
     else if dealerScore.soft == playerScore.soft then
         "Its a tie!"
     else
-        "You Win!"
+        "You have a higher hand - You Win!"
 
 
 standFlash : Score -> Score -> ScoreState -> String
 standFlash playerScore dealerScore dealerState =
     case dealerState of
         Score.Blackjack ->
-            "Dealer Wins!"
+            "Dealer has 21 - Dealer Wins!"
 
         Score.Bust ->
-            "You Win!"
+            "Dealer Busts! You Win!"
 
         Score.Under ->
             maybeDealerWin playerScore dealerScore
@@ -163,7 +163,7 @@ update msg model =
 
         Surrender ->
             ( { model
-                | flash = "You lose!"
+                | flash = "You Surrendered!"
                 , playerCanHit = False
                 , dealerHandVisible = True
               }
@@ -236,13 +236,13 @@ update msg model =
                 flash =
                     case Score.makeState score of
                         Score.Blackjack ->
-                            "You Win!"
+                            "21 - You Win!"
 
                         Score.Under ->
                             model.flash
 
                         Score.Bust ->
-                            "Bust!"
+                            "Bust! - You Lose!"
             in
                 ( { model
                     | playerHand = playerHand
@@ -274,10 +274,18 @@ update msg model =
                             "Blackjack on deal! - You Win!"
 
                         Score.Under ->
-                            "Welcome To BlackJack!"
+                            case Score.makeState <| Score.makeScoreFromHand dealerHand of
+                                Score.Blackjack ->
+                                    "Dealer Blackjack on deal! - You Lose!"
+
+                                Score.Under ->
+                                    "Welcome To BlackJack!"
+
+                                Score.Bust ->
+                                    "Dealer Bust on Deal, this should never happen!"
 
                         Score.Bust ->
-                            "Bust on Deal, this should never happen!"
+                            "Player Bust on Deal, this should never happen!"
             in
                 ( { model
                     | deck = d3
@@ -358,24 +366,28 @@ view model =
             [ h1 [] [ text "🂠BlackJack🂠" ]
             , h1 [] [ text "♠️♣️♥️♦️" ]
             , div [] [ text (toString model.flash) ]
-            , div [] [ button [ onClick NewGame ] [ text "New Game" ] ]
-            , div []
-                [ if model.playerCanHit then
-                    button [ onClick Hit ] [ text "Hit" ]
-                  else
-                    button [ onClick Hit, attribute "disabled" "true" ] [ text "Hit" ]
-                ]
-            , div [] [ button [ onClick Stand ] [ text "Stand" ] ]
-            , button [ onClick Surrender ] [ text "Surrender" ]
             , div [] [ text ("Round: " ++ (toString model.round)) ]
+            , div [] [ button [ onClick NewGame ] [ text "New Game" ] ]
+            , div [ attribute "style" "margin-top: 20px" ]
+                [ (if model.playerCanHit then
+                    button [ onClick Hit ] [ text "Hit" ]
+                   else
+                    button [ onClick Hit, attribute "disabled" "true" ] [ text "Hit" ]
+                  )
+                , button [ onClick Stand ] [ text "Stand" ]
+                , button [ onClick Surrender ] [ text "Surrender" ]
+                ]
             , h2 [] [ text "Player" ]
             , div [ attribute "style" "font-size: 102px;" ] <| playerCardStringText model.playerHand
-            , div [] [ text (toString model.playerScore) ]
+              --, div [] [ text (toString model.playerScore) ]
             , h2 [] [ text "Dealer" ]
-            , div [ attribute "style" "font-size: 102px;" ] [ dealerCardStringText model.dealerHand ]
             , button [ onClick ToggleShowDealerHand ] [ text "🔎" ]
-            , div [] [ text (toString <| showDealerHand model) ]
-            , div [] [ text (toString <| showDealerScore model) ]
+            , div [ attribute "style" "font-size: 102px;" ] <|
+                if model.dealerHandVisible then
+                    playerCardStringText model.dealerHand
+                else
+                    [ dealerCardStringText model.dealerHand ]
+              --, div [] [ text (toString <| showDealerScore model) ]
             , h2 [] [ text "Deck" ]
             , button [ onClick ToggleShowDeck ] [ text "🔎" ]
             , div []
