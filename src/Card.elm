@@ -1,4 +1,12 @@
-module Card exposing (..)
+module Card
+    exposing
+        ( dealNCards
+        , dealDealerStand
+        , dealerCardStringText
+        , extractFace
+        , initDeck
+        , playerCardStringText
+        )
 
 
 type Face
@@ -45,6 +53,11 @@ initDeck =
         List.map stringify cards
 
 
+flatZip : List Suit -> List Face -> List Card
+flatZip s f =
+    List.concatMap (\face -> List.map (\suit -> Card face suit) s) f
+
+
 cards : List Card
 cards =
     let
@@ -71,7 +84,7 @@ cards =
             , Clubs
             ]
     in
-        List.concatMap (\face -> List.map (\suit -> Card face suit) suits) faces
+        flatZip suits faces
 
 
 extractFace : String -> String
@@ -111,6 +124,7 @@ dealerCardStringText hand =
         "🂠" ++ dealerCards
 
 
+dealDealerStand : List a -> List a -> Int -> ( List a, List a )
 dealDealerStand dealerHand deck standunder =
     dealNCards dealerHand deck standunder
 

@@ -1,4 +1,8 @@
-module BasicStrategy exposing (..)
+module BasicStrategy
+    exposing
+        ( basicStrategy
+        , legend
+        )
 
 import Html exposing (..)
 import Html.Attributes exposing (..)

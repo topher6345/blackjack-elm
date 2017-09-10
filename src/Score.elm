@@ -1,4 +1,17 @@
-module Score exposing (..)
+module Score
+    exposing
+        ( dealerStandHand
+        , handIsPair
+        , hitFlash
+        , makeScoreFromHand
+        , makeState
+        , makeStateFromHand
+        , scoreMinusAce
+        , Score
+        , ScoreState
+        , shuffleDeckFlash
+        , standFlash
+        )
 
 import Card
 
