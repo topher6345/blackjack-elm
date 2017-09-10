@@ -107,34 +107,6 @@ shuffleDeck =
         (Random.Array.shuffle (Array.fromList Card.initDeck))
 
 
-maybeDealerWin : Score -> Score -> String
-maybeDealerWin playerScore dealerScore =
-    if playerScore.hard < 22 then
-        if dealerScore.soft > playerScore.hard then
-            "Dealer has a higher hand - Dealer Wins!"
-        else
-            "You have a higher hand - You Win!"
-    else if dealerScore.soft > playerScore.soft then
-        "Dealer has a higher hand - Dealer Wins!"
-    else if dealerScore.soft == playerScore.soft then
-        "Its a tie!"
-    else
-        "You have a higher hand - You Win!"
-
-
-standFlash : Score -> Score -> ScoreState -> String
-standFlash playerScore dealerScore dealerState =
-    case dealerState of
-        Score.Blackjack ->
-            "Dealer has 21 - Dealer Wins!"
-
-        Score.Bust ->
-            "Dealer Busts! You Win!"
-
-        Score.Under ->
-            maybeDealerWin playerScore dealerScore
-
-
 dealNCards : List a -> List a -> Int -> ( List a, List a )
 dealNCards to from n =
     let
@@ -211,7 +183,7 @@ update msg model =
                     Score.makeState dealerScore
 
                 flash =
-                    standFlash model.playerScore dealerScore dealerState
+                    Score.standFlash model.playerScore dealerScore dealerState
             in
                 ( { model
                     | dealerHand = dealerHand

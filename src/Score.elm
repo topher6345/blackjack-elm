@@ -13,6 +13,34 @@ type ScoreState
     | Bust
 
 
+standFlash : Score -> Score -> ScoreState -> String
+standFlash playerScore dealerScore dealerState =
+    case dealerState of
+        Blackjack ->
+            "Dealer has 21 - Dealer Wins!"
+
+        Bust ->
+            "Dealer Busts! You Win!"
+
+        Under ->
+            maybeDealerWin playerScore dealerScore
+
+
+maybeDealerWin : Score -> Score -> String
+maybeDealerWin playerScore dealerScore =
+    if playerScore.hard < 22 then
+        if dealerScore.soft > playerScore.hard then
+            "Dealer has a higher hand - Dealer Wins!"
+        else
+            "You have a higher hand - You Win!"
+    else if dealerScore.soft > playerScore.soft then
+        "Dealer has a higher hand - Dealer Wins!"
+    else if dealerScore.soft == playerScore.soft then
+        "Its a tie!"
+    else
+        "You have a higher hand - You Win!"
+
+
 scoreFace : String -> number
 scoreFace card =
     case card of
