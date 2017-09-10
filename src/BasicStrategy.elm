@@ -107,11 +107,6 @@ blankStyle =
     attribute "style" ""
 
 
-hasAce : Score.Score -> Bool
-hasAce playerScore =
-    playerScore.hard /= playerScore.soft
-
-
 playerScoreAttributes : Int -> List Int -> Attribute a
 playerScoreAttributes score range =
     case List.member score range of
@@ -172,7 +167,7 @@ basicStrategy model =
 
         -- Multiple call sites in table
         playerHasAce =
-            hasAce playerScore
+            Score.hasAce playerScore
 
         playerScoreWithoutAce =
             Score.scoreMinusAce model.playerHand

@@ -2,6 +2,7 @@ module Score
     exposing
         ( dealStand
         , handIsPair
+        , hasAce
         , makeScoreFromHand
         , scoreMinusAce
         , Score
@@ -205,3 +206,8 @@ dealerStandHand : List String -> List String -> Int
 dealerStandHand dealerHand deck =
     dealerStandUnder (dealerHand ++ deck)
         - 2
+
+
+hasAce : Score -> Bool
+hasAce score =
+    score.hard /= score.soft
