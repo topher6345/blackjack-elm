@@ -89,9 +89,14 @@ makeScoreCardTuple c =
     ( c, makeScore c )
 
 
-scoresUnderBust : List String -> List { hard : Int, soft : Int }
+under22 : Score -> Bool
+under22 x =
+    x.soft < 22
+
+
+scoresUnderBust : List String -> List Score
 scoresUnderBust deck =
-    List.filter (\x -> x.soft < 22) <| scanlScores <| List.map makeScore deck
+    List.filter under22 <| scanlScores <| List.map makeScore deck
 
 
 dealerStandUnder : List String -> Int
@@ -106,11 +111,6 @@ cardsUnderBust deck =
             List.length <| scoresUnderBust deck
     in
         List.take length deck
-
-
-
---softScoreFromHand :
---foldl1 : (String -> String -> String) -> List String -> String
 
 
 scanlScores : List Score -> List Score
@@ -189,9 +189,14 @@ scoreSoft card =
             scoreFace card
 
 
+notAce : String -> Bool
+notAce string =
+    not (string == "Ace")
+
+
 handMinusAce : List String -> List String
 handMinusAce cards =
-    List.filter (\f -> not (f == "Ace")) (List.map Card.extractFace cards)
+    List.filter notAce (List.map Card.extractFace cards)
 
 
 scoreMinusAce : List String -> number
@@ -237,15 +242,18 @@ makeState { hard, soft } =
         Under
 
 
+makeStateFromHand : List String -> ScoreState
 makeStateFromHand playerHand =
     makeState <| makeScoreFromHand playerHand
 
 
+dealerStandHand : List String -> List String -> Int
 dealerStandHand dealerHand deck =
     dealerStandUnder (dealerHand ++ deck)
         - 2
 
 
+hitFlash : Score -> String -> String
 hitFlash score passthrough =
     case makeState <| score of
         Blackjack ->
