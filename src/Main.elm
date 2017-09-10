@@ -315,14 +315,6 @@ subscriptions model =
 -- VIEW
 
 
-showDealerScore : Model -> String
-showDealerScore model =
-    if model.dealerHandVisible then
-        toString model.dealerScore
-    else
-        ""
-
-
 playerCardStringText : List String -> List (Html msg)
 playerCardStringText hand =
     List.map text (List.map Card.cardStringToGlyph hand)
@@ -371,7 +363,15 @@ view model =
                     playerCardStringText model.dealerHand
                 else
                     [ dealerCardStringText model.dealerHand ]
-            , div [] [ text (toString <| showDealerScore model) ]
+            , div []
+                [ text
+                    (toString <|
+                        if model.dealerHandVisible then
+                            toString model.dealerScore
+                        else
+                            ""
+                    )
+                ]
             , h2 [] [ text "Deck" ]
             , button [ onClick ToggleShowDeck ] [ text "🔎" ]
             , div []
