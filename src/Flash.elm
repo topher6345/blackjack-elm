@@ -77,12 +77,12 @@ hitFlash score passthrough =
 
 shuffleDeckFlash : List String -> List String -> String
 shuffleDeckFlash playerHand dealerHand =
-    case makeState <| makeScoreFromHand playerHand of
+    case makeStateFromHand playerHand of
         Blackjack ->
             "Blackjack on deal! - You Win!"
 
         Under ->
-            case makeState <| makeScoreFromHand dealerHand of
+            case makeStateFromHand dealerHand of
                 Blackjack ->
                     "Dealer Blackjack on deal! - You Lose!"
 
