@@ -44,13 +44,14 @@ legend =
                 ]
             , text "= Double (if not allowed, then stand)"
             ]
-        , dd []
-            [ span [ attribute "style" "background:yellow; color:black" ]
-                [ b []
-                    [ text "SP" ]
-                ]
-            , text "= Split"
-            ]
+          -- Can't split yet
+          --, dd []
+          --    [ span [ attribute "style" "background:yellow; color:black" ]
+          --        [ b []
+          --            [ text "SP" ]
+          --        ]
+          --    , text "= Split"
+          --    ]
         , dd []
             [ span [ attribute "style" "background:white; color:black" ]
                 [ b []
@@ -444,159 +445,167 @@ basicStrategy playerHand dealerHand =
                     , hit
                     , hit
                     ]
-                , tr []
-                    [ th [ attribute "colspan" "11" ]
-                        [ text "Pairs" ]
-                    ]
-                , tr []
-                    [ td []
-                        []
-                    , td [ dealerSoftScoreAttribute playerHandIsPair dealerScore.soft 2 ]
-                        [ text "2" ]
-                    , td [ dealerSoftScoreAttribute playerHandIsPair dealerScore.soft 3 ]
-                        [ text "3" ]
-                    , td [ dealerSoftScoreAttribute playerHandIsPair dealerScore.soft 4 ]
-                        [ text "4" ]
-                    , td [ dealerSoftScoreAttribute playerHandIsPair dealerScore.soft 5 ]
-                        [ text "5" ]
-                    , td [ dealerSoftScoreAttribute playerHandIsPair dealerScore.soft 6 ]
-                        [ text "6" ]
-                    , td [ dealerSoftScoreAttribute playerHandIsPair dealerScore.soft 7 ]
-                        [ text "7" ]
-                    , td [ dealerSoftScoreAttribute playerHandIsPair dealerScore.soft 8 ]
-                        [ text "8" ]
-                    , td [ dealerSoftScoreAttribute playerHandIsPair dealerScore.soft 9 ]
-                        [ text "9" ]
-                    , td [ dealerSoftScoreAttribute playerHandIsPair dealerScore.soft 10 ]
-                        [ text "10" ]
-                    , td [ dealerSoftScoreAttribute playerHandIsPair dealerScore.soft 11 ]
-                        [ text "A" ]
-                    ]
-                , tr []
-                    [ th [ playerSoftScoreAttribute playerHandIsPair playerScore.hard [ 22 ] ]
-                        [ text "A,A" ]
-                    , sp
-                    , sp
-                    , sp
-                    , sp
-                    , sp
-                    , sp
-                    , sp
-                    , sp
-                    , sp
-                    , sp
-                    ]
-                , tr []
-                    [ th [ playerSoftScoreAttribute playerHandIsPair playerScore.soft [ 20 ] ]
-                        [ text "10,10" ]
-                    , stand
-                    , stand
-                    , stand
-                    , stand
-                    , stand
-                    , stand
-                    , stand
-                    , stand
-                    , stand
-                    , stand
-                    ]
-                , tr []
-                    [ th [ playerSoftScoreAttribute playerHandIsPair playerScore.soft [ 18 ] ]
-                        [ text "9,9" ]
-                    , sp
-                    , sp
-                    , sp
-                    , sp
-                    , sp
-                    , stand
-                    , sp
-                    , sp
-                    , stand
-                    , stand
-                    ]
-                , tr []
-                    [ th [ playerSoftScoreAttribute playerHandIsPair playerScore.soft [ 16 ] ]
-                        [ text "8,8" ]
-                    , sp
-                    , sp
-                    , sp
-                    , sp
-                    , sp
-                    , sp
-                    , sp
-                    , sp
-                    , sp
-                    , sp
-                    ]
-                , tr []
-                    [ th [ playerSoftScoreAttribute playerHandIsPair playerScore.soft [ 14 ] ]
-                        [ text "7,7" ]
-                    , sp
-                    , sp
-                    , sp
-                    , sp
-                    , sp
-                    , sp
-                    , hit
-                    , hit
-                    , hit
-                    , hit
-                    ]
-                , tr []
-                    [ th [ playerSoftScoreAttribute playerHandIsPair playerScore.soft [ 12 ] ]
-                        [ text "6,6" ]
-                    , sp
-                    , sp
-                    , sp
-                    , sp
-                    , sp
-                    , hit
-                    , hit
-                    , hit
-                    , hit
-                    , hit
-                    ]
-                , tr []
-                    [ th [ playerSoftScoreAttribute playerHandIsPair playerScore.soft [ 10 ] ]
-                        [ text "5,5" ]
-                    , dh
-                    , dh
-                    , dh
-                    , dh
-                    , dh
-                    , dh
-                    , dh
-                    , dh
-                    , hit
-                    , hit
-                    ]
-                , tr []
-                    [ th [ playerSoftScoreAttribute playerHandIsPair playerScore.soft [ 8 ] ]
-                        [ text "4,4" ]
-                    , hit
-                    , hit
-                    , hit
-                    , sp
-                    , sp
-                    , hit
-                    , hit
-                    , hit
-                    , hit
-                    , hit
-                    ]
-                , tr []
-                    [ th [ playerSoftScoreAttribute playerHandIsPair playerScore.soft [ 4, 6 ] ]
-                        [ text "2,2–3,3" ]
-                    , sp
-                    , sp
-                    , sp
-                    , sp
-                    , sp
-                    , sp
-                    , hit
-                    , hit
-                    , hit
-                    , hit
-                    ]
                 ]
             ]
+
+
+
+-- Can't split yet
+
+
+pairsTable playerHandIsPair playerScore dealerScore =
+    [ tr []
+        [ th [ attribute "colspan" "11" ]
+            [ text "Pairs" ]
+        ]
+    , tr []
+        [ td []
+            []
+        , td [ dealerSoftScoreAttribute playerHandIsPair dealerScore.soft 2 ]
+            [ text "2" ]
+        , td [ dealerSoftScoreAttribute playerHandIsPair dealerScore.soft 3 ]
+            [ text "3" ]
+        , td [ dealerSoftScoreAttribute playerHandIsPair dealerScore.soft 4 ]
+            [ text "4" ]
+        , td [ dealerSoftScoreAttribute playerHandIsPair dealerScore.soft 5 ]
+            [ text "5" ]
+        , td [ dealerSoftScoreAttribute playerHandIsPair dealerScore.soft 6 ]
+            [ text "6" ]
+        , td [ dealerSoftScoreAttribute playerHandIsPair dealerScore.soft 7 ]
+            [ text "7" ]
+        , td [ dealerSoftScoreAttribute playerHandIsPair dealerScore.soft 8 ]
+            [ text "8" ]
+        , td [ dealerSoftScoreAttribute playerHandIsPair dealerScore.soft 9 ]
+            [ text "9" ]
+        , td [ dealerSoftScoreAttribute playerHandIsPair dealerScore.soft 10 ]
+            [ text "10" ]
+        , td [ dealerSoftScoreAttribute playerHandIsPair dealerScore.soft 11 ]
+            [ text "A" ]
+        ]
+    , tr []
+        [ th [ playerSoftScoreAttribute playerHandIsPair playerScore.hard [ 22 ] ]
+            [ text "A,A" ]
+        , sp
+        , sp
+        , sp
+        , sp
+        , sp
+        , sp
+        , sp
+        , sp
+        , sp
+        , sp
+        ]
+    , tr []
+        [ th [ playerSoftScoreAttribute playerHandIsPair playerScore.soft [ 20 ] ]
+            [ text "10,10" ]
+        , stand
+        , stand
+        , stand
+        , stand
+        , stand
+        , stand
+        , stand
+        , stand
+        , stand
+        , stand
+        ]
+    , tr []
+        [ th [ playerSoftScoreAttribute playerHandIsPair playerScore.soft [ 18 ] ]
+            [ text "9,9" ]
+        , sp
+        , sp
+        , sp
+        , sp
+        , sp
+        , stand
+        , sp
+        , sp
+        , stand
+        , stand
+        ]
+    , tr []
+        [ th [ playerSoftScoreAttribute playerHandIsPair playerScore.soft [ 16 ] ]
+            [ text "8,8" ]
+        , sp
+        , sp
+        , sp
+        , sp
+        , sp
+        , sp
+        , sp
+        , sp
+        , sp
+        , sp
+        ]
+    , tr []
+        [ th [ playerSoftScoreAttribute playerHandIsPair playerScore.soft [ 14 ] ]
+            [ text "7,7" ]
+        , sp
+        , sp
+        , sp
+        , sp
+        , sp
+        , sp
+        , hit
+        , hit
+        , hit
+        , hit
+        ]
+    , tr []
+        [ th [ playerSoftScoreAttribute playerHandIsPair playerScore.soft [ 12 ] ]
+            [ text "6,6" ]
+        , sp
+        , sp
+        , sp
+        , sp
+        , sp
+        , hit
+        , hit
+        , hit
+        , hit
+        , hit
+        ]
+    , tr []
+        [ th [ playerSoftScoreAttribute playerHandIsPair playerScore.soft [ 10 ] ]
+            [ text "5,5" ]
+        , dh
+        , dh
+        , dh
+        , dh
+        , dh
+        , dh
+        , dh
+        , dh
+        , hit
+        , hit
+        ]
+    , tr []
+        [ th [ playerSoftScoreAttribute playerHandIsPair playerScore.soft [ 8 ] ]
+            [ text "4,4" ]
+        , hit
+        , hit
+        , hit
+        , sp
+        , sp
+        , hit
+        , hit
+        , hit
+        , hit
+        , hit
+        ]
+    , tr []
+        [ th [ playerSoftScoreAttribute playerHandIsPair playerScore.soft [ 4, 6 ] ]
+            [ text "2,2–3,3" ]
+        , sp
+        , sp
+        , sp
+        , sp
+        , sp
+        , sp
+        , hit
+        , hit
+        , hit
+        , hit
+        ]
+    ]
