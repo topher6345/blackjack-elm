@@ -142,7 +142,8 @@ update msg model =
 
         NewGame ->
             ( { model
-                | history = (gameFromModel model) :: model.history
+                | dealerHandVisible = False
+                , history = (gameFromModel model) :: model.history
                 , playerCanHit = True
                 , playerCanNewGame = False
                 , playerCanSurrender = True
