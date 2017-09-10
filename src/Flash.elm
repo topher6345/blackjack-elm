@@ -53,6 +53,8 @@ maybeDealerWin playerScore dealerScore =
     if playerScore.hard < 22 then
         if dealerScore.soft > playerScore.hard then
             "Dealer has a higher hand - Dealer Wins!"
+        else if dealerScore.soft == playerScore.hard then
+            "Its a tie!"
         else
             "You have a higher hand - You Win!"
     else if dealerScore.soft > playerScore.soft then
