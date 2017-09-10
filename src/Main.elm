@@ -315,14 +315,6 @@ subscriptions model =
 -- VIEW
 
 
-showDeck : Model -> List String
-showDeck model =
-    if model.deckVisible then
-        model.deck
-    else
-        []
-
-
 showDealerHand : Model -> List String
 showDealerHand model =
     if model.dealerHandVisible then
@@ -379,7 +371,7 @@ view model =
                 ]
             , h2 [] [ text "Player" ]
             , div [ attribute "style" "font-size: 102px;" ] <| playerCardStringText model.playerHand
-              --, div [] [ text (toString model.playerScore) ]
+            , div [] [ text (toString model.playerScore) ]
             , h2 [] [ text "Dealer" ]
             , button [ onClick ToggleShowDealerHand ] [ text "🔎" ]
             , div [ attribute "style" "font-size: 102px;" ] <|
@@ -387,11 +379,18 @@ view model =
                     playerCardStringText model.dealerHand
                 else
                     [ dealerCardStringText model.dealerHand ]
-              --, div [] [ text (toString <| showDealerScore model) ]
+            , div [] [ text (toString <| showDealerScore model) ]
             , h2 [] [ text "Deck" ]
             , button [ onClick ToggleShowDeck ] [ text "🔎" ]
             , div []
-                [ text (toString <| showDeck model) ]
+                [ text
+                    (toString <|
+                        if model.deckVisible then
+                            model.deck
+                        else
+                            []
+                    )
+                ]
               --, ol []
               --    [ text (toString model.history) ]
             ]
