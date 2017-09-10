@@ -36,6 +36,7 @@ type alias Model =
     , history : List Game
     , playerCanHit : Bool
     , playerCanStand : Bool
+    , playerCanSurrender : Bool
     , playerHand : List String
     , playerScore : Score
     , playerState : ScoreState
@@ -81,6 +82,7 @@ init =
       , history = []
       , playerCanHit = True
       , playerCanStand = True
+      , playerCanSurrender = True
       , playerHand = []
       , playerScore = Score.zero
       , playerState = Flash.initState
@@ -164,6 +166,7 @@ update msg model =
                     , flash = Flash.standFlash model.playerScore dealerScore dealerState
                     , playerCanHit = False
                     , playerCanStand = False
+                    , playerCanSurrender = False
                   }
                 , Cmd.none
                 )
@@ -181,6 +184,7 @@ update msg model =
                     , flash = Flash.hitFlash score model.flash
                     , playerCanHit = Flash.playerCanHit score
                     , playerCanStand = Flash.playerCanHit score
+                    , playerCanSurrender = False
                     , playerHand = playerHand
                     , playerScore = score
                     , playerState = Flash.makeState score
@@ -200,7 +204,8 @@ update msg model =
                     , deck = newDeck
                     , flash = Flash.shuffleDeckFlash playerHand dealerHand
                     , playerCanHit = Flash.playerCanHit <| Score.makeScoreFromHand playerHand
-                    , playerCanStand = True
+                    , playerCanSurrender = Flash.playerCanHit <| Score.makeScoreFromHand playerHand
+                    , playerCanStand = Flash.playerCanHit <| Score.makeScoreFromHand playerHand
                     , playerHand = playerHand
                     , playerScore = Score.makeScoreFromHand playerHand
                     , playerState = Flash.makeStateFromHand playerHand
@@ -241,7 +246,10 @@ view model =
                     button [ onClick Stand ] [ text "Stand" ]
                   else
                     button [ onClick Stand, attribute "disabled" "true" ] [ text "Stand" ]
-                , button [ onClick Surrender ] [ text "Surrender" ]
+                , if model.playerCanSurrender then
+                    button [ onClick Surrender ] [ text "Surrender" ]
+                  else
+                    button [ onClick Surrender, attribute "disabled" "true" ] [ text "Surrender" ]
                 ]
             , h2 [] [ text "Player" ]
             , div [ attribute "style" "font-size: 102px;" ] <|
