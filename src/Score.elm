@@ -3,6 +3,7 @@ module Score
         ( dealerStandHand
         , handIsPair
         , hitFlash
+        , initState
         , makeScoreFromHand
         , makeState
         , makeStateFromHand
@@ -11,6 +12,7 @@ module Score
         , ScoreState
         , shuffleDeckFlash
         , standFlash
+        , zero
         )
 
 import Card
@@ -24,6 +26,16 @@ type ScoreState
     = Blackjack
     | Under
     | Bust
+
+
+zero : Score
+zero =
+    Score 0 0
+
+
+initState : ScoreState
+initState =
+    makeState zero
 
 
 standFlash : Score -> Score -> ScoreState -> String

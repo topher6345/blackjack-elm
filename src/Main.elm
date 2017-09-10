@@ -76,12 +76,12 @@ init =
             { round = 0
             , deck = []
             , playerHand = []
-            , playerScore = Score 0 0
-            , playerState = Score.makeState (Score 0 0)
+            , playerScore = Score.zero
+            , playerState = Score.initState
             , playerCanHit = True
             , dealerHand = []
-            , dealerScore = Score 0 0
-            , dealerState = Score.makeState (Score 0 0)
+            , dealerScore = Score.zero
+            , dealerState = Score.initState
             , deckVisible = False
             , dealerHandVisible = False
             , flash = "Welcome To BlackJack!"
@@ -111,15 +111,11 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         ToggleShowDeck ->
-            let
-                current =
-                    model.deckVisible
-            in
-                ( { model
-                    | deckVisible = not current
-                  }
-                , Cmd.none
-                )
+            ( { model
+                | deckVisible = not model.deckVisible
+              }
+            , Cmd.none
+            )
 
         Surrender ->
             ( { model
@@ -131,30 +127,19 @@ update msg model =
             )
 
         ToggleShowDealerHand ->
-            let
-                current =
-                    model.dealerHandVisible
-            in
-                ( { model
-                    | dealerHandVisible = not current
-                  }
-                , Cmd.none
-                )
+            ( { model
+                | dealerHandVisible = not model.dealerHandVisible
+              }
+            , Cmd.none
+            )
 
         NewGame ->
-            let
-                game =
-                    gameFromModel model
-
-                games =
-                    model.history
-            in
-                ( { model
-                    | history = game :: games
-                    , playerCanHit = True
-                  }
-                , shuffleDeck
-                )
+            ( { model
+                | history = (gameFromModel model) :: model.history
+                , playerCanHit = True
+              }
+            , shuffleDeck
+            )
 
         Stand ->
             let
@@ -173,9 +158,6 @@ update msg model =
 
                 dealerState =
                     Score.makeState dealerScore
-
-                flash =
-                    Score.standFlash model.playerScore dealerScore dealerState
             in
                 ( { model
                     | dealerHand = dealerHand
@@ -184,7 +166,8 @@ update msg model =
                     , dealerState = dealerState
                     , playerCanHit = False
                     , dealerHandVisible = True
-                    , flash = flash
+                    , flash =
+                        Score.standFlash model.playerScore dealerScore dealerState
                   }
                 , Cmd.none
                 )
@@ -196,15 +179,12 @@ update msg model =
 
                 score =
                     Score.makeScoreFromHand playerHand
-
-                flash =
-                    Score.hitFlash score model.flash
             in
                 ( { model
                     | playerHand = playerHand
                     , deck = newDeck
                     , playerScore = score
-                    , flash = flash
+                    , flash = Score.hitFlash score model.flash
                     , playerState = Score.makeState score
                   }
                 , Cmd.none
@@ -221,15 +201,12 @@ update msg model =
                 ( dealerHand, d3 ) =
                     Card.dealNCards [] d2 2
 
-                newRound =
-                    model.round + 1
-
                 flash =
                     Score.shuffleDeckFlash playerHand dealerHand
             in
                 ( { model
                     | deck = d3
-                    , round = newRound
+                    , round = model.round + 1
                     , dealerHand = dealerHand
                     , playerHand = playerHand
                     , playerScore = Score.makeScoreFromHand playerHand
