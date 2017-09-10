@@ -275,11 +275,6 @@ subscriptions model =
 -- VIEW
 
 
-playerCardStringText : List String -> List (Html msg)
-playerCardStringText hand =
-    List.map text (List.map Card.cardStringToGlyph hand)
-
-
 view : Model -> Html Msg
 view model =
     div [ attribute "style" "display: flex;" ]
@@ -299,13 +294,13 @@ view model =
                 , button [ onClick Surrender ] [ text "Surrender" ]
                 ]
             , h2 [] [ text "Player" ]
-            , div [ attribute "style" "font-size: 102px;" ] <| playerCardStringText model.playerHand
+            , div [ attribute "style" "font-size: 102px;" ] <| List.map text <| Card.playerCardStringText model.playerHand
             , div [] [ text (toString model.playerScore) ]
             , h2 [] [ text "Dealer" ]
             , button [ onClick ToggleShowDealerHand ] [ text "🔎" ]
             , div [ attribute "style" "font-size: 102px;" ] <|
                 if model.dealerHandVisible then
-                    playerCardStringText model.dealerHand
+                    List.map text <| Card.playerCardStringText model.dealerHand
                 else
                     [ text <| Card.dealerCardStringText model.dealerHand ]
             , div []

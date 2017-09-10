@@ -91,6 +91,11 @@ dealNCards to from n =
         ( to ++ c1, c2 )
 
 
+playerCardStringText : List String -> List String
+playerCardStringText hand =
+    List.map cardStringToGlyph hand
+
+
 dealerCardStringText : List String -> String
 dealerCardStringText hand =
     let
