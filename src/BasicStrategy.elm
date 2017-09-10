@@ -31,14 +31,14 @@ legend =
             , text "= Hit"
             ]
         , dd []
-            [ span [ attribute "style" "background:cyan; color:black" ]
+            [ span [ attribute "style" "background:palegreen; color:black" ]
                 [ b []
                     [ text "Dh" ]
                 ]
             , text "= Double (if not allowed, then hit)"
             ]
         , dd []
-            [ span [ attribute "style" "background:cyan; color:black" ]
+            [ span [ attribute "style" "background:lightsalmon; color:black" ]
                 [ b []
                     [ text "Ds" ]
                 ]
@@ -87,19 +87,19 @@ su =
 
 dh : Html msg
 dh =
-    td [ attribute "style" "background:cyan; color:black" ]
+    td [ attribute "style" "background:palegreen; color:black" ]
         [ text "Dh" ]
 
 
 ds : Html msg
 ds =
-    td [ attribute "style" "background:cyan; color:black" ]
+    td [ attribute "style" "background:lightsalmon; color:black" ]
         [ text "Ds" ]
 
 
-purpleAttribute : Attribute msg
-purpleAttribute =
-    attribute "style" "background:purple; color:black"
+selectedStyle : Attribute msg
+selectedStyle =
+    attribute "style" "background:black; color:white"
 
 
 blankStyle : Attribute msg
@@ -111,7 +111,7 @@ playerScoreAttributes : Int -> List Int -> Attribute a
 playerScoreAttributes score range =
     case List.member score range of
         True ->
-            purpleAttribute
+            selectedStyle
 
         False ->
             blankStyle
@@ -121,7 +121,7 @@ dealerScoreAttribute : Int -> Int -> Attribute a
 dealerScoreAttribute score value =
     case score == value of
         True ->
-            purpleAttribute
+            selectedStyle
 
         False ->
             blankStyle
@@ -133,7 +133,7 @@ dealerSoftScoreAttribute hasAce score value =
         True ->
             case score == value of
                 True ->
-                    purpleAttribute
+                    selectedStyle
 
                 False ->
                     blankStyle
@@ -161,7 +161,7 @@ basicStrategy playerHand dealerHand =
 
         -- Multiple call sites in table
         playerHasAce =
-            Score.hasAce playerScore
+            Score.hasAce playerScore && (List.length playerHand < 3)
 
         playerScoreWithoutAce =
             Score.scoreMinusAce playerHand

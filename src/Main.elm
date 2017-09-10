@@ -79,7 +79,7 @@ init =
       , dealerState = Flash.initState
       , deck = []
       , deckVisible = False
-      , flash = ""
+      , flash = "Welcome to Blackjack - Click NewGame below to start!"
       , history = []
       , playerCanHit = False
       , playerCanNewGame = True
@@ -260,15 +260,15 @@ view model =
                 ]
             , div [ attribute "style" "margin-top: 20px" ]
                 [ if model.playerCanHit then
-                    button [ onClick Hit ] [ text "Hit" ]
+                    button [ onClick Hit, attribute "style" "background:lime; color:black;" ] [ text "Hit" ]
                   else
                     button [ onClick Hit, attribute "disabled" "true" ] [ text "Hit" ]
                 , if model.playerCanStand then
-                    button [ onClick Stand ] [ text "Stand" ]
+                    button [ onClick Stand, attribute "style" "background:red; color:white" ] [ text "Stand" ]
                   else
                     button [ onClick Stand, attribute "disabled" "true" ] [ text "Stand" ]
                 , if model.playerCanSurrender then
-                    button [ onClick Surrender ] [ text "Surrender" ]
+                    button [ onClick Surrender, attribute "style" "background:white; color:black" ] [ text "Surrender" ]
                   else
                     button [ onClick Surrender, attribute "disabled" "true" ] [ text "Surrender" ]
                 ]
