@@ -107,6 +107,7 @@ shuffleDeck =
         (Random.Array.shuffle (Array.fromList Card.initDeck))
 
 
+maybeDealerWin : Score -> Score -> String
 maybeDealerWin playerScore dealerScore =
     if playerScore.hard < 22 then
         if dealerScore.soft > playerScore.hard then
@@ -121,6 +122,7 @@ maybeDealerWin playerScore dealerScore =
         "You Win!"
 
 
+standFlash : Score -> Score -> ScoreState -> String
 standFlash playerScore dealerScore dealerState =
     case dealerState of
         Score.Blackjack ->
@@ -329,6 +331,26 @@ showDealerScore model =
         ""
 
 
+playerCardStringText : List String -> List (Html msg)
+playerCardStringText hand =
+    List.map text (List.map Card.cardStringToGlyph hand)
+
+
+dealerCardStringText : List String -> Html msg
+dealerCardStringText hand =
+    let
+        tail =
+            Maybe.withDefault [] <| List.tail hand
+
+        headOfTail =
+            Maybe.withDefault "" <| List.head tail
+
+        dealerCards =
+            Card.cardStringToGlyph headOfTail
+    in
+        text <| "🂠" ++ dealerCards
+
+
 view : Model -> Html Msg
 view model =
     div [ attribute "style" "display: flex;" ]
@@ -341,16 +363,16 @@ view model =
                 [ if model.playerCanHit then
                     button [ onClick Hit ] [ text "Hit" ]
                   else
-                    div [] []
+                    button [ onClick Hit, attribute "disabled" "true" ] [ text "Hit" ]
                 ]
-            , button [ onClick Stand ] [ text "Stand" ]
+            , div [] [ button [ onClick Stand ] [ text "Stand" ] ]
             , button [ onClick Surrender ] [ text "Surrender" ]
             , div [] [ text ("Round: " ++ (toString model.round)) ]
             , h2 [] [ text "Player" ]
-            , div [ attribute "style" "font-size: 102px;" ] <| List.map (\x -> text x) (List.map Card.cardStringToGlyph model.playerHand)
+            , div [ attribute "style" "font-size: 102px;" ] <| playerCardStringText model.playerHand
             , div [] [ text (toString model.playerScore) ]
             , h2 [] [ text "Dealer" ]
-            , div [ attribute "style" "font-size: 102px;" ] [ text ("🂠" ++ (Card.cardStringToGlyph <| Maybe.withDefault "" <| List.head <| Maybe.withDefault [] <| List.tail model.dealerHand)) ]
+            , div [ attribute "style" "font-size: 102px;" ] [ dealerCardStringText model.dealerHand ]
             , button [ onClick ToggleShowDealerHand ] [ text "🔎" ]
             , div [] [ text (toString <| showDealerHand model) ]
             , div [] [ text (toString <| showDealerScore model) ]
