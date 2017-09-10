@@ -87,15 +87,6 @@ dealerStandUnder deck =
     List.length <| scoresUnderBust deck
 
 
-cardsUnderBust : List String -> List String
-cardsUnderBust deck =
-    let
-        length =
-            List.length <| scoresUnderBust deck
-    in
-        List.take length deck
-
-
 scanlScores : List Score -> List Score
 scanlScores list =
     let
