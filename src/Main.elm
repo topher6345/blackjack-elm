@@ -107,18 +107,6 @@ shuffleDeck =
         (Random.Array.shuffle (Array.fromList Card.initDeck))
 
 
-dealNCards : List a -> List a -> Int -> ( List a, List a )
-dealNCards to from n =
-    let
-        c1 =
-            List.take n from
-
-        c2 =
-            List.drop n from
-    in
-        ( to ++ c1, c2 )
-
-
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
@@ -172,7 +160,7 @@ update msg model =
             let
                 ( dealerHand, newDeck ) =
                     if model.dealerScore.soft < 18 then
-                        dealNCards model.dealerHand model.deck (Score.dealerStandUnder (model.dealerHand ++ model.deck) - 2)
+                        Card.dealNCards model.dealerHand model.deck (Score.dealerStandUnder (model.dealerHand ++ model.deck) - 2)
                     else
                         ( model.dealerHand, model.deck )
 
@@ -200,7 +188,7 @@ update msg model =
         Hit ->
             let
                 ( playerHand, newDeck ) =
-                    dealNCards model.dealerHand model.deck 1
+                    Card.dealNCards model.dealerHand model.deck 1
 
                 score =
                     Score.makeScoreFromHand playerHand
@@ -232,10 +220,10 @@ update msg model =
                     Array.toList cards
 
                 ( playerHand, d2 ) =
-                    dealNCards [] d1 2
+                    Card.dealNCards [] d1 2
 
                 ( dealerHand, d3 ) =
-                    dealNCards [] d2 2
+                    Card.dealNCards [] d2 2
 
                 newRound =
                     model.round + 1

@@ -79,6 +79,19 @@ extractFace x =
     Maybe.withDefault "" <| List.head <| String.words x
 
 
+dealNCards : List a -> List a -> Int -> ( List a, List a )
+dealNCards to from n =
+    let
+        c1 =
+            List.take n from
+
+        c2 =
+            List.drop n from
+    in
+        ( to ++ c1, c2 )
+
+
+cardStringToGlyph : String -> String
 cardStringToGlyph string =
     case string of
         "Ace Spades" ->
