@@ -3,6 +3,7 @@ module Card
         ( dealNCards
         , dealDealerStand
         , dealerCardStringText
+        , dealShuffled
         , extractFace
         , initDeck
         , playerCardStringText
@@ -85,6 +86,18 @@ cards =
             ]
     in
         flatZip suits faces
+
+
+dealShuffled : List a -> ( List a, List a, List a )
+dealShuffled cards =
+    let
+        ( playerHand, d2 ) =
+            dealNCards [] cards 2
+
+        ( dealerHand, d3 ) =
+            dealNCards [] d2 2
+    in
+        ( d3, dealerHand, playerHand )
 
 
 extractFace : String -> String

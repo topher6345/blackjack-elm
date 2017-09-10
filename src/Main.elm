@@ -143,15 +143,11 @@ update msg model =
 
         Stand ->
             let
-                dealDealerStand hand deck =
-                    Card.dealDealerStand hand deck <|
-                        Score.dealerStandHand hand deck
-
                 ( dealerHand, newDeck ) =
-                    if model.dealerScore.soft < 18 then
-                        dealDealerStand model.dealerHand model.deck
-                    else
-                        ( model.dealerHand, model.deck )
+                    Score.dealStand
+                        model.dealerScore.soft
+                        model.dealerHand
+                        model.deck
 
                 dealerScore =
                     Score.makeScoreFromHand dealerHand
@@ -192,20 +188,11 @@ update msg model =
 
         ShuffleDeck cards ->
             let
-                d1 =
-                    Array.toList cards
-
-                ( playerHand, d2 ) =
-                    Card.dealNCards [] d1 2
-
-                ( dealerHand, d3 ) =
-                    Card.dealNCards [] d2 2
-
-                flash =
-                    Score.shuffleDeckFlash playerHand dealerHand
+                ( newDeck, dealerHand, playerHand ) =
+                    Card.dealShuffled (Array.toList cards)
             in
                 ( { model
-                    | deck = d3
+                    | deck = newDeck
                     , round = model.round + 1
                     , dealerHand = dealerHand
                     , playerHand = playerHand
@@ -213,7 +200,7 @@ update msg model =
                     , playerState = Score.makeStateFromHand playerHand
                     , dealerScore = Score.makeScoreFromHand dealerHand
                     , dealerState = Score.makeStateFromHand dealerHand
-                    , flash = flash
+                    , flash = Score.shuffleDeckFlash playerHand dealerHand
                   }
                 , Cmd.none
                 )
@@ -242,11 +229,10 @@ view model =
             , div [] [ text ("Round: " ++ (toString model.round)) ]
             , div [] [ button [ onClick NewGame ] [ text "New Game" ] ]
             , div [ attribute "style" "margin-top: 20px" ]
-                [ (if model.playerCanHit then
+                [ if model.playerCanHit then
                     button [ onClick Hit ] [ text "Hit" ]
-                   else
+                  else
                     button [ onClick Hit, attribute "disabled" "true" ] [ text "Hit" ]
-                  )
                 , button [ onClick Stand ] [ text "Stand" ]
                 , button [ onClick Surrender ] [ text "Surrender" ]
                 ]
@@ -266,24 +252,22 @@ view model =
                         Card.dealerCardStringText model.dealerHand
                     ]
             , div []
-                [ text
-                    (toString <|
+                [ text <|
+                    toString <|
                         if model.dealerHandVisible then
                             toString model.dealerScore
                         else
                             ""
-                    )
                 ]
             , h2 [] [ text "Deck" ]
             , button [ onClick ToggleShowDeck ] [ text "🔎" ]
             , div []
-                [ text
-                    (toString <|
+                [ text <|
+                    toString <|
                         if model.deckVisible then
                             model.deck
                         else
                             []
-                    )
                 ]
               --, ol []
               --    [ text (toString model.history) ]

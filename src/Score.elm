@@ -1,6 +1,6 @@
 module Score
     exposing
-        ( dealerStandHand
+        ( dealStand
         , handIsPair
         , hitFlash
         , initState
@@ -117,6 +117,19 @@ makeScoreCardTuple c =
 under22 : Score -> Bool
 under22 x =
     x.soft < 22
+
+
+dealStand : Int -> List String -> List String -> ( List String, List String )
+dealStand softScore dealerHand deck =
+    let
+        dealDealerStand hand deck =
+            Card.dealDealerStand hand deck <|
+                dealerStandHand hand deck
+    in
+        if softScore < 18 then
+            dealDealerStand dealerHand deck
+        else
+            ( dealerHand, deck )
 
 
 scoresUnderBust : List String -> List Score
