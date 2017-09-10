@@ -61,6 +61,42 @@ legend =
         ]
 
 
+stand : Html msg
+stand =
+    td [ attribute "style" "background:red; color:black" ]
+        [ text "S" ]
+
+
+hit : Html msg
+hit =
+    td [ attribute "style" "background:lime; color:black" ]
+        [ text "H" ]
+
+
+sp : Html msg
+sp =
+    td [ attribute "style" "background:yellow; color:black" ]
+        [ text "SP" ]
+
+
+su : Html msg
+su =
+    td [ attribute "style" "background:white; color:black" ]
+        [ text "SU" ]
+
+
+dh : Html msg
+dh =
+    td [ attribute "style" "background:cyan; color:black" ]
+        [ text "Dh" ]
+
+
+ds : Html msg
+ds =
+    td [ attribute "style" "background:cyan; color:black" ]
+        [ text "Ds" ]
+
+
 hasAce : Score.Score -> Bool
 hasAce playerScore =
     playerScore.hard /= playerScore.soft
@@ -135,7 +171,7 @@ basicStrategy model =
         playerHandIsPair =
             Score.handIsPair model.playerHand
     in
-        table [ attribute "border" "1", class "wikitable", attribute "style" "text-align:center" ]
+        table [ attribute "border" "1", attribute "style" "text-align:center" ]
             [ tbody []
                 [ tr []
                     [ th [ attribute "rowspan" "2" ]
@@ -172,218 +208,128 @@ basicStrategy model =
                 , tr []
                     [ th [ playerScoreAttributes playerScore.hard (List.range 17 20) ]
                         [ text "17–20" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
+                    , stand
+                    , stand
+                    , stand
+                    , stand
+                    , stand
+                    , stand
+                    , stand
+                    , stand
+                    , stand
+                    , stand
                     ]
                 , tr []
                     [ th [ playerScoreAttributes playerScore.hard (List.range 16 16) ]
                         [ text "16" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:white; color:black" ]
-                        [ text "SU" ]
-                    , td [ attribute "style" "background:white; color:black" ]
-                        [ text "SU" ]
-                    , td [ attribute "style" "background:white; color:black" ]
-                        [ text "SU" ]
+                    , stand
+                    , stand
+                    , stand
+                    , stand
+                    , stand
+                    , hit
+                    , hit
+                    , su
+                    , su
+                    , su
                     ]
                 , tr []
                     [ th [ playerScoreAttributes playerScore.hard (List.range 15 15) ]
                         [ text "15" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:white; color:black" ]
-                        [ text "SU" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
+                    , stand
+                    , stand
+                    , stand
+                    , stand
+                    , stand
+                    , hit
+                    , hit
+                    , hit
+                    , su
+                    , hit
                     ]
                 , tr []
                     [ th [ playerScoreAttributes playerScore.hard (List.range 13 14) ]
                         [ text "13–14" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
+                    , stand
+                    , stand
+                    , stand
+                    , stand
+                    , stand
+                    , hit
+                    , hit
+                    , hit
+                    , hit
+                    , hit
                     ]
                 , tr []
                     [ th [ playerScoreAttributes playerScore.hard (List.range 12 12) ]
                         [ text "12" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
+                    , hit
+                    , hit
+                    , stand
+                    , stand
+                    , stand
+                    , hit
+                    , hit
+                    , hit
+                    , hit
+                    , hit
                     ]
                 , tr []
                     [ th [ playerScoreAttributes playerScore.hard (List.range 11 11) ]
                         [ text "11" ]
-                    , td [ attribute "style" "background:cyan; color:black" ]
-                        [ text "Dh" ]
-                    , td [ attribute "style" "background:cyan; color:black" ]
-                        [ text "Dh" ]
-                    , td [ attribute "style" "background:cyan; color:black" ]
-                        [ text "Dh" ]
-                    , td [ attribute "style" "background:cyan; color:black" ]
-                        [ text "Dh" ]
-                    , td [ attribute "style" "background:cyan; color:black" ]
-                        [ text "Dh" ]
-                    , td [ attribute "style" "background:cyan; color:black" ]
-                        [ text "Dh" ]
-                    , td [ attribute "style" "background:cyan; color:black" ]
-                        [ text "Dh" ]
-                    , td [ attribute "style" "background:cyan; color:black" ]
-                        [ text "Dh" ]
-                    , td [ attribute "style" "background:cyan; color:black" ]
-                        [ text "Dh" ]
-                    , td [ attribute "style" "background:cyan; color:black" ]
-                        [ text "Dh" ]
+                    , dh
+                    , dh
+                    , dh
+                    , dh
+                    , dh
+                    , dh
+                    , dh
+                    , dh
+                    , dh
+                    , dh
                     ]
                 , tr []
                     [ th [ playerScoreAttributes playerScore.hard (List.range 10 10) ]
                         [ text "10" ]
-                    , td [ attribute "style" "background:cyan; color:black" ]
-                        [ text "Dh" ]
-                    , td [ attribute "style" "background:cyan; color:black" ]
-                        [ text "Dh" ]
-                    , td [ attribute "style" "background:cyan; color:black" ]
-                        [ text "Dh" ]
-                    , td [ attribute "style" "background:cyan; color:black" ]
-                        [ text "Dh" ]
-                    , td [ attribute "style" "background:cyan; color:black" ]
-                        [ text "Dh" ]
-                    , td [ attribute "style" "background:cyan; color:black" ]
-                        [ text "Dh" ]
-                    , td [ attribute "style" "background:cyan; color:black" ]
-                        [ text "Dh" ]
-                    , td [ attribute "style" "background:cyan; color:black" ]
-                        [ text "Dh" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
+                    , dh
+                    , dh
+                    , dh
+                    , dh
+                    , dh
+                    , dh
+                    , dh
+                    , dh
+                    , hit
+                    , hit
                     ]
                 , tr []
                     [ th [ playerScoreAttributes playerScore.hard (List.range 9 9) ]
                         [ text "9" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:cyan; color:black" ]
-                        [ text "Dh" ]
-                    , td [ attribute "style" "background:cyan; color:black" ]
-                        [ text "Dh" ]
-                    , td [ attribute "style" "background:cyan; color:black" ]
-                        [ text "Dh" ]
-                    , td [ attribute "style" "background:cyan; color:black" ]
-                        [ text "Dh" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
+                    , hit
+                    , dh
+                    , dh
+                    , dh
+                    , dh
+                    , hit
+                    , hit
+                    , hit
+                    , hit
+                    , hit
                     ]
                 , tr []
                     [ th [ playerScoreAttributes playerScore.hard (List.range 5 8) ]
                         [ text "5–8" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
+                    , hit
+                    , hit
+                    , hit
+                    , hit
+                    , hit
+                    , hit
+                    , hit
+                    , hit
+                    , hit
+                    , hit
                     ]
                 , tr []
                     [ th [ attribute "colspan" "11" ]
@@ -416,146 +362,86 @@ basicStrategy model =
                 , tr []
                     [ th [ playerSoftScoreAttribute playerHasAce playerScoreWithoutAce <| List.range 9 9 ]
                         [ text "A,9" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
+                    , stand
+                    , stand
+                    , stand
+                    , stand
+                    , stand
+                    , stand
+                    , stand
+                    , stand
+                    , stand
+                    , stand
                     ]
                 , tr []
                     [ th [ playerSoftScoreAttribute playerHasAce playerScoreWithoutAce <| List.range 8 8 ]
                         [ text "A,8" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:cyan; color:black" ]
-                        [ text "Ds" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
+                    , stand
+                    , stand
+                    , stand
+                    , stand
+                    , ds
+                    , stand
+                    , stand
+                    , stand
+                    , stand
+                    , stand
                     ]
                 , tr []
                     [ th [ playerSoftScoreAttribute playerHasAce playerScoreWithoutAce <| List.range 7 7 ]
                         [ text "A,7" ]
-                    , td [ attribute "style" "background:cyan; color:black" ]
-                        [ text "Ds" ]
-                    , td [ attribute "style" "background:cyan; color:black" ]
-                        [ text "Ds" ]
-                    , td [ attribute "style" "background:cyan; color:black" ]
-                        [ text "Ds" ]
-                    , td [ attribute "style" "background:cyan; color:black" ]
-                        [ text "Ds" ]
-                    , td [ attribute "style" "background:cyan; color:black" ]
-                        [ text "Ds" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
+                    , ds
+                    , ds
+                    , ds
+                    , ds
+                    , ds
+                    , stand
+                    , stand
+                    , hit
+                    , hit
+                    , hit
                     ]
                 , tr []
                     [ th [ playerSoftScoreAttribute playerHasAce playerScoreWithoutAce <| List.range 6 6 ]
                         [ text "A,6" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:cyan; color:black" ]
-                        [ text "Dh" ]
-                    , td [ attribute "style" "background:cyan; color:black" ]
-                        [ text "Dh" ]
-                    , td [ attribute "style" "background:cyan; color:black" ]
-                        [ text "Dh" ]
-                    , td [ attribute "style" "background:cyan; color:black" ]
-                        [ text "Dh" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
+                    , hit
+                    , dh
+                    , dh
+                    , dh
+                    , dh
+                    , hit
+                    , hit
+                    , hit
+                    , hit
+                    , hit
                     ]
                 , tr []
                     [ th [ playerSoftScoreAttribute playerHasAce playerScoreWithoutAce <| List.range 4 5 ]
                         [ text "A,4–A,5" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:cyan; color:black" ]
-                        [ text "Dh" ]
-                    , td [ attribute "style" "background:cyan; color:black" ]
-                        [ text "Dh" ]
-                    , td [ attribute "style" "background:cyan; color:black" ]
-                        [ text "Dh" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
+                    , hit
+                    , hit
+                    , dh
+                    , dh
+                    , dh
+                    , hit
+                    , hit
+                    , hit
+                    , hit
+                    , hit
                     ]
                 , tr []
                     [ th [ playerSoftScoreAttribute playerHasAce playerScoreWithoutAce <| List.range 2 3 ]
                         [ text "A,2–A,3" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:cyan; color:black" ]
-                        [ text "Dh" ]
-                    , td [ attribute "style" "background:cyan; color:black" ]
-                        [ text "Dh" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
+                    , hit
+                    , hit
+                    , hit
+                    , dh
+                    , dh
+                    , hit
+                    , hit
+                    , hit
+                    , hit
+                    , hit
                     ]
                 , tr []
                     [ th [ attribute "colspan" "11" ]
@@ -588,218 +474,128 @@ basicStrategy model =
                 , tr []
                     [ th [ playerSoftScoreAttribute playerHandIsPair playerScore.hard [ 22 ] ]
                         [ text "A,A" ]
-                    , td [ attribute "style" "background:yellow; color:black" ]
-                        [ text "SP" ]
-                    , td [ attribute "style" "background:yellow; color:black" ]
-                        [ text "SP" ]
-                    , td [ attribute "style" "background:yellow; color:black" ]
-                        [ text "SP" ]
-                    , td [ attribute "style" "background:yellow; color:black" ]
-                        [ text "SP" ]
-                    , td [ attribute "style" "background:yellow; color:black" ]
-                        [ text "SP" ]
-                    , td [ attribute "style" "background:yellow; color:black" ]
-                        [ text "SP" ]
-                    , td [ attribute "style" "background:yellow; color:black" ]
-                        [ text "SP" ]
-                    , td [ attribute "style" "background:yellow; color:black" ]
-                        [ text "SP" ]
-                    , td [ attribute "style" "background:yellow; color:black" ]
-                        [ text "SP" ]
-                    , td [ attribute "style" "background:yellow; color:black" ]
-                        [ text "SP" ]
+                    , sp
+                    , sp
+                    , sp
+                    , sp
+                    , sp
+                    , sp
+                    , sp
+                    , sp
+                    , sp
+                    , sp
                     ]
                 , tr []
                     [ th [ playerSoftScoreAttribute playerHandIsPair playerScore.soft [ 20 ] ]
                         [ text "10,10" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
+                    , stand
+                    , stand
+                    , stand
+                    , stand
+                    , stand
+                    , stand
+                    , stand
+                    , stand
+                    , stand
+                    , stand
                     ]
                 , tr []
                     [ th [ playerSoftScoreAttribute playerHandIsPair playerScore.soft [ 18 ] ]
                         [ text "9,9" ]
-                    , td [ attribute "style" "background:yellow; color:black" ]
-                        [ text "SP" ]
-                    , td [ attribute "style" "background:yellow; color:black" ]
-                        [ text "SP" ]
-                    , td [ attribute "style" "background:yellow; color:black" ]
-                        [ text "SP" ]
-                    , td [ attribute "style" "background:yellow; color:black" ]
-                        [ text "SP" ]
-                    , td [ attribute "style" "background:yellow; color:black" ]
-                        [ text "SP" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:yellow; color:black" ]
-                        [ text "SP" ]
-                    , td [ attribute "style" "background:yellow; color:black" ]
-                        [ text "SP" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
-                    , td [ attribute "style" "background:red; color:black" ]
-                        [ text "S" ]
+                    , sp
+                    , sp
+                    , sp
+                    , sp
+                    , sp
+                    , stand
+                    , sp
+                    , sp
+                    , stand
+                    , stand
                     ]
                 , tr []
                     [ th [ playerSoftScoreAttribute playerHandIsPair playerScore.soft [ 16 ] ]
                         [ text "8,8" ]
-                    , td [ attribute "style" "background:yellow; color:black" ]
-                        [ text "SP" ]
-                    , td [ attribute "style" "background:yellow; color:black" ]
-                        [ text "SP" ]
-                    , td [ attribute "style" "background:yellow; color:black" ]
-                        [ text "SP" ]
-                    , td [ attribute "style" "background:yellow; color:black" ]
-                        [ text "SP" ]
-                    , td [ attribute "style" "background:yellow; color:black" ]
-                        [ text "SP" ]
-                    , td [ attribute "style" "background:yellow; color:black" ]
-                        [ text "SP" ]
-                    , td [ attribute "style" "background:yellow; color:black" ]
-                        [ text "SP" ]
-                    , td [ attribute "style" "background:yellow; color:black" ]
-                        [ text "SP" ]
-                    , td [ attribute "style" "background:yellow; color:black" ]
-                        [ text "SP" ]
-                    , td [ attribute "style" "background:yellow; color:black" ]
-                        [ text "SP" ]
+                    , sp
+                    , sp
+                    , sp
+                    , sp
+                    , sp
+                    , sp
+                    , sp
+                    , sp
+                    , sp
+                    , sp
                     ]
                 , tr []
                     [ th [ playerSoftScoreAttribute playerHandIsPair playerScore.soft [ 14 ] ]
                         [ text "7,7" ]
-                    , td [ attribute "style" "background:yellow; color:black" ]
-                        [ text "SP" ]
-                    , td [ attribute "style" "background:yellow; color:black" ]
-                        [ text "SP" ]
-                    , td [ attribute "style" "background:yellow; color:black" ]
-                        [ text "SP" ]
-                    , td [ attribute "style" "background:yellow; color:black" ]
-                        [ text "SP" ]
-                    , td [ attribute "style" "background:yellow; color:black" ]
-                        [ text "SP" ]
-                    , td [ attribute "style" "background:yellow; color:black" ]
-                        [ text "SP" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
+                    , sp
+                    , sp
+                    , sp
+                    , sp
+                    , sp
+                    , sp
+                    , hit
+                    , hit
+                    , hit
+                    , hit
                     ]
                 , tr []
                     [ th [ playerSoftScoreAttribute playerHandIsPair playerScore.soft [ 12 ] ]
                         [ text "6,6" ]
-                    , td [ attribute "style" "background:yellow; color:black" ]
-                        [ text "SP" ]
-                    , td [ attribute "style" "background:yellow; color:black" ]
-                        [ text "SP" ]
-                    , td [ attribute "style" "background:yellow; color:black" ]
-                        [ text "SP" ]
-                    , td [ attribute "style" "background:yellow; color:black" ]
-                        [ text "SP" ]
-                    , td [ attribute "style" "background:yellow; color:black" ]
-                        [ text "SP" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
+                    , sp
+                    , sp
+                    , sp
+                    , sp
+                    , sp
+                    , hit
+                    , hit
+                    , hit
+                    , hit
+                    , hit
                     ]
                 , tr []
                     [ th [ playerSoftScoreAttribute playerHandIsPair playerScore.soft [ 10 ] ]
                         [ text "5,5" ]
-                    , td [ attribute "style" "background:cyan; color:black" ]
-                        [ text "Dh" ]
-                    , td [ attribute "style" "background:cyan; color:black" ]
-                        [ text "Dh" ]
-                    , td [ attribute "style" "background:cyan; color:black" ]
-                        [ text "Dh" ]
-                    , td [ attribute "style" "background:cyan; color:black" ]
-                        [ text "Dh" ]
-                    , td [ attribute "style" "background:cyan; color:black" ]
-                        [ text "Dh" ]
-                    , td [ attribute "style" "background:cyan; color:black" ]
-                        [ text "Dh" ]
-                    , td [ attribute "style" "background:cyan; color:black" ]
-                        [ text "Dh" ]
-                    , td [ attribute "style" "background:cyan; color:black" ]
-                        [ text "Dh" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
+                    , dh
+                    , dh
+                    , dh
+                    , dh
+                    , dh
+                    , dh
+                    , dh
+                    , dh
+                    , hit
+                    , hit
                     ]
                 , tr []
                     [ th [ playerSoftScoreAttribute playerHandIsPair playerScore.soft [ 8 ] ]
                         [ text "4,4" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:yellow; color:black" ]
-                        [ text "SP" ]
-                    , td [ attribute "style" "background:yellow; color:black" ]
-                        [ text "SP" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
+                    , hit
+                    , hit
+                    , hit
+                    , sp
+                    , sp
+                    , hit
+                    , hit
+                    , hit
+                    , hit
+                    , hit
                     ]
                 , tr []
                     [ th [ playerSoftScoreAttribute playerHandIsPair playerScore.soft [ 4, 6 ] ]
                         [ text "2,2–3,3" ]
-                    , td [ attribute "style" "background:yellow; color:black" ]
-                        [ text "SP" ]
-                    , td [ attribute "style" "background:yellow; color:black" ]
-                        [ text "SP" ]
-                    , td [ attribute "style" "background:yellow; color:black" ]
-                        [ text "SP" ]
-                    , td [ attribute "style" "background:yellow; color:black" ]
-                        [ text "SP" ]
-                    , td [ attribute "style" "background:yellow; color:black" ]
-                        [ text "SP" ]
-                    , td [ attribute "style" "background:yellow; color:black" ]
-                        [ text "SP" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
-                    , td [ attribute "style" "background:lime; color:black" ]
-                        [ text "H" ]
+                    , sp
+                    , sp
+                    , sp
+                    , sp
+                    , sp
+                    , sp
+                    , hit
+                    , hit
+                    , hit
+                    , hit
                     ]
                 ]
             ]
