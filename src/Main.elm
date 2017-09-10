@@ -97,6 +97,7 @@ type Msg
     | Stand
     | ToggleShowDeck
     | ToggleShowDealerHand
+    | Surrender
     | ShuffleDeck (Array.Array String)
 
 
@@ -114,6 +115,8 @@ maybeDealerWin playerScore dealerScore =
             "You Win!"
     else if dealerScore.soft > playerScore.soft then
         "Dealer Wins!"
+    else if dealerScore.soft == playerScore.soft then
+        "Its a tie!"
     else
         "You Win!"
 
@@ -155,6 +158,15 @@ update msg model =
                   }
                 , Cmd.none
                 )
+
+        Surrender ->
+            ( { model
+                | flash = "You lose!"
+                , playerCanHit = False
+                , dealerHandVisible = True
+              }
+            , Cmd.none
+            )
 
         ToggleShowDealerHand ->
             let
@@ -257,13 +269,13 @@ update msg model =
                 flash =
                     case Score.makeState <| Score.makeScoreFromHand playerHand of
                         Score.Blackjack ->
-                            "You Win!"
+                            "Blackjack on deal! - You Win!"
 
                         Score.Under ->
                             "Welcome To BlackJack!"
 
                         Score.Bust ->
-                            "Bust!"
+                            "Bust on Deal, this should never happen!"
             in
                 ( { model
                     | deck = d3
@@ -332,20 +344,18 @@ view model =
                     div [] []
                 ]
             , button [ onClick Stand ] [ text "Stand" ]
-            , button [ onClick NewGame ] [ text "Surrender" ]
+            , button [ onClick Surrender ] [ text "Surrender" ]
             , div [] [ text ("Round: " ++ (toString model.round)) ]
             , h2 [] [ text "Player" ]
             , div [] [ text (toString model.playerHand) ]
             , div [] [ text (toString model.playerScore) ]
-            , h3 [] [ text (toString model.playerState) ]
             , h2 [] [ text "Dealer" ]
             , div [] [ text (toString <| Maybe.withDefault [] <| List.tail model.dealerHand) ]
-            , button [ onClick ToggleShowDealerHand ] [ text "Show/Hide Dealer Hand" ]
+            , button [ onClick ToggleShowDealerHand ] [ text "🔎" ]
             , div [] [ text (toString <| showDealerHand model) ]
             , div [] [ text (toString <| showDealerScore model) ]
-            , h3 [] [ text (toString model.dealerState) ]
             , h2 [] [ text "Deck" ]
-            , button [ onClick ToggleShowDeck ] [ text "Show/Hide Deck" ]
+            , button [ onClick ToggleShowDeck ] [ text "🔎" ]
             , div []
                 [ text (toString <| showDeck model) ]
               --, ol []
