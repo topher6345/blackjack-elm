@@ -67,7 +67,7 @@ maybeDealerWin playerScore dealerScore =
 
 hitFlash : Score -> String -> String
 hitFlash score passthrough =
-    case makeState <| score of
+    case makeState score of
         Blackjack _ ->
             "21 - You Win!"
 
