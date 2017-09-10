@@ -30,6 +30,7 @@ type alias Model =
     , playerHand : List String
     , playerScore : Score
     , playerState : ScoreState
+    , playerCanHit : Bool
     , dealerHand : List String
     , dealerScore : Score
     , dealerState : ScoreState
@@ -77,6 +78,7 @@ init =
             , playerHand = []
             , playerScore = Score 0 0
             , playerState = Score.makeState (Score 0 0)
+            , playerCanHit = True
             , dealerHand = []
             , dealerScore = Score 0 0
             , dealerState = Score.makeState (Score 0 0)
@@ -104,23 +106,19 @@ shuffleDeck =
         (Random.Array.shuffle (Array.fromList Card.initDeck))
 
 
-maybeDealerWin :
-    { b | flash : String, playerScore : { a | hard : comparable } }
-    -> { c | soft : comparable }
-    -> String
-maybeDealerWin model score =
-    if score.soft > model.playerScore.hard then
+maybeDealerWin playerScore dealerScore =
+    if playerScore.hard < 22 then
+        if dealerScore.soft > playerScore.hard then
+            "Dealer Wins!"
+        else
+            "You Win!"
+    else if dealerScore.soft > playerScore.soft then
         "Dealer Wins!"
     else
-        model.flash
+        "You Win!"
 
 
-standFlash :
-    { b | flash : String, playerScore : { a | hard : comparable } }
-    -> { c | soft : comparable }
-    -> ScoreState
-    -> String
-standFlash model score dealerState =
+standFlash playerScore dealerScore dealerState =
     case dealerState of
         Score.Blackjack ->
             "Dealer Wins!"
@@ -129,7 +127,7 @@ standFlash model score dealerState =
             "You Win!"
 
         Score.Under ->
-            maybeDealerWin model score
+            maybeDealerWin playerScore dealerScore
 
 
 dealNCards : List a -> List a -> Int -> ( List a, List a )
@@ -179,6 +177,7 @@ update msg model =
             in
                 ( { model
                     | history = game :: games
+                    , playerCanHit = True
                   }
                 , shuffleDeck
                 )
@@ -198,13 +197,15 @@ update msg model =
                     Score.makeState dealerScore
 
                 flash =
-                    standFlash model dealerScore dealerState
+                    standFlash model.playerScore dealerScore dealerState
             in
                 ( { model
                     | dealerHand = dealerHand
                     , deck = newDeck
                     , dealerScore = dealerScore
                     , dealerState = dealerState
+                    , playerCanHit = False
+                    , dealerHandVisible = True
                     , flash = flash
                   }
                 , Cmd.none
@@ -323,7 +324,15 @@ view model =
             [ h1 [] [ text "🂠BlackJack🂠" ]
             , h1 [] [ text "♠️♣️♥️♦️" ]
             , div [] [ text (toString model.flash) ]
-            , button [ onClick NewGame ] [ text "New Game" ]
+            , div [] [ button [ onClick NewGame ] [ text "New Game" ] ]
+            , div []
+                [ if model.playerCanHit then
+                    button [ onClick Hit ] [ text "Hit" ]
+                  else
+                    div [] []
+                ]
+            , button [ onClick Stand ] [ text "Stand" ]
+            , button [ onClick NewGame ] [ text "Surrender" ]
             , div [] [ text ("Round: " ++ (toString model.round)) ]
             , h2 [] [ text "Player" ]
             , div [] [ text (toString model.playerHand) ]
@@ -335,10 +344,6 @@ view model =
             , div [] [ text (toString <| showDealerHand model) ]
             , div [] [ text (toString <| showDealerScore model) ]
             , h3 [] [ text (toString model.dealerState) ]
-            , button [ onClick Hit ] [ text "Hit" ]
-            , button [ onClick Stand ] [ text "Stand" ]
-            , div [] [ text (toString <| Score.cardsUnderBust model.deck) ]
-            , button [ onClick NewGame ] [ text "Surrender" ]
             , h2 [] [ text "Deck" ]
             , button [ onClick ToggleShowDeck ] [ text "Show/Hide Deck" ]
             , div []
