@@ -47,7 +47,7 @@ type alias PlayerHand =
 
 initDeck : List String
 initDeck =
-    List.map cardToString cards
+    List.map cardToString orderedDeck
 
 
 cardToString : Card -> String
@@ -60,8 +60,8 @@ flatZip s f =
     List.concatMap (\face -> List.map (\suit -> Card face suit) s) f
 
 
-cards : List Card
-cards =
+orderedDeck : List Card
+orderedDeck =
     let
         faces =
             [ Ace
@@ -90,10 +90,10 @@ cards =
 
 
 dealShuffled : List a -> ( List a, List a, List a )
-dealShuffled cards =
+dealShuffled deck =
     let
         ( playerHand, d2 ) =
-            dealNCards [] cards 2
+            dealNCards [] deck 2
 
         ( dealerHand, d3 ) =
             dealNCards [] d2 2
