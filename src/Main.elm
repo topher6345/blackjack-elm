@@ -35,6 +35,7 @@ type alias Model =
     , flash : String
     , history : List Game
     , playerCanHit : Bool
+    , playerCanNewGame : Bool
     , playerCanStand : Bool
     , playerCanSurrender : Bool
     , playerHand : List String
@@ -78,17 +79,18 @@ init =
       , dealerState = Flash.initState
       , deck = []
       , deckVisible = False
-      , flash = Flash.initFlash
+      , flash = ""
       , history = []
-      , playerCanHit = True
-      , playerCanStand = True
-      , playerCanSurrender = True
+      , playerCanHit = False
+      , playerCanNewGame = True
+      , playerCanStand = False
+      , playerCanSurrender = False
       , playerHand = []
       , playerScore = Score.zero
       , playerState = Flash.initState
       , round = 0
       }
-    , shuffleDeck
+    , Cmd.none
     )
 
 
@@ -124,6 +126,9 @@ update msg model =
                 | dealerHandVisible = True
                 , flash = "You Surrendered!"
                 , playerCanHit = False
+                , playerCanSurrender = False
+                , playerCanStand = False
+                , playerCanNewGame = True
               }
             , Cmd.none
             )
@@ -139,6 +144,8 @@ update msg model =
             ( { model
                 | history = (gameFromModel model) :: model.history
                 , playerCanHit = True
+                , playerCanNewGame = False
+                , playerCanSurrender = True
               }
             , shuffleDeck
             )
@@ -167,6 +174,7 @@ update msg model =
                     , playerCanHit = False
                     , playerCanStand = False
                     , playerCanSurrender = False
+                    , playerCanNewGame = True
                   }
                 , Cmd.none
                 )
@@ -183,8 +191,9 @@ update msg model =
                     | deck = newDeck
                     , flash = Flash.hitFlash score model.flash
                     , playerCanHit = Flash.playerCanHit score
+                    , playerCanNewGame = not <| Flash.playerCanHit score
                     , playerCanStand = Flash.playerCanHit score
-                    , playerCanSurrender = False
+                    , playerCanSurrender = Flash.playerCanHit score
                     , playerHand = playerHand
                     , playerScore = score
                     , playerState = Flash.makeState score
@@ -204,7 +213,6 @@ update msg model =
                     , deck = newDeck
                     , flash = Flash.shuffleDeckFlash playerHand dealerHand
                     , playerCanHit = Flash.playerCanHit <| Score.makeScoreFromHand playerHand
-                    , playerCanSurrender = Flash.playerCanHit <| Score.makeScoreFromHand playerHand
                     , playerCanStand = Flash.playerCanHit <| Score.makeScoreFromHand playerHand
                     , playerHand = playerHand
                     , playerScore = Score.makeScoreFromHand playerHand
@@ -236,7 +244,12 @@ view model =
             , h1 [] [ text "♠️♣️♥️♦️" ]
             , div [] [ text (toString model.flash) ]
             , div [] [ text ("Round: " ++ (toString model.round)) ]
-            , div [] [ button [ onClick NewGame ] [ text "New Game" ] ]
+            , div []
+                [ if model.playerCanNewGame then
+                    button [ onClick NewGame ] [ text "NewGame" ]
+                  else
+                    button [ onClick NewGame, attribute "disabled" "true" ] [ text "NewGame" ]
+                ]
             , div [ attribute "style" "margin-top: 20px" ]
                 [ if model.playerCanHit then
                     button [ onClick Hit ] [ text "Hit" ]
@@ -295,6 +308,7 @@ view model =
         ]
 
 
+showHistory : List Game -> Html msg
 showHistory history =
     ol [ attribute "reversed" "true" ] <|
         List.map (\x -> li [] [ text x ]) <|

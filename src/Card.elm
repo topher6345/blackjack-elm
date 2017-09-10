@@ -303,4 +303,4 @@ cardStringToGlyph string =
             "🃞"
 
         _ ->
-            "Fdsafdsafdsa"
+            ""
