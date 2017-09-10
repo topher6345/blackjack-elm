@@ -97,6 +97,16 @@ ds =
         [ text "Ds" ]
 
 
+purpleAttribute : Attribute msg
+purpleAttribute =
+    attribute "style" "background:purple; color:black"
+
+
+blankStyle : Attribute msg
+blankStyle =
+    attribute "style" ""
+
+
 hasAce : Score.Score -> Bool
 hasAce playerScore =
     playerScore.hard /= playerScore.soft
@@ -106,20 +116,20 @@ playerScoreAttributes : Int -> List Int -> Attribute a
 playerScoreAttributes score range =
     case List.member score range of
         True ->
-            attribute "style" "background:purple; color:black"
+            purpleAttribute
 
         False ->
-            attribute "style" ""
+            blankStyle
 
 
 dealerScoreAttribute : Int -> Int -> Attribute a
 dealerScoreAttribute score value =
     case score == value of
         True ->
-            attribute "style" "background:purple; color:black"
+            purpleAttribute
 
         False ->
-            attribute "style" ""
+            blankStyle
 
 
 dealerSoftScoreAttribute : Bool -> Int -> Int -> Attribute a
@@ -128,13 +138,13 @@ dealerSoftScoreAttribute hasAce score value =
         True ->
             case score == value of
                 True ->
-                    attribute "style" "background:purple; color:black"
+                    purpleAttribute
 
                 False ->
-                    attribute "style" ""
+                    blankStyle
 
         False ->
-            attribute "style" ""
+            blankStyle
 
 
 playerSoftScoreAttribute : Bool -> Int -> List Int -> Attribute msg
@@ -144,7 +154,7 @@ playerSoftScoreAttribute hasAce score range =
             playerScoreAttributes score range
 
         False ->
-            attribute "style" ""
+            blankStyle
 
 
 basicStrategy :
