@@ -19,9 +19,9 @@ import Score
 
 
 type ScoreState
-    = Blackjack
-    | Under
-    | Bust
+    = Blackjack String
+    | Under String
+    | Bust String
 
 
 initState : ScoreState
@@ -37,13 +37,13 @@ initFlash =
 standFlash : Score -> Score -> ScoreState -> String
 standFlash playerScore dealerScore dealerState =
     case dealerState of
-        Blackjack ->
+        Blackjack _ ->
             "Dealer has 21 - Dealer Wins!"
 
-        Bust ->
+        Bust _ ->
             "Dealer Busts! You Win!"
 
-        Under ->
+        Under _ ->
             maybeDealerWin playerScore dealerScore
 
 
@@ -65,45 +65,45 @@ maybeDealerWin playerScore dealerScore =
 hitFlash : Score -> String -> String
 hitFlash score passthrough =
     case makeState <| score of
-        Blackjack ->
+        Blackjack _ ->
             "21 - You Win!"
 
-        Under ->
+        Under _ ->
             passthrough
 
-        Bust ->
+        Bust _ ->
             "Bust! - You Lose!"
 
 
 shuffleDeckFlash : List String -> List String -> String
 shuffleDeckFlash playerHand dealerHand =
     case makeStateFromHand playerHand of
-        Blackjack ->
+        Blackjack _ ->
             "Blackjack on deal! - You Win!"
 
-        Under ->
+        Under _ ->
             case makeStateFromHand dealerHand of
-                Blackjack ->
+                Blackjack _ ->
                     "Dealer Blackjack on deal! - You Lose!"
 
-                Under ->
+                Under _ ->
                     "Welcome To BlackJack!"
 
-                Bust ->
+                Bust _ ->
                     "Dealer Bust on Deal, this should never happen!"
 
-        Bust ->
+        Bust _ ->
             "Player Bust on Deal, this should never happen!"
 
 
 makeState : Score -> ScoreState
 makeState { hard, soft } =
     if soft > 21 then
-        Bust
+        Bust ""
     else if soft == 21 || hard == 21 then
-        Blackjack
+        Blackjack ""
     else
-        Under
+        Under ""
 
 
 makeStateFromHand : List String -> ScoreState

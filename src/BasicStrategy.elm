@@ -166,11 +166,13 @@ basicStrategy :
     -> Html msg
 basicStrategy model =
     let
+        -- Multiple call sites in table
         playerScore =
             model.playerScore
 
+        -- Multiple call sites in table
         playerHasAce =
-            hasAce model.playerScore
+            hasAce playerScore
 
         playerScoreWithoutAce =
             Score.scoreMinusAce model.playerHand
