@@ -105,11 +105,6 @@ scanlScores list =
         List.scanl f (Maybe.withDefault score head) (Maybe.withDefault [] tail)
 
 
-softScoreFromHand : List String -> Int
-softScoreFromHand x =
-    (makeScoreFromHand x).soft
-
-
 makeScore : String -> Score
 makeScore string =
     let
