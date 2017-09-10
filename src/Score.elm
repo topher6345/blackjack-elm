@@ -237,6 +237,27 @@ makeState { hard, soft } =
         Under
 
 
+makeStateFromHand playerHand =
+    makeState <| makeScoreFromHand playerHand
+
+
+dealerStandHand dealerHand deck =
+    dealerStandUnder (dealerHand ++ deck)
+        - 2
+
+
+hitFlash score passthrough =
+    case makeState <| score of
+        Blackjack ->
+            "21 - You Win!"
+
+        Under ->
+            passthrough
+
+        Bust ->
+            "Bust! - You Lose!"
+
+
 shuffleDeckFlash : List String -> List String -> String
 shuffleDeckFlash playerHand dealerHand =
     case makeState <| makeScoreFromHand playerHand of

@@ -158,9 +158,13 @@ update msg model =
 
         Stand ->
             let
+                dealDealerStand hand deck =
+                    Card.dealDealerStand hand deck <|
+                        Score.dealerStandHand hand deck
+
                 ( dealerHand, newDeck ) =
                     if model.dealerScore.soft < 18 then
-                        Card.dealNCards model.dealerHand model.deck (Score.dealerStandUnder (model.dealerHand ++ model.deck) - 2)
+                        dealDealerStand model.dealerHand model.deck
                     else
                         ( model.dealerHand, model.deck )
 
@@ -194,15 +198,7 @@ update msg model =
                     Score.makeScoreFromHand playerHand
 
                 flash =
-                    case Score.makeState score of
-                        Score.Blackjack ->
-                            "21 - You Win!"
-
-                        Score.Under ->
-                            model.flash
-
-                        Score.Bust ->
-                            "Bust! - You Lose!"
+                    Score.hitFlash score model.flash
             in
                 ( { model
                     | playerHand = playerHand
@@ -237,9 +233,9 @@ update msg model =
                     , dealerHand = dealerHand
                     , playerHand = playerHand
                     , playerScore = Score.makeScoreFromHand playerHand
-                    , playerState = Score.makeState <| Score.makeScoreFromHand playerHand
+                    , playerState = Score.makeStateFromHand playerHand
                     , dealerScore = Score.makeScoreFromHand dealerHand
-                    , dealerState = Score.makeState <| Score.makeScoreFromHand dealerHand
+                    , dealerState = Score.makeStateFromHand dealerHand
                     , flash = flash
                   }
                 , Cmd.none
@@ -278,15 +274,20 @@ view model =
                 , button [ onClick Surrender ] [ text "Surrender" ]
                 ]
             , h2 [] [ text "Player" ]
-            , div [ attribute "style" "font-size: 102px;" ] <| List.map text <| Card.playerCardStringText model.playerHand
+            , div [ attribute "style" "font-size: 102px;" ] <|
+                List.map text <|
+                    Card.playerCardStringText model.playerHand
             , div [] [ text (toString model.playerScore) ]
             , h2 [] [ text "Dealer" ]
             , button [ onClick ToggleShowDealerHand ] [ text "🔎" ]
             , div [ attribute "style" "font-size: 102px;" ] <|
                 if model.dealerHandVisible then
-                    List.map text <| Card.playerCardStringText model.dealerHand
+                    List.map text <|
+                        Card.playerCardStringText model.dealerHand
                 else
-                    [ text <| Card.dealerCardStringText model.dealerHand ]
+                    [ text <|
+                        Card.dealerCardStringText model.dealerHand
+                    ]
             , div []
                 [ text
                     (toString <|

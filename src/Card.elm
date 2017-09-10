@@ -111,6 +111,10 @@ dealerCardStringText hand =
         "🂠" ++ dealerCards
 
 
+dealDealerStand dealerHand deck standunder =
+    dealNCards dealerHand deck standunder
+
+
 cardStringToGlyph : String -> String
 cardStringToGlyph string =
     case string of
