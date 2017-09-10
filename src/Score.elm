@@ -63,11 +63,6 @@ scoreFace card =
             0
 
 
-makeScoreCardTuple : String -> ( String, Score )
-makeScoreCardTuple c =
-    ( c, makeScore c )
-
-
 under22 : Score -> Bool
 under22 x =
     x.soft < 22
