@@ -347,10 +347,10 @@ view model =
             , button [ onClick Surrender ] [ text "Surrender" ]
             , div [] [ text ("Round: " ++ (toString model.round)) ]
             , h2 [] [ text "Player" ]
-            , div [] [ text (toString model.playerHand) ]
+            , div [ attribute "style" "font-size: 102px;" ] <| List.map (\x -> text x) (List.map Card.cardStringToGlyph model.playerHand)
             , div [] [ text (toString model.playerScore) ]
             , h2 [] [ text "Dealer" ]
-            , div [] [ text (toString <| Maybe.withDefault [] <| List.tail model.dealerHand) ]
+            , div [ attribute "style" "font-size: 102px;" ] [ text ("🂠" ++ (Card.cardStringToGlyph <| Maybe.withDefault "" <| List.head <| Maybe.withDefault [] <| List.tail model.dealerHand)) ]
             , button [ onClick ToggleShowDealerHand ] [ text "🔎" ]
             , div [] [ text (toString <| showDealerHand model) ]
             , div [] [ text (toString <| showDealerScore model) ]
