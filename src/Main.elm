@@ -25,40 +25,41 @@ main =
 
 
 type alias Model =
-    { round : Int
+    { dealerHand : List String
+    , dealerHandVisible : Bool
+    , dealerScore : Score
+    , dealerState : ScoreState
     , deck : List String
+    , deckVisible : Bool
+    , flash : String
+    , history : List Game
+    , playerCanHit : Bool
     , playerHand : List String
     , playerScore : Score
     , playerState : ScoreState
-    , playerCanHit : Bool
-    , dealerHand : List String
-    , dealerScore : Score
-    , dealerState : ScoreState
-    , deckVisible : Bool
-    , dealerHandVisible : Bool
-    , flash : String
-    , history : List Game
+    , round : Int
     }
 
 
 type alias Game =
-    { round : Int
-    , winner : String
-    , playerHand : List String
-    , playerScore : Score
+    { dealerHand : List String
     , dealerHand : List String
     , dealerScore : Score
+    , playerHand : List String
+    , playerScore : Score
+    , round : Int
+    , winner : String
     }
 
 
 gameFromModel : Model -> Game
 gameFromModel model =
-    { round = model.round
-    , winner = model.flash
+    { dealerHand = model.dealerHand
+    , dealerScore = model.dealerScore
     , playerHand = model.playerHand
     , playerScore = model.playerScore
-    , dealerHand = model.dealerHand
-    , dealerScore = model.dealerScore
+    , round = model.round
+    , winner = model.flash
     }
 
 
@@ -73,32 +74,32 @@ init =
             Score 0 0
 
         model =
-            { round = 0
-            , deck = []
-            , playerHand = []
-            , playerScore = Score.zero
-            , playerState = Score.initState
-            , playerCanHit = True
+            { dealerHandVisible = False
             , dealerHand = []
             , dealerScore = Score.zero
             , dealerState = Score.initState
+            , deck = []
             , deckVisible = False
-            , dealerHandVisible = False
             , flash = "Welcome To BlackJack!"
             , history = []
+            , playerCanHit = True
+            , playerHand = []
+            , playerScore = Score.zero
+            , playerState = Score.initState
+            , round = 0
             }
     in
         ( model, shuffleDeck )
 
 
 type Msg
-    = NewGame
-    | Hit
-    | Stand
-    | ToggleShowDeck
-    | ToggleShowDealerHand
-    | Surrender
+    = Hit
+    | NewGame
     | ShuffleDeck (Array.Array String)
+    | Stand
+    | Surrender
+    | ToggleShowDealerHand
+    | ToggleShowDeck
 
 
 shuffleDeck : Cmd Msg
@@ -119,9 +120,9 @@ update msg model =
 
         Surrender ->
             ( { model
-                | flash = "You Surrendered!"
+                | dealerHandVisible = True
+                , flash = "You Surrendered!"
                 , playerCanHit = False
-                , dealerHandVisible = True
               }
             , Cmd.none
             )
@@ -157,13 +158,12 @@ update msg model =
             in
                 ( { model
                     | dealerHand = dealerHand
-                    , deck = newDeck
+                    , dealerHandVisible = True
                     , dealerScore = dealerScore
                     , dealerState = dealerState
+                    , deck = newDeck
+                    , flash = Score.standFlash model.playerScore dealerScore dealerState
                     , playerCanHit = False
-                    , dealerHandVisible = True
-                    , flash =
-                        Score.standFlash model.playerScore dealerScore dealerState
                   }
                 , Cmd.none
                 )
@@ -177,10 +177,10 @@ update msg model =
                     Score.makeScoreFromHand playerHand
             in
                 ( { model
-                    | playerHand = playerHand
-                    , deck = newDeck
-                    , playerScore = score
+                    | deck = newDeck
                     , flash = Score.hitFlash score model.flash
+                    , playerHand = playerHand
+                    , playerScore = score
                     , playerState = Score.makeState score
                   }
                 , Cmd.none
@@ -192,15 +192,15 @@ update msg model =
                     Card.dealShuffled (Array.toList cards)
             in
                 ( { model
-                    | deck = newDeck
-                    , round = model.round + 1
-                    , dealerHand = dealerHand
+                    | dealerHand = dealerHand
+                    , dealerScore = Score.makeScoreFromHand dealerHand
+                    , dealerState = Score.makeStateFromHand dealerHand
+                    , deck = newDeck
+                    , flash = Score.shuffleDeckFlash playerHand dealerHand
                     , playerHand = playerHand
                     , playerScore = Score.makeScoreFromHand playerHand
                     , playerState = Score.makeStateFromHand playerHand
-                    , dealerScore = Score.makeScoreFromHand dealerHand
-                    , dealerState = Score.makeStateFromHand dealerHand
-                    , flash = Score.shuffleDeckFlash playerHand dealerHand
+                    , round = model.round + 1
                   }
                 , Cmd.none
                 )
