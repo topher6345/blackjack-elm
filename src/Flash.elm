@@ -5,6 +5,7 @@ module Flash
         , initState
         , makeState
         , makeStateFromHand
+        , playerCanHit
         , ScoreState
         , shuffleDeckFlash
         , standFlash
@@ -104,6 +105,16 @@ makeState { hard, soft } =
         Blackjack ""
     else
         Under ""
+
+
+playerCanHit : Score -> Bool
+playerCanHit score =
+    case makeState score of
+        Under _ ->
+            True
+
+        _ ->
+            False
 
 
 makeStateFromHand : List String -> ScoreState
