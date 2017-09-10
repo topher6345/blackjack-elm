@@ -2,16 +2,9 @@ module Score
     exposing
         ( dealStand
         , handIsPair
-        , hitFlash
-        , initState
         , makeScoreFromHand
-        , makeState
-        , makeStateFromHand
         , scoreMinusAce
         , Score
-        , ScoreState
-        , shuffleDeckFlash
-        , standFlash
         , zero
         )
 
@@ -22,48 +15,9 @@ type alias Score =
     { soft : Int, hard : Int }
 
 
-type ScoreState
-    = Blackjack
-    | Under
-    | Bust
-
-
 zero : Score
 zero =
     Score 0 0
-
-
-initState : ScoreState
-initState =
-    makeState zero
-
-
-standFlash : Score -> Score -> ScoreState -> String
-standFlash playerScore dealerScore dealerState =
-    case dealerState of
-        Blackjack ->
-            "Dealer has 21 - Dealer Wins!"
-
-        Bust ->
-            "Dealer Busts! You Win!"
-
-        Under ->
-            maybeDealerWin playerScore dealerScore
-
-
-maybeDealerWin : Score -> Score -> String
-maybeDealerWin playerScore dealerScore =
-    if playerScore.hard < 22 then
-        if dealerScore.soft > playerScore.hard then
-            "Dealer has a higher hand - Dealer Wins!"
-        else
-            "You have a higher hand - You Win!"
-    else if dealerScore.soft > playerScore.soft then
-        "Dealer has a higher hand - Dealer Wins!"
-    else if dealerScore.soft == playerScore.soft then
-        "Its a tie!"
-    else
-        "You have a higher hand - You Win!"
 
 
 scoreFace : String -> number
@@ -270,56 +224,7 @@ handIsPair fullCards =
         False
 
 
-makeState : Score -> ScoreState
-makeState { hard, soft } =
-    if soft > 21 then
-        Bust
-    else if soft == 21 || hard == 21 then
-        Blackjack
-    else
-        Under
-
-
-makeStateFromHand : List String -> ScoreState
-makeStateFromHand playerHand =
-    makeState <| makeScoreFromHand playerHand
-
-
 dealerStandHand : List String -> List String -> Int
 dealerStandHand dealerHand deck =
     dealerStandUnder (dealerHand ++ deck)
         - 2
-
-
-hitFlash : Score -> String -> String
-hitFlash score passthrough =
-    case makeState <| score of
-        Blackjack ->
-            "21 - You Win!"
-
-        Under ->
-            passthrough
-
-        Bust ->
-            "Bust! - You Lose!"
-
-
-shuffleDeckFlash : List String -> List String -> String
-shuffleDeckFlash playerHand dealerHand =
-    case makeState <| makeScoreFromHand playerHand of
-        Blackjack ->
-            "Blackjack on deal! - You Win!"
-
-        Under ->
-            case makeState <| makeScoreFromHand dealerHand of
-                Blackjack ->
-                    "Dealer Blackjack on deal! - You Lose!"
-
-                Under ->
-                    "Welcome To BlackJack!"
-
-                Bust ->
-                    "Dealer Bust on Deal, this should never happen!"
-
-        Bust ->
-            "Player Bust on Deal, this should never happen!"

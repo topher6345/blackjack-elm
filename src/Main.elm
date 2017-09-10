@@ -10,7 +10,8 @@ import Array
 import Random
 import Random.Array
 import Card
-import Score exposing (Score, ScoreState)
+import Score exposing (Score)
+import Flash exposing (ScoreState)
 import BasicStrategy
 
 
@@ -77,7 +78,7 @@ init =
             { dealerHandVisible = False
             , dealerHand = []
             , dealerScore = Score.zero
-            , dealerState = Score.initState
+            , dealerState = Flash.initState
             , deck = []
             , deckVisible = False
             , flash = "Welcome To BlackJack!"
@@ -85,7 +86,7 @@ init =
             , playerCanHit = True
             , playerHand = []
             , playerScore = Score.zero
-            , playerState = Score.initState
+            , playerState = Flash.initState
             , round = 0
             }
     in
@@ -104,8 +105,9 @@ type Msg
 
 shuffleDeck : Cmd Msg
 shuffleDeck =
-    Random.generate ShuffleDeck
-        (Random.Array.shuffle (Array.fromList Card.initDeck))
+    Random.generate ShuffleDeck <|
+        Random.Array.shuffle <|
+            Array.fromList Card.initDeck
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -154,7 +156,7 @@ update msg model =
                     Score.makeScoreFromHand dealerHand
 
                 dealerState =
-                    Score.makeState dealerScore
+                    Flash.makeState dealerScore
             in
                 ( { model
                     | dealerHand = dealerHand
@@ -162,7 +164,7 @@ update msg model =
                     , dealerScore = dealerScore
                     , dealerState = dealerState
                     , deck = newDeck
-                    , flash = Score.standFlash model.playerScore dealerScore dealerState
+                    , flash = Flash.standFlash model.playerScore dealerScore dealerState
                     , playerCanHit = False
                   }
                 , Cmd.none
@@ -178,10 +180,10 @@ update msg model =
             in
                 ( { model
                     | deck = newDeck
-                    , flash = Score.hitFlash score model.flash
+                    , flash = Flash.hitFlash score model.flash
                     , playerHand = playerHand
                     , playerScore = score
-                    , playerState = Score.makeState score
+                    , playerState = Flash.makeState score
                   }
                 , Cmd.none
                 )
@@ -194,12 +196,12 @@ update msg model =
                 ( { model
                     | dealerHand = dealerHand
                     , dealerScore = Score.makeScoreFromHand dealerHand
-                    , dealerState = Score.makeStateFromHand dealerHand
+                    , dealerState = Flash.makeStateFromHand dealerHand
                     , deck = newDeck
-                    , flash = Score.shuffleDeckFlash playerHand dealerHand
+                    , flash = Flash.shuffleDeckFlash playerHand dealerHand
                     , playerHand = playerHand
                     , playerScore = Score.makeScoreFromHand playerHand
-                    , playerState = Score.makeStateFromHand playerHand
+                    , playerState = Flash.makeStateFromHand playerHand
                     , round = model.round + 1
                   }
                 , Cmd.none
