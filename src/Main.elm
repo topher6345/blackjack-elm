@@ -315,14 +315,6 @@ subscriptions model =
 -- VIEW
 
 
-showDealerHand : Model -> List String
-showDealerHand model =
-    if model.dealerHandVisible then
-        model.dealerHand
-    else
-        []
-
-
 showDealerScore : Model -> String
 showDealerScore model =
     if model.dealerHandVisible then
