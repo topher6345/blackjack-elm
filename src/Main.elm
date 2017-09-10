@@ -280,21 +280,6 @@ playerCardStringText hand =
     List.map text (List.map Card.cardStringToGlyph hand)
 
 
-dealerCardStringText : List String -> Html msg
-dealerCardStringText hand =
-    let
-        tail =
-            Maybe.withDefault [] <| List.tail hand
-
-        headOfTail =
-            Maybe.withDefault "" <| List.head tail
-
-        dealerCards =
-            Card.cardStringToGlyph headOfTail
-    in
-        text <| "🂠" ++ dealerCards
-
-
 view : Model -> Html Msg
 view model =
     div [ attribute "style" "display: flex;" ]
@@ -322,7 +307,7 @@ view model =
                 if model.dealerHandVisible then
                     playerCardStringText model.dealerHand
                 else
-                    [ dealerCardStringText model.dealerHand ]
+                    [ text <| Card.dealerCardStringText model.dealerHand ]
             , div []
                 [ text
                     (toString <|

@@ -91,6 +91,21 @@ dealNCards to from n =
         ( to ++ c1, c2 )
 
 
+dealerCardStringText : List String -> String
+dealerCardStringText hand =
+    let
+        tail =
+            Maybe.withDefault [] <| List.tail hand
+
+        headOfTail =
+            Maybe.withDefault "" <| List.head tail
+
+        dealerCards =
+            cardStringToGlyph headOfTail
+    in
+        "🂠" ++ dealerCards
+
+
 cardStringToGlyph : String -> String
 cardStringToGlyph string =
     case string of
