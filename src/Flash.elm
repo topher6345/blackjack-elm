@@ -1,6 +1,7 @@
 module Flash
     exposing
         ( hitFlash
+        , initFlash
         , initState
         , makeState
         , makeStateFromHand
@@ -26,6 +27,11 @@ type ScoreState
 initState : ScoreState
 initState =
     makeState Score.zero
+
+
+initFlash : String
+initFlash =
+    "Welcome To BlackJack!"
 
 
 standFlash : Score -> Score -> ScoreState -> String

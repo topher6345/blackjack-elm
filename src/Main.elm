@@ -70,27 +70,22 @@ type History
 
 init : ( Model, Cmd Msg )
 init =
-    let
-        initScore =
-            Score 0 0
-
-        model =
-            { dealerHandVisible = False
-            , dealerHand = []
-            , dealerScore = Score.zero
-            , dealerState = Flash.initState
-            , deck = []
-            , deckVisible = False
-            , flash = "Welcome To BlackJack!"
-            , history = []
-            , playerCanHit = True
-            , playerHand = []
-            , playerScore = Score.zero
-            , playerState = Flash.initState
-            , round = 0
-            }
-    in
-        ( model, shuffleDeck )
+    ( { dealerHandVisible = False
+      , dealerHand = []
+      , dealerScore = Score.zero
+      , dealerState = Flash.initState
+      , deck = []
+      , deckVisible = False
+      , flash = Flash.initFlash
+      , history = []
+      , playerCanHit = True
+      , playerHand = []
+      , playerScore = Score.zero
+      , playerState = Flash.initState
+      , round = 0
+      }
+    , shuffleDeck
+    )
 
 
 type Msg
