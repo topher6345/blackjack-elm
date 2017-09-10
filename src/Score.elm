@@ -235,3 +235,24 @@ makeState { hard, soft } =
         Blackjack
     else
         Under
+
+
+shuffleDeckFlash : List String -> List String -> String
+shuffleDeckFlash playerHand dealerHand =
+    case makeState <| makeScoreFromHand playerHand of
+        Blackjack ->
+            "Blackjack on deal! - You Win!"
+
+        Under ->
+            case makeState <| makeScoreFromHand dealerHand of
+                Blackjack ->
+                    "Dealer Blackjack on deal! - You Lose!"
+
+                Under ->
+                    "Welcome To BlackJack!"
+
+                Bust ->
+                    "Dealer Bust on Deal, this should never happen!"
+
+        Bust ->
+            "Player Bust on Deal, this should never happen!"

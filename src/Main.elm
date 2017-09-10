@@ -229,23 +229,7 @@ update msg model =
                     model.round + 1
 
                 flash =
-                    case Score.makeState <| Score.makeScoreFromHand playerHand of
-                        Score.Blackjack ->
-                            "Blackjack on deal! - You Win!"
-
-                        Score.Under ->
-                            case Score.makeState <| Score.makeScoreFromHand dealerHand of
-                                Score.Blackjack ->
-                                    "Dealer Blackjack on deal! - You Lose!"
-
-                                Score.Under ->
-                                    "Welcome To BlackJack!"
-
-                                Score.Bust ->
-                                    "Dealer Bust on Deal, this should never happen!"
-
-                        Score.Bust ->
-                            "Player Bust on Deal, this should never happen!"
+                    Score.shuffleDeckFlash playerHand dealerHand
             in
                 ( { model
                     | deck = d3
