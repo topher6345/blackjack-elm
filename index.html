@@ -1,21 +1,17 @@
 <!DOCTYPE HTML>
 <html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Simple Blackjack in Elm</title>
+    <script type="text/javascript" src="elm.js"></script>
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <title>Elm • Simple Blackjack</title>
-  <script type="text/javascript" src="elm.js"></script>
-  <link rel="stylesheet" href="style.css">
-</head>
+  <body>
+    <div id="blackjack"></div>
+  </body>
 
-<body>
-<div id="main"></div>
-</body>
-
-<script type="text/javascript">
-
-var node = document.getElementById('main');
+  <script type="text/javascript">
+    var node = document.getElementById('blackjack');
     var app = Elm.Main.embed(node);
-</script>
-
+  </script>
 </html>
