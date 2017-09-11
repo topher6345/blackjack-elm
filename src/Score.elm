@@ -9,6 +9,8 @@ module Score
         , zero
         )
 
+-- A module for operations on computing Scores given a Hand
+
 import Card
 
 
