@@ -221,6 +221,7 @@ update msg model =
                     , flash = Flash.shuffleDeckFlash playerHand dealerHand
                     , playerCanHit = not isBlackJack
                     , playerCanStand = not isBlackJack
+                    , playerCanSurrender = not isBlackJack
                     , playerCanNewGame = isBlackJack
                     , playerHand = playerHand
                     , playerScore = Score.makeScoreFromHand playerHand
@@ -246,12 +247,15 @@ subscriptions model =
 
 view : Model -> Html Msg
 view model =
-    div [ attribute "style" "display: flex;" ]
-        [ div [ attribute "style" "flex-grow:1;max-width: 33%; " ]
-            [ h1 [] [ text "🂠BlackJack🂠" ]
-            , h1 [] [ text "♠️♣️♥️♦️" ]
-            , div [] [ text (toString model.flash) ]
+    div [ attribute "style" "display: flex; min-width: 100%; min-height: 100%; font-family: Palatino;" ]
+        [ div [ attribute "style" "flex-grow:1; max-width: 20%; min-width: 20%; background: DARKGREEN; color: white" ]
+            [ h1 [ attribute "style" "text-align: center;" ] [ text "Game history" ]
+            , showHistory model.history
+            ]
+        , div [ attribute "style" "flex-grow:1; min-width: 40%; max-width: 40%; padding-left: 10%;" ]
+            [ h1 [] [ text "♠️ ♥️ BlackJack ♣️ ♦️" ]
             , div [] [ text ("Round: " ++ (toString model.round)) ]
+            , pre [] [ text model.flash ]
             , div []
                 [ if model.playerCanNewGame then
                     button [ onClick NewGame ] [ text "NewGame" ]
@@ -260,17 +264,17 @@ view model =
                 ]
             , div [ attribute "style" "margin-top: 20px" ]
                 [ if model.playerCanHit then
-                    button [ onClick Hit, attribute "style" "background:lime; color:black;" ] [ text "Hit" ]
+                    button [ onClick Hit, attribute "style" "background:lime; color:black;" ] [ text "HIT" ]
                   else
-                    button [ onClick Hit, attribute "disabled" "true" ] [ text "Hit" ]
+                    button [ onClick Hit, attribute "disabled" "true" ] [ text "HIT" ]
                 , if model.playerCanStand then
-                    button [ onClick Stand, attribute "style" "background:red; color:white" ] [ text "Stand" ]
+                    button [ onClick Stand, attribute "style" "background:red; color:white" ] [ text "STAND" ]
                   else
-                    button [ onClick Stand, attribute "disabled" "true" ] [ text "Stand" ]
+                    button [ onClick Stand, attribute "disabled" "true" ] [ text "STAND" ]
                 , if model.playerCanSurrender then
-                    button [ onClick Surrender, attribute "style" "background:white; color:black" ] [ text "Surrender" ]
+                    button [ onClick Surrender, attribute "style" "background:white; color:black" ] [ text "SURRENDER" ]
                   else
-                    button [ onClick Surrender, attribute "disabled" "true" ] [ text "Surrender" ]
+                    button [ onClick Surrender, attribute "disabled" "true" ] [ text "SURRENDER" ]
                 ]
             , h2 [] [ text "Player" ]
             , div [ attribute "style" "font-size: 102px;" ] <|
@@ -278,7 +282,7 @@ view model =
                     Card.playerCardStringText model.playerHand
             , div [] [ text (toString model.playerScore) ]
             , h2 [] [ text "Dealer" ]
-            , button [ onClick ToggleShowDealerHand ] [ text "🔎" ]
+            , button [ onClick ToggleShowDealerHand ] [ text "👀" ]
             , div [ attribute "style" "font-size: 102px;" ] <|
                 if model.dealerHandVisible then
                     List.map text <|
@@ -295,24 +299,23 @@ view model =
                         else
                             ""
                 ]
-            , h2 [] [ text "Deck" ]
-            , button [ onClick ToggleShowDeck ] [ text "🔎" ]
-            , div []
-                [ text <|
-                    toString <|
-                        if model.deckVisible then
-                            model.deck
-                        else
-                            []
-                ]
+              --, h2 [] [ text "Deck" ]
+              --, button [ onClick ToggleShowDeck ] [ text "🔎" ]
+              --, div []
+              --    [ text <|
+              --        toString <|
+              --            if model.deckVisible then
+              --                model.deck
+              --            else
+              --                []
+              --   ]
             ]
-        , div [ attribute "style" " flex-grow:1 " ]
-            [ BasicStrategy.legend
-            , h3 [] [ text "Game history" ]
-            , showHistory model.history
+        , div [ attribute "style" " flex-grow:1; background: OLIVE; color: white; padding-left: 20px;" ]
+            [ h1 []
+                [ text "Basic Strategy" ]
+            , BasicStrategy.legend
+            , BasicStrategy.basicStrategy model.playerHand model.dealerHand
             ]
-        , div [ attribute "style" " flex-grow:1 " ]
-            [ BasicStrategy.basicStrategy model.playerHand model.dealerHand ]
         ]
 
 

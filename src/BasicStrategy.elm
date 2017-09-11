@@ -35,14 +35,14 @@ legend =
                 [ b []
                     [ text "Dh" ]
                 ]
-            , text "= Double (if not allowed, then hit)"
+            , text "= Hit (Double if allowed)"
             ]
         , dd []
             [ span [ attribute "style" "background:lightsalmon; color:black" ]
                 [ b []
                     [ text "Ds" ]
                 ]
-            , text "= Double (if not allowed, then stand)"
+            , text "= Stand (Double if allowed)"
             ]
           -- Can't split yet
           --, dd []
@@ -57,7 +57,7 @@ legend =
                 [ b []
                     [ text "SU" ]
                 ]
-            , text "= Surrender (if not allowed, then hit)"
+            , text "= Surrender"
             ]
         ]
 
@@ -173,7 +173,7 @@ basicStrategy playerHand dealerHand =
         playerHandIsPair =
             Score.handIsPair playerHand
     in
-        table [ attribute "border" "1", attribute "style" "text-align:center" ]
+        table [ attribute "border" "1", attribute "style" "text-align:center; background: white; color: black" ]
             [ tbody []
                 [ tr []
                     [ th [ attribute "rowspan" "2" ]
@@ -205,7 +205,7 @@ basicStrategy playerHand dealerHand =
                     ]
                 , tr []
                     [ th [ attribute "colspan" "11" ]
-                        [ text "Hard totals (excluding pairs)" ]
+                        [ text "Hard total" ]
                     ]
                 , tr []
                     [ th [ playerScoreAttributes playerScore.hard (List.range 17 20) ]
@@ -335,7 +335,7 @@ basicStrategy playerHand dealerHand =
                     ]
                 , tr []
                     [ th [ attribute "colspan" "11" ]
-                        [ text "Soft totals" ]
+                        [ text "Soft total" ]
                     ]
                 , tr []
                     [ td []
