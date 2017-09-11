@@ -1,10 +1,10 @@
 module Score
     exposing
-        ( dealStand
-        , hasPair
+        ( hasPair
         , hasAce
         , fromHand
         , fromHandMinusAce
+        , makeScore
         , Score
         , zero
         )
@@ -16,6 +16,10 @@ import Card
 
 type alias Score =
     { soft : Int, hard : Int }
+
+
+type alias Hand =
+    List String
 
 
 zero : Score
@@ -66,48 +70,6 @@ scoreFace card =
             0
 
 
-under22 : Score -> Bool
-under22 x =
-    x.soft < 22
-
-
-dealStand : Int -> List String -> List String -> ( List String, List String )
-dealStand softScore dealerHand deck =
-    if softScore < 18 then
-        Card.dealDealerStand dealerHand deck <|
-            dealerStandHand dealerHand deck
-    else
-        ( dealerHand, deck )
-
-
-scoresUnderBust : List String -> List Score
-scoresUnderBust deck =
-    List.filter under22 <| scanlScores <| List.map makeScore deck
-
-
-dealerStandUnder : List String -> Int
-dealerStandUnder deck =
-    List.length <| scoresUnderBust deck
-
-
-scanlScores : List Score -> List Score
-scanlScores list =
-    let
-        head =
-            List.head list
-
-        tail =
-            List.tail list
-
-        score =
-            { soft = 0, hard = 0 }
-
-        f x y =
-            { soft = x.soft + y.soft, hard = x.hard + y.hard }
-    in
-        List.scanl f (Maybe.withDefault score head) (Maybe.withDefault [] tail)
-
-
 makeScore : String -> Score
 makeScore string =
     let
@@ -123,7 +85,7 @@ makeScore string =
         Score soft hard
 
 
-fromHand : List String -> Score
+fromHand : Hand -> Score
 fromHand hand =
     let
         faces =
@@ -166,17 +128,17 @@ notAce string =
     not (string == "Ace")
 
 
-handMinusAce : List String -> List String
+handMinusAce : Hand -> Hand
 handMinusAce cards =
     List.filter notAce (List.map Card.extractFace cards)
 
 
-fromHandMinusAce : List String -> Int
+fromHandMinusAce : Hand -> Int
 fromHandMinusAce cards =
     Maybe.withDefault 0 <| List.head <| List.map scoreHard <| handMinusAce cards
 
 
-isPair : List String -> Bool
+isPair : Hand -> Bool
 isPair xs =
     let
         safeHead z =
@@ -194,7 +156,7 @@ isPair xs =
         x == y
 
 
-hasPair : List String -> Bool
+hasPair : Hand -> Bool
 hasPair fullCards =
     if not ((List.length fullCards) == 2) then
         False
@@ -202,12 +164,6 @@ hasPair fullCards =
         True
     else
         False
-
-
-dealerStandHand : List String -> List String -> Int
-dealerStandHand dealerHand deck =
-    dealerStandUnder (dealerHand ++ deck)
-        - 2
 
 
 hasAce : Score -> Bool

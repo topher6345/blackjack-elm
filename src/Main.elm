@@ -13,6 +13,7 @@ import Card
 import Score exposing (Score)
 import Flash exposing (ScoreState)
 import BasicStrategy
+import DealerStand
 
 
 main : Program Never Model Msg
@@ -154,7 +155,7 @@ update msg model =
         Stand ->
             let
                 ( dealerHand, newDeck ) =
-                    Score.dealStand
+                    DealerStand.dealStand
                         model.dealerScore.soft
                         model.dealerHand
                         model.deck
