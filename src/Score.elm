@@ -21,7 +21,7 @@ zero =
     Score 0 0
 
 
-scoreFace : String -> number
+scoreFace : String -> Int
 scoreFace card =
     case card of
         "Two" ->
@@ -139,7 +139,7 @@ fromHand hand =
         Score soft hard
 
 
-scoreHard : String -> number
+scoreHard : String -> Int
 scoreHard hand =
     case hand of
         "Ace" ->
@@ -149,7 +149,7 @@ scoreHard hand =
             scoreFace hand
 
 
-scoreSoft : String -> number
+scoreSoft : String -> Int
 scoreSoft card =
     case card of
         "Ace" ->
@@ -169,7 +169,7 @@ handMinusAce cards =
     List.filter notAce (List.map Card.extractFace cards)
 
 
-fromHandMinusAce : List String -> number
+fromHandMinusAce : List String -> Int
 fromHandMinusAce cards =
     Maybe.withDefault 0 <| List.head <| List.map scoreHard <| handMinusAce cards
 
