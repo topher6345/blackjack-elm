@@ -183,7 +183,7 @@ update msg model =
         Hit ->
             let
                 ( playerHand, newDeck ) =
-                    Card.dealNCards model.playerHand model.deck 1
+                    Card.dealN model.playerHand model.deck 1
 
                 score =
                     Score.makeScoreFromHand playerHand

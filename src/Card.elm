@@ -1,6 +1,6 @@
 module Card
     exposing
-        ( dealNCards
+        ( dealN
         , dealDealerStand
         , dealerCardStringText
         , dealShuffled
@@ -93,10 +93,10 @@ dealShuffled : List a -> ( List a, List a, List a )
 dealShuffled deck =
     let
         ( playerHand, d2 ) =
-            dealNCards [] deck 2
+            dealN [] deck 2
 
         ( dealerHand, d3 ) =
-            dealNCards [] d2 2
+            dealN [] d2 2
     in
         ( d3, dealerHand, playerHand )
 
@@ -106,8 +106,8 @@ extractFace x =
     Maybe.withDefault "" <| List.head <| String.words x
 
 
-dealNCards : List a -> List a -> Int -> ( List a, List a )
-dealNCards to from n =
+dealN : List a -> List a -> Int -> ( List a, List a )
+dealN to from n =
     let
         c1 =
             List.take n from
@@ -140,7 +140,7 @@ dealerCardStringText hand =
 
 dealDealerStand : List a -> List a -> Int -> ( List a, List a )
 dealDealerStand dealerHand deck standunder =
-    dealNCards dealerHand deck standunder
+    dealN dealerHand deck standunder
 
 
 cardStringToGlyph : String -> String
