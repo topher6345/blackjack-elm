@@ -13,7 +13,7 @@ Then view it:
     elm reactor
 
 ## Key Elm Modules and Types
-in `scr/`
+in `src/`
  * `Main` - Entry Point for Elm App
  * `Card` - Dealing and Card manipulations
  * `Score.Score` - (hard, soft)
@@ -28,4 +28,5 @@ in `scr/`
 - [ ] Statistics
 - [ ] Wager
 - [ ] Split
+- [ ] Dealer cards dont flip if dealer is dealt a blackjack on the first hand
 - [ ] Double Down
