@@ -37,14 +37,6 @@ type alias Card =
     { face : Face, suit : Suit }
 
 
-type alias DealerHand =
-    { invisible : Card, visible : List Card }
-
-
-type alias PlayerHand =
-    List Card
-
-
 initDeck : List String
 initDeck =
     List.map cardToString orderedDeck
