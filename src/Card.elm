@@ -2,10 +2,10 @@ module Card
     exposing
         ( dealN
         , dealDealerStand
-        , showDealerHand
         , dealShuffled
         , extractFace
         , initDeck
+        , showDealerHand
         , showPlayerHand
         )
 
