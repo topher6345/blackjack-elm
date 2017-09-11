@@ -6,7 +6,7 @@ module Card
         , dealShuffled
         , extractFace
         , initDeck
-        , playerCardStringText
+        , showPlayerHand
         )
 
 
@@ -118,8 +118,8 @@ dealN to from n =
         ( to ++ c1, c2 )
 
 
-playerCardStringText : List String -> List String
-playerCardStringText hand =
+showPlayerHand : List String -> List String
+showPlayerHand hand =
     List.map cardStringToGlyph hand
 
 

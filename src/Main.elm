@@ -279,14 +279,14 @@ view model =
             , h2 [] [ text "Player" ]
             , div [ attribute "style" "font-size: 102px;" ] <|
                 List.map text <|
-                    Card.playerCardStringText model.playerHand
+                    Card.showPlayerHand model.playerHand
             , div [] [ text (toString model.playerScore) ]
             , h2 [] [ text "Dealer" ]
             , button [ onClick ToggleShowDealerHand ] [ text "👀" ]
             , div [ attribute "style" "font-size: 102px;" ] <|
                 if model.dealerHandVisible then
                     List.map text <|
-                        Card.playerCardStringText model.dealerHand
+                        Card.showPlayerHand model.dealerHand
                 else
                     [ text <|
                         Card.showDealerHand model.dealerHand
