@@ -14,6 +14,7 @@ import Score exposing (Score)
 import Flash exposing (ScoreState)
 import BasicStrategy
 import DealerStand
+import Statistics
 
 
 main : Program Never Model Msg
@@ -251,6 +252,11 @@ view model =
     div [ attribute "style" "display: flex; min-width: 100%; min-height: 100%; font-family: Palatino;" ]
         [ div [ attribute "style" "flex-grow:1; max-width: 20%; min-width: 20%; background: DARKGREEN; color: white" ]
             [ h1 [ attribute "style" "text-align: center;" ] [ text "Game history" ]
+            , text "Wins: "
+            , text <| toString <| Statistics.wins model.history
+            , text "   Percentage: "
+            , text <| Statistics.safeWinPercentage <| Statistics.winPercentage model.history
+            , text " %"
             , showHistory model.history
             ]
         , div [ attribute "style" "flex-grow:1; min-width: 40%; max-width: 40%; padding-left: 10%;" ]
