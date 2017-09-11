@@ -11,10 +11,15 @@ type alias Hand =
 dealStand : Int -> Hand -> Hand -> ( Hand, Hand )
 dealStand softScore dealerHand deck =
     if softScore < 18 then
-        Card.dealDealerStand dealerHand deck <|
+        dealDealerStand dealerHand deck <|
             dealerStandHand dealerHand deck
     else
         ( dealerHand, deck )
+
+
+dealDealerStand : Hand -> Hand -> Int -> ( Hand, Hand )
+dealDealerStand dealerHand deck standunder =
+    Card.dealN dealerHand deck standunder
 
 
 dealerStandHand : Hand -> Hand -> Int

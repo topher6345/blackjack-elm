@@ -1,7 +1,6 @@
 module Card
     exposing
         ( dealN
-        , dealDealerStand
         , dealShuffled
         , extractFace
         , initDeck
@@ -128,11 +127,6 @@ showDealerHand hand =
             stringToGlyph headOfTail
     in
         "🂠" ++ dealerCards
-
-
-dealDealerStand : List a -> List a -> Int -> ( List a, List a )
-dealDealerStand dealerHand deck standunder =
-    dealN dealerHand deck standunder
 
 
 stringToGlyph : String -> String
