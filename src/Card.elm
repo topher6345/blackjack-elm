@@ -2,7 +2,7 @@ module Card
     exposing
         ( dealN
         , dealDealerStand
-        , listToString
+        , showDealerHand
         , dealShuffled
         , extractFace
         , initDeck
@@ -123,8 +123,8 @@ playerCardStringText hand =
     List.map cardStringToGlyph hand
 
 
-listToString : List String -> String
-listToString hand =
+showDealerHand : List String -> String
+showDealerHand hand =
     let
         tail =
             Maybe.withDefault [] <| List.tail hand

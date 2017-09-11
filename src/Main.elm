@@ -289,7 +289,7 @@ view model =
                         Card.playerCardStringText model.dealerHand
                 else
                     [ text <|
-                        Card.listToString model.dealerHand
+                        Card.showDealerHand model.dealerHand
                     ]
             , div []
                 [ text <|
