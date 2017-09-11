@@ -6,7 +6,7 @@ module BasicStrategy
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Score
+import Score exposing (Score)
 
 
 -- https://mbylstra.github.io/html-to-elm/
@@ -440,6 +440,7 @@ basicStrategy playerHand dealerHand =
 -- Can't split yet
 
 
+pairsTable : Bool -> Score -> Score -> List (Html msg)
 pairsTable playerHandIsPair playerScore dealerScore =
     [ tr []
         [ th [ attribute "colspan" "11" ]
