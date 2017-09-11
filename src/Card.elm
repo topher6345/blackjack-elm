@@ -120,7 +120,7 @@ dealN to from n =
 
 showPlayerHand : List String -> List String
 showPlayerHand hand =
-    List.map cardStringToGlyph hand
+    List.map stringToGlyph hand
 
 
 showDealerHand : List String -> String
@@ -133,7 +133,7 @@ showDealerHand hand =
             Maybe.withDefault "" <| List.head tail
 
         dealerCards =
-            cardStringToGlyph headOfTail
+            stringToGlyph headOfTail
     in
         "🂠" ++ dealerCards
 
@@ -143,8 +143,8 @@ dealDealerStand dealerHand deck standunder =
     dealN dealerHand deck standunder
 
 
-cardStringToGlyph : String -> String
-cardStringToGlyph string =
+stringToGlyph : String -> String
+stringToGlyph string =
     case string of
         "Ace Spades" ->
             "🂡"

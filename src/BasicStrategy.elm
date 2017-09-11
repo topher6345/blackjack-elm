@@ -158,17 +158,17 @@ basicStrategy playerHand dealerHand =
     let
         -- Multiple call sites in table
         playerScore =
-            Score.makeScoreFromHand playerHand
+            Score.fromHand playerHand
 
         -- Multiple call sites in table
         playerHasAce =
             Score.hasAce playerScore && (List.length playerHand < 3)
 
         playerScoreWithoutAce =
-            Score.scoreMinusAce playerHand
+            Score.fromHandMinusAce playerHand
 
         dealerScore =
-            Score.makeScoreFromHand <| Maybe.withDefault [] <| List.tail dealerHand
+            Score.fromHand <| Maybe.withDefault [] <| List.tail dealerHand
 
         playerHandIsPair =
             Score.handIsPair playerHand

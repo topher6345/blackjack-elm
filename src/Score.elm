@@ -3,8 +3,8 @@ module Score
         ( dealStand
         , handIsPair
         , hasAce
-        , makeScoreFromHand
-        , scoreMinusAce
+        , fromHand
+        , fromHandMinusAce
         , Score
         , zero
         )
@@ -121,8 +121,8 @@ makeScore string =
         Score soft hard
 
 
-makeScoreFromHand : List String -> Score
-makeScoreFromHand hand =
+fromHand : List String -> Score
+fromHand hand =
     let
         faces =
             List.map Card.extractFace hand
@@ -169,8 +169,8 @@ handMinusAce cards =
     List.filter notAce (List.map Card.extractFace cards)
 
 
-scoreMinusAce : List String -> number
-scoreMinusAce cards =
+fromHandMinusAce : List String -> number
+fromHandMinusAce cards =
     Maybe.withDefault 0 <| List.head <| List.map scoreHard <| handMinusAce cards
 
 

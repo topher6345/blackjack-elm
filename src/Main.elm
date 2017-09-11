@@ -160,7 +160,7 @@ update msg model =
                         model.deck
 
                 dealerScore =
-                    Score.makeScoreFromHand dealerHand
+                    Score.fromHand dealerHand
 
                 dealerState =
                     Flash.makeState dealerScore
@@ -186,7 +186,7 @@ update msg model =
                     Card.dealN model.playerHand model.deck 1
 
                 score =
-                    Score.makeScoreFromHand playerHand
+                    Score.fromHand playerHand
             in
                 ( { model
                     | deck = newDeck
@@ -215,7 +215,7 @@ update msg model =
             in
                 ( { model
                     | dealerHand = dealerHand
-                    , dealerScore = Score.makeScoreFromHand dealerHand
+                    , dealerScore = Score.fromHand dealerHand
                     , dealerState = Flash.makeStateFromHand dealerHand
                     , deck = newDeck
                     , flash = Flash.shuffleDeckFlash playerHand dealerHand
@@ -224,7 +224,7 @@ update msg model =
                     , playerCanSurrender = not isBlackJack
                     , playerCanNewGame = isBlackJack
                     , playerHand = playerHand
-                    , playerScore = Score.makeScoreFromHand playerHand
+                    , playerScore = Score.fromHand playerHand
                     , playerState = Flash.makeStateFromHand playerHand
                     , round = model.round + 1
                   }

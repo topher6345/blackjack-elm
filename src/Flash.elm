@@ -12,12 +12,7 @@ module Flash
         , standFlash
         )
 
-import Score
-    exposing
-        ( Score
-        , makeScoreFromHand
-        , zero
-        )
+import Score exposing (Score)
 
 
 type ScoreState
@@ -132,9 +127,9 @@ isBlackjack score =
 
 isBlackjackHand : List String -> Bool
 isBlackjackHand hand =
-    isBlackjack <| makeState <| Score.makeScoreFromHand hand
+    isBlackjack <| makeState <| Score.fromHand hand
 
 
 makeStateFromHand : List String -> ScoreState
 makeStateFromHand playerHand =
-    makeState <| makeScoreFromHand playerHand
+    makeState <| Score.fromHand playerHand
