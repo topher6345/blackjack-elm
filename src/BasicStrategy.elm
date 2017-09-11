@@ -110,47 +110,34 @@ blankStyle =
 
 playerScoreAttributes : Int -> List Int -> Attribute a
 playerScoreAttributes score range =
-    case List.member score range of
-        True ->
-            selectedStyle
-
-        False ->
-            blankStyle
+    if List.member score range then
+        selectedStyle
+    else
+        blankStyle
 
 
 dealerScoreAttribute : Int -> Int -> Attribute a
 dealerScoreAttribute score value =
-    case score == value of
-        True ->
-            selectedStyle
-
-        False ->
-            blankStyle
+    if score == value then
+        selectedStyle
+    else
+        blankStyle
 
 
 dealerSoftScoreAttribute : Bool -> Int -> Int -> Attribute a
 dealerSoftScoreAttribute hasAce score value =
-    case hasAce of
-        True ->
-            case score == value of
-                True ->
-                    selectedStyle
-
-                False ->
-                    blankStyle
-
-        False ->
-            blankStyle
+    if (score == value) && hasAce then
+        selectedStyle
+    else
+        blankStyle
 
 
 playerSoftScoreAttribute : Bool -> Int -> List Int -> Attribute msg
 playerSoftScoreAttribute hasAce score range =
-    case hasAce of
-        True ->
-            playerScoreAttributes score range
-
-        False ->
-            blankStyle
+    if hasAce then
+        playerScoreAttributes score range
+    else
+        blankStyle
 
 
 basicStrategy : List String -> List String -> Html msg
