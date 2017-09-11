@@ -158,7 +158,7 @@ basicStrategy playerHand dealerHand =
             Score.fromHand <| Maybe.withDefault [] <| List.tail dealerHand
 
         playerHandIsPair =
-            Score.handIsPair playerHand
+            Score.hasPair playerHand
     in
         table [ attribute "border" "1", attribute "style" "text-align:center; background: white; color: black" ]
             [ tbody []

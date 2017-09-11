@@ -1,7 +1,7 @@
 module Score
     exposing
         ( dealStand
-        , handIsPair
+        , hasPair
         , hasAce
         , fromHand
         , fromHandMinusAce
@@ -192,8 +192,8 @@ isPair xs =
         x == y
 
 
-handIsPair : List String -> Bool
-handIsPair fullCards =
+hasPair : List String -> Bool
+hasPair fullCards =
     if not ((List.length fullCards) == 2) then
         False
     else if isPair <| List.map Card.extractFace fullCards then
