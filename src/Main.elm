@@ -291,13 +291,25 @@ subscriptions model =
 -- VIEW
 
 
+zeroFloor x =
+    if x /= 0 then
+        x - 1
+    else
+        0
+
+
 view : Model -> Html Msg
 view model =
     div [ attribute "style" "display: flex; min-width: 100%; min-height: 100%; font-family: Palatino;" ]
         [ div [ attribute "style" "flex-grow:1; max-width: 20%; min-width: 20%; background: DARKGREEN; color: white" ]
             [ h1 [ attribute "style" "text-align: center;" ] [ text "Game history" ]
             , p []
-                [ text "Total Games: ", text <| toString <| List.length model.history ]
+                [ text "Total Games: "
+                , text <|
+                    toString <|
+                        zeroFloor <|
+                            List.length model.history
+                ]
             , p []
                 [ text "Wins: "
                 , text <| toString <| Statistics.wins model.history
