@@ -11,7 +11,7 @@ import Random
 import Random.Array
 import Card
 import Score exposing (Score)
-import Flash exposing (ScoreState)
+import Flash exposing (ScoreState, PlayerState(Start, Continue, Win, Lose, Tie))
 import BasicStrategy
 import DealerStand
 import Statistics
@@ -34,7 +34,7 @@ type alias Model =
     , dealerState : ScoreState
     , deck : List String
     , deckVisible : Bool
-    , flash : String
+    , flash : PlayerState
     , history : List Game
     , playerCanHit : Bool
     , playerCanNewGame : Bool
@@ -54,7 +54,7 @@ type alias Game =
     , playerHand : List String
     , playerScore : Score
     , round : Int
-    , winner : String
+    , winner : PlayerState
     }
 
 
@@ -81,7 +81,7 @@ init =
       , dealerState = Flash.initState
       , deck = []
       , deckVisible = False
-      , flash = "Welcome to Blackjack - Click NewGame below to start!"
+      , flash = Start "Welcome to Blackjack - Click NewGame below to start!"
       , history = []
       , playerCanHit = False
       , playerCanNewGame = True
@@ -126,7 +126,7 @@ update msg model =
         Surrender ->
             ( { model
                 | dealerHandVisible = True
-                , flash = "You Surrendered!"
+                , flash = Lose "You Surrendered!"
                 , playerCanHit = False
                 , playerCanSurrender = False
                 , playerCanStand = False
@@ -192,7 +192,7 @@ update msg model =
             in
                 ( { model
                     | deck = newDeck
-                    , flash = Flash.hitFlash score model.flash
+                    , flash = Flash.hitFlash score (Flash.toString model.flash)
                     , playerCanHit = Flash.playerCanHit score
                     , playerCanNewGame = not <| Flash.playerCanHit score
                     , playerCanStand = Flash.playerCanHit score
@@ -262,7 +262,7 @@ view model =
         , div [ attribute "style" "flex-grow:1; min-width: 40%; max-width: 40%; padding-left: 10%;" ]
             [ h1 [] [ text "♠️ ♥️ BlackJack ♣️ ♦️" ]
             , div [] [ text ("Round: " ++ (toString model.round)) ]
-            , pre [] [ text model.flash ]
+            , pre [] [ text <| Flash.toString model.flash ]
             , div []
                 [ if model.playerCanNewGame then
                     button [ onClick NewGame ] [ text "NewGame" ]
@@ -330,4 +330,5 @@ showHistory : List Game -> Html msg
 showHistory history =
     ol [ attribute "reversed" "true" ] <|
         List.map (\x -> li [] [ text x ]) <|
-            List.map (\x -> x.winner) history
+            List.map Flash.toString <|
+                List.map (\x -> x.winner) history

@@ -7,18 +7,44 @@ module Flash
         , makeState
         , makeStateFromHand
         , playerCanHit
+        , PlayerState(Start, Continue, Win, Lose, Tie)
         , ScoreState
         , shuffleDeckFlash
         , standFlash
+        , toString
         )
 
 import Score exposing (Score)
 
 
 type ScoreState
-    = Blackjack String
-    | Under String
-    | Bust String
+    = Blackjack
+    | Under
+    | Bust
+
+
+type PlayerState
+    = Start String
+    | Continue
+    | Win String
+    | Lose String
+    | Tie String
+
+
+toString : PlayerState -> String
+toString playerState =
+    case playerState of
+        Win string ->
+            string
+
+        Lose string ->
+            string
+
+        Tie string ->
+            string
+
+        _ ->
+            ""
 
 
 initState : ScoreState
@@ -31,84 +57,84 @@ initFlash =
     "Welcome To BlackJack!"
 
 
-standFlash : Score -> Score -> ScoreState -> String
+standFlash : Score -> Score -> ScoreState -> PlayerState
 standFlash playerScore dealerScore dealerState =
     case dealerState of
-        Blackjack _ ->
-            "Dealer has 21 - Dealer Wins!"
+        Blackjack ->
+            Lose "Dealer has 21 - Dealer Wins!"
 
-        Bust _ ->
-            "Dealer Busts! You Win!"
+        Bust ->
+            Win "Dealer Busts! You Win!"
 
-        Under _ ->
+        Under ->
             maybeDealerWin playerScore dealerScore
 
 
-maybeDealerWin : Score -> Score -> String
+maybeDealerWin : Score -> Score -> PlayerState
 maybeDealerWin playerScore dealerScore =
     if playerScore.hard < 22 then
         if dealerScore.soft > playerScore.hard then
-            "Dealer has a higher hand - You Lose!"
+            Lose "Dealer has a higher hand - You Lose!"
         else if dealerScore.soft == playerScore.hard then
-            "Its a tie!"
+            Tie "Its a tie!"
         else
-            "You have a higher hand - You Win!"
+            Win "You have a higher hand - You Win!"
     else if dealerScore.soft > playerScore.soft then
-        "Dealer has a higher hand - You Lose!"
+        Lose "Dealer has a higher hand - You Lose!"
     else if dealerScore.soft == playerScore.soft then
-        "Its a tie!"
+        Tie "Its a tie!"
     else
-        "You have a higher hand - You Win!"
+        Win "You have a higher hand - You Win!"
 
 
-hitFlash : Score -> String -> String
+hitFlash : Score -> String -> PlayerState
 hitFlash score passthrough =
     case makeState score of
-        Blackjack _ ->
-            "21 - You Win!"
+        Blackjack ->
+            Win "21 - You Win!"
 
-        Under _ ->
-            passthrough
+        Under ->
+            Continue
 
-        Bust _ ->
-            "Bust! - You Lose!"
+        Bust ->
+            Lose "Bust! - You Lose!"
 
 
-shuffleDeckFlash : List String -> List String -> String
+shuffleDeckFlash : List String -> List String -> PlayerState
 shuffleDeckFlash playerHand dealerHand =
     case makeStateFromHand playerHand of
-        Blackjack _ ->
-            "Blackjack on deal! - You Win!"
+        Blackjack ->
+            Win "Blackjack on deal! - You Win!"
 
-        Under _ ->
+        Under ->
             case makeStateFromHand dealerHand of
-                Blackjack _ ->
-                    "Dealer Blackjack on deal! - You Lose!"
+                Blackjack ->
+                    Lose "Dealer Blackjack on deal! - You Lose!"
 
-                Under _ ->
-                    "Welcome To BlackJack!"
+                Under ->
+                    Start "Welcome To BlackJack!"
 
-                Bust _ ->
-                    "Dealer Bust on Deal, this should never happen!"
+                Bust ->
+                    Start "Dealer Bust on Deal, this should never happen!"
 
-        Bust _ ->
-            "Player Bust on Deal, this should never happen!"
+        Bust ->
+            Start "Player Bust on Deal, this should never happen!"
 
 
 makeState : Score -> ScoreState
 makeState { hard, soft } =
     if soft > 21 then
-        Bust ""
+        Bust
     else if soft == 21 || hard == 21 then
-        Blackjack ""
+        Blackjack
     else
-        Under ""
+        Under
 
 
 playerCanHit : Score -> Bool
 playerCanHit score =
     case makeState score of
-        Under _ ->
+        Under ->
             True
 
         _ ->
@@ -118,7 +144,7 @@ playerCanHit score =
 isBlackjack : ScoreState -> Bool
 isBlackjack score =
     case score of
-        Blackjack _ ->
+        Blackjack ->
             True
 
         _ ->

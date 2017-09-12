@@ -1,16 +1,29 @@
 module Statistics exposing (..)
 
+import Flash exposing (PlayerState(Start, Continue, Win, Lose, Tie))
 
-wins : List { a | winner : String } -> Int
+
+isWin : PlayerState -> Bool
+isWin state =
+    case state of
+        Win _ ->
+            True
+
+        _ ->
+            False
+
+
+wins : List { a | winner : PlayerState } -> Int
 wins history =
-    List.length <| List.filter (\x -> String.contains "Win" x) <| List.map (\x -> x.winner) history
+    List.length <| List.filter isWin <| List.map (\x -> x.winner) history
 
 
-winPercentage : List { a | winner : String } -> Float
+winPercentage : List { a | winner : PlayerState } -> Float
 winPercentage history =
     (toFloat <| wins history) / (toFloat <| (List.length history - 1))
 
 
+safeWinPercentage : Float -> String
 safeWinPercentage float =
     if isNaN float then
         ""
