@@ -11,7 +11,7 @@ import Random
 import Random.Array
 import Card
 import Score exposing (Score)
-import Flash exposing (ScoreState, PlayerState(Start, Continue, Win, Lose, Tie))
+import Flash exposing (ScoreState, PlayerState(Start, Continue, Win, Lose, Tie, Surrender))
 import BasicStrategy
 import DealerStand
 import Statistics
@@ -43,7 +43,9 @@ type alias Model =
     , playerHand : List String
     , playerScore : Score
     , playerState : ScoreState
+    , playerPocket : Int
     , round : Int
+    , wager : Int
     }
 
 
@@ -55,6 +57,7 @@ type alias Game =
     , playerScore : Score
     , round : Int
     , winner : PlayerState
+    , pocket : Int
     }
 
 
@@ -66,6 +69,7 @@ gameFromModel model =
     , playerScore = model.playerScore
     , round = model.round
     , winner = model.flash
+    , pocket = model.playerPocket
     }
 
 
@@ -90,7 +94,9 @@ init =
       , playerHand = []
       , playerScore = Score.zero
       , playerState = Flash.initState
+      , playerPocket = 1000
       , round = 0
+      , wager = 10
       }
     , Cmd.none
     )
@@ -102,6 +108,7 @@ type Msg
     | ShuffleDeck (Array.Array String)
     | Stand
     | Surrender
+    | UpdateBet String
     | ToggleShowDealerHand
     | ToggleShowDeck
 
@@ -113,9 +120,32 @@ shuffleDeck =
             Array.fromList Card.initDeck
 
 
+allowedWager : Int -> String -> Int
+allowedWager pocket amount =
+    let
+        wager =
+            Result.withDefault 0 <| String.toInt amount
+    in
+        if wager < pocket then
+            wager
+        else if pocket < 10 then
+            0
+        else if wager < 10 then
+            10
+        else
+            pocket
+
+
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
+        UpdateBet amount ->
+            ( { model
+                | wager = allowedWager model.playerPocket amount
+              }
+            , Cmd.none
+            )
+
         ToggleShowDeck ->
             ( { model
                 | deckVisible = not model.deckVisible
@@ -126,11 +156,12 @@ update msg model =
         Surrender ->
             ( { model
                 | dealerHandVisible = True
-                , flash = Lose "You Surrendered!"
+                , flash = Flash.Surrender "You Surrendered!"
                 , playerCanHit = False
                 , playerCanSurrender = False
                 , playerCanStand = False
                 , playerCanNewGame = True
+                , playerPocket = Flash.disburse (Flash.Surrender "You Surrendered!") model.playerPocket model.wager
               }
             , Cmd.none
             )
@@ -149,6 +180,7 @@ update msg model =
                 , playerCanHit = True
                 , playerCanNewGame = False
                 , playerCanSurrender = True
+                , wager = allowedWager model.playerPocket (toString model.wager)
               }
             , shuffleDeck
             )
@@ -166,6 +198,9 @@ update msg model =
 
                 dealerState =
                     Flash.makeState dealerScore
+
+                flash =
+                    Flash.standFlash model.playerScore dealerScore dealerState
             in
                 ( { model
                     | dealerHand = dealerHand
@@ -178,6 +213,7 @@ update msg model =
                     , playerCanStand = False
                     , playerCanSurrender = False
                     , playerCanNewGame = True
+                    , playerPocket = Flash.disburse flash model.playerPocket model.wager
                   }
                 , Cmd.none
                 )
@@ -189,6 +225,9 @@ update msg model =
 
                 score =
                     Score.fromHand playerHand
+
+                flash =
+                    Flash.hitFlash score (Flash.toString model.flash)
             in
                 ( { model
                     | deck = newDeck
@@ -200,6 +239,7 @@ update msg model =
                     , playerHand = playerHand
                     , playerScore = score
                     , playerState = Flash.makeState score
+                    , playerPocket = Flash.disburse flash model.playerPocket model.wager
                   }
                 , Cmd.none
                 )
@@ -214,6 +254,9 @@ update msg model =
 
                 playerCanHit =
                     Flash.playerCanHit
+
+                flash =
+                    Flash.shuffleDeckFlash playerHand dealerHand
             in
                 ( { model
                     | dealerHand = dealerHand
@@ -229,6 +272,7 @@ update msg model =
                     , playerScore = Score.fromHand playerHand
                     , playerState = Flash.makeStateFromHand playerHand
                     , round = model.round + 1
+                    , playerPocket = Flash.disburse flash model.playerPocket model.wager
                   }
                 , Cmd.none
                 )
@@ -257,18 +301,26 @@ view model =
             , text "   Percentage: "
             , text <| Statistics.safeWinPercentage <| Statistics.winPercentage model.history
             , text " %"
+            , p [] [ text <| "Peak: " ++ (toString <| showPeak model.history) ]
             , showHistory model.history
             ]
         , div [ attribute "style" "flex-grow:1; min-width: 40%; max-width: 40%; padding-left: 10%;" ]
             [ h1 [] [ text "♠️ ♥️ BlackJack ♣️ ♦️" ]
             , div [] [ text ("Round: " ++ (toString model.round)) ]
             , pre [] [ text <| Flash.toString model.flash ]
-            , div []
-                [ if model.playerCanNewGame then
-                    button [ onClick NewGame ] [ text "NewGame" ]
-                  else
-                    button [ onClick NewGame, attribute "disabled" "true" ] [ text "NewGame" ]
-                ]
+            , div [] <|
+                if model.playerCanNewGame then
+                    [ button [ onClick NewGame ] [ text "Deal" ]
+                    , label [] [ text "wager: $ " ]
+                    , input [ type_ "text", onInput UpdateBet, attribute "autofocus" "true", value <| toString model.wager ] []
+                    , label [] [ text " (min $10) " ]
+                    ]
+                else
+                    [ button [ onClick NewGame, attribute "disabled" "true" ] [ text "Deal" ]
+                    , label [] [ text "wager: $ " ]
+                    , input [ type_ "text", attribute "disabled" "true", value <| toString model.wager ] []
+                    , label [] [ text " (min $10) " ]
+                    ]
             , div [ attribute "style" "margin-top: 20px" ]
                 [ if model.playerCanHit then
                     button [ onClick Hit, attribute "style" "background:lime; color:black;" ] [ text "HIT" ]
@@ -284,6 +336,7 @@ view model =
                     button [ onClick Surrender, attribute "disabled" "true" ] [ text "SURRENDER" ]
                 ]
             , h2 [] [ text "Player" ]
+            , div [ attribute "style" "font-size: 102px;" ] [ text <| "💲" ++ (toString model.playerPocket) ]
             , div [ attribute "style" "font-size: 102px;" ] <|
                 List.map text <|
                     Card.showPlayerHand model.playerHand
@@ -326,9 +379,29 @@ view model =
         ]
 
 
+rejectStart : List Game -> List Game
+rejectStart history =
+    let
+        f x =
+            case x.winner of
+                Start _ ->
+                    False
+
+                _ ->
+                    True
+    in
+        List.filter f history
+
+
+showPeak : List Game -> Int
+showPeak history =
+    Maybe.withDefault 0 <| List.maximum <| List.map (\x -> x.pocket) history
+
+
 showHistory : List Game -> Html msg
 showHistory history =
     ol [ attribute "reversed" "true" ] <|
         List.map (\x -> li [] [ text x ]) <|
             List.map Flash.toString <|
-                List.map (\x -> x.winner) history
+                List.map (\x -> x.winner) <|
+                    rejectStart history

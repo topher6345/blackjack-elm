@@ -1,13 +1,14 @@
 module Flash
     exposing
-        ( hitFlash
+        ( disburse
+        , hitFlash
         , initFlash
         , initState
         , isBlackjackHand
         , makeState
         , makeStateFromHand
         , playerCanHit
-        , PlayerState(Start, Continue, Win, Lose, Tie)
+        , PlayerState(Start, Continue, Win, Lose, Tie, Surrender)
         , ScoreState
         , shuffleDeckFlash
         , standFlash
@@ -28,6 +29,7 @@ type PlayerState
     | Continue
     | Win String
     | Lose String
+    | Surrender String
     | Tie String
 
 
@@ -43,8 +45,30 @@ toString playerState =
         Tie string ->
             string
 
+        Surrender string ->
+            string
+
+        Start string ->
+            string
+
         _ ->
             ""
+
+
+disburse : PlayerState -> Int -> Int -> Int
+disburse state pocket wager =
+    case state of
+        Win _ ->
+            pocket + wager
+
+        Lose _ ->
+            pocket - wager
+
+        Surrender _ ->
+            pocket - (round ((toFloat wager) * 0.5))
+
+        _ ->
+            pocket
 
 
 initState : ScoreState
