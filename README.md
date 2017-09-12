@@ -25,8 +25,8 @@ in `src/`
 - [x] Hit
 - [x] Stand
 - [x] Surrender
-- [ ] Statistics
-- [ ] Wager
+- [x] Statistics
+- [x] Wager
 - [ ] Split
 - [ ] Dealer cards dont flip if dealer is dealt a blackjack on the first hand
 - [ ] Double Down
