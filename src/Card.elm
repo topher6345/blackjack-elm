@@ -4,6 +4,7 @@ module Card
         , dealShuffled
         , extractFace
         , initDeck
+        , stringToCard
         , showDealerHand
         , showPlayerHand
         )
@@ -44,6 +45,86 @@ initDeck =
 cardToString : Card -> String
 cardToString card =
     (toString card.face) ++ " " ++ (toString card.suit)
+
+
+stringToCard : String -> Card
+stringToCard string =
+    let
+        words =
+            String.words string
+
+        face =
+            List.head words |> Maybe.withDefault ""
+
+        suit =
+            List.tail words |> Maybe.withDefault [] |> List.head |> Maybe.withDefault ""
+    in
+        { face = stringToFace face, suit = stringToSuit suit }
+
+
+stringToFace : String -> Face
+stringToFace string =
+    case string of
+        "Ace" ->
+            Ace
+
+        "Two" ->
+            Two
+
+        "Three" ->
+            Three
+
+        "Four" ->
+            Four
+
+        "Five" ->
+            Five
+
+        "Six" ->
+            Six
+
+        "Seven" ->
+            Seven
+
+        "Eight" ->
+            Eight
+
+        "Nine" ->
+            Nine
+
+        "Ten" ->
+            Ten
+
+        "Jack" ->
+            Jack
+
+        "Queen" ->
+            Queen
+
+        "King" ->
+            King
+
+        a ->
+            Debug.crash <| "Dont know how to serialize" ++ a ++ " ."
+
+
+stringToSuit : String -> Suit
+stringToSuit string =
+    case string of
+        "Spades" ->
+            Spades
+
+        "Hearts" ->
+            Hearts
+
+        "Diamonds" ->
+            Diamonds
+
+        "Clubs" ->
+            Clubs
+
+        a ->
+            Debug.crash <| "Dont know how to serialize" ++ a ++ " ."
 
 
 flatZip : List Suit -> List Face -> List Card
