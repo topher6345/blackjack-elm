@@ -29,7 +29,7 @@ main =
 
 type alias Model =
     { dealerHand : List String
-    , dealerHandVisible : Bool
+    , cheating : Bool
     , dealerScore : Score
     , deck : List String
     , deckVisible : Bool
@@ -77,7 +77,7 @@ type History
 
 init : ( Model, Cmd Msg )
 init =
-    ( { dealerHandVisible = False
+    ( { cheating = False
       , dealerHand = []
       , dealerScore = Score.zero
       , deck = []
@@ -105,7 +105,7 @@ type Msg
     | Stand
     | Surrender
     | UpdateBet String
-    | ToggleShowDealerHand
+    | Cheat
     | ToggleShowDeck
 
 
@@ -149,7 +149,7 @@ update msg model =
 
         Surrender ->
             ( { model
-                | dealerHandVisible = True
+                | cheating = True
                 , flash = Flash.Surrender "You Surrendered!"
                 , playerCanHit = False
                 , playerCanSurrender = False
@@ -160,16 +160,16 @@ update msg model =
             , Cmd.none
             )
 
-        ToggleShowDealerHand ->
+        Cheat ->
             ( { model
-                | dealerHandVisible = not model.dealerHandVisible
+                | cheating = True
               }
             , Cmd.none
             )
 
         NewGame ->
             ( { model
-                | dealerHandVisible = False
+                | cheating = False
                 , history = (gameFromModel model) :: model.history
                 , playerCanHit = True
                 , playerCanNewGame = False
@@ -195,7 +195,7 @@ update msg model =
             in
                 ( { model
                     | dealerHand = dealerHand
-                    , dealerHandVisible = True
+                    , cheating = True
                     , dealerScore = dealerScore
                     , deck = newDeck
                     , flash = flash
@@ -278,6 +278,7 @@ subscriptions model =
 -- VIEW
 
 
+zeroFloor : Int -> Int
 zeroFloor x =
     if x /= 0 then
         x - 1
@@ -288,7 +289,7 @@ zeroFloor x =
 view : Model -> Html Msg
 view model =
     div [ attribute "style" "display: flex; min-width: 100%; min-height: 100%; font-family: Palatino;" ]
-        [ div [ attribute "style" "flex-grow:1; max-width: 20%; min-width: 20%; background: DARKGREEN; color: white" ]
+        [ div [ attribute "style" "flex-grow:1; max-width: 20%; min-width: 20%; background: DARKGREEN; color: white; padding: 20px" ]
             [ h1 [ attribute "style" "text-align: center;" ] [ text "Game history" ]
             , p []
                 [ text "Total Games: "
@@ -310,7 +311,7 @@ view model =
             , p [] [ text <| "Peak: " ++ (toString <| showPeak model.history) ]
             , showHistory model.history
             ]
-        , div [ attribute "style" "flex-grow:1; min-width: 40%; max-width: 40%; padding-left: 10%;" ]
+        , div [ attribute "style" "flex-grow:1; min-width: 40%; max-width: 40%; padding-left: 5%;" ]
             [ h1 [] [ text "♠️ ♥️ BlackJack ♣️ ♦️" ]
             , div [] [ text ("Round: " ++ (toString model.round)) ]
             , pre [] [ text <| Flash.toString model.flash ]
@@ -345,22 +346,15 @@ view model =
                 List.map text <|
                     Card.showPlayerHand model.playerHand
             , h2 [] [ text "Dealer" ]
-            , button [ onClick ToggleShowDealerHand ] [ text "cheat" ]
+            , button [ onClick Cheat ] [ text "cheat" ]
             , div [ attribute "style" "font-size: 102px;" ] <|
-                if model.dealerHandVisible then
+                if model.cheating then
                     List.map text <|
                         Card.showPlayerHand model.dealerHand
                 else
                     [ text <|
                         Card.showDealerHand model.dealerHand
                     ]
-            , div []
-                [ text <|
-                    if model.dealerHandVisible then
-                        toString model.dealerScore
-                    else
-                        ""
-                ]
             ]
         , div [ attribute "style" " flex-grow:1; background: OLIVE; color: white; padding-left: 20px;" ]
             [ h1 []

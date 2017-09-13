@@ -70,7 +70,7 @@ stand =
 
 hit : Html msg
 hit =
-    td [ attribute "style" "background:lime; color:black" ]
+    td [ attribute "style" "background:lightgreen; color:black" ]
         [ text "H" ]
 
 
@@ -89,13 +89,13 @@ su =
 dh : Html msg
 dh =
     td [ attribute "style" "background:palegreen; color:black" ]
-        [ text "Dh" ]
+        [ text "H" ]
 
 
 ds : Html msg
 ds =
     td [ attribute "style" "background:lightsalmon; color:black" ]
-        [ text "Ds" ]
+        [ text "S" ]
 
 
 selectedStyle : Attribute msg
