@@ -348,7 +348,6 @@ view model =
             , div [ attribute "style" "font-size: 102px;" ] <|
                 List.map text <|
                     Card.showPlayerHand model.playerHand
-            , div [] [ text (toString model.playerScore) ]
             , h2 [] [ text "Dealer" ]
             , button [ onClick ToggleShowDealerHand ] [ text "👀" ]
             , div [ attribute "style" "font-size: 102px;" ] <|
@@ -361,22 +360,11 @@ view model =
                     ]
             , div []
                 [ text <|
-                    toString <|
-                        if model.dealerHandVisible then
-                            toString model.dealerScore
-                        else
-                            ""
+                    if model.dealerHandVisible then
+                        toString model.dealerScore
+                    else
+                        ""
                 ]
-              --, h2 [] [ text "Deck" ]
-              --, button [ onClick ToggleShowDeck ] [ text "🔎" ]
-              --, div []
-              --    [ text <|
-              --        toString <|
-              --            if model.deckVisible then
-              --                model.deck
-              --            else
-              --                []
-              --   ]
             ]
         , div [ attribute "style" " flex-grow:1; background: OLIVE; color: white; padding-left: 20px;" ]
             [ h1 []
