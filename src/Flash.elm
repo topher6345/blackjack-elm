@@ -3,13 +3,10 @@ module Flash
         ( disburse
         , hitFlash
         , initFlash
-        , initState
         , isBlackjackHand
-        , makeState
         , makeStateFromHand
         , playerCanHit
         , PlayerState(Start, Continue, Win, Lose, Tie, Surrender)
-        , ScoreState
         , shuffleDeckFlash
         , standFlash
         , toString
@@ -69,11 +66,6 @@ disburse state pocket wager =
 
         _ ->
             pocket
-
-
-initState : ScoreState
-initState =
-    makeState Score.zero
 
 
 initFlash : String

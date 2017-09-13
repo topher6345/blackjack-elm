@@ -11,7 +11,7 @@ import Random
 import Random.Array
 import Card
 import Score exposing (Score)
-import Flash exposing (ScoreState, PlayerState(Start, Continue, Win, Lose, Tie, Surrender))
+import Flash exposing (PlayerState(Start, Continue, Win, Lose, Tie, Surrender))
 import BasicStrategy
 import DealerStand
 import Statistics
