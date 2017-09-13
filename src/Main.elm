@@ -120,14 +120,12 @@ allowedWager : Int -> String -> Int
 allowedWager pocket amount =
     let
         wager =
-            Result.withDefault 0 <| String.toInt amount
+            Result.withDefault 1 <| String.toInt amount
     in
-        if wager < pocket then
-            wager
-        else if pocket < 10 then
+        if pocket < 10 then
             0
-        else if wager < 10 then
-            10
+        else if wager < pocket then
+            wager
         else
             pocket
 
@@ -321,13 +319,11 @@ view model =
                     [ button [ onClick NewGame ] [ text "Deal" ]
                     , label [] [ text "wager: $ " ]
                     , input [ type_ "text", onInput UpdateBet, attribute "autofocus" "true", value <| toString model.wager ] []
-                    , label [] [ text " (min $10) " ]
                     ]
                 else
                     [ button [ onClick NewGame, attribute "disabled" "true" ] [ text "Deal" ]
                     , label [] [ text "wager: $ " ]
                     , input [ type_ "text", attribute "disabled" "true", value <| toString model.wager ] []
-                    , label [] [ text " (min $10) " ]
                     ]
             , div [ attribute "style" "margin-top: 20px" ]
                 [ if model.playerCanHit then
