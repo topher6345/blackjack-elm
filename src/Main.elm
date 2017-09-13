@@ -31,7 +31,6 @@ type alias Model =
     { dealerHand : List String
     , dealerHandVisible : Bool
     , dealerScore : Score
-    , dealerState : ScoreState
     , deck : List String
     , deckVisible : Bool
     , flash : PlayerState
@@ -42,7 +41,6 @@ type alias Model =
     , playerCanSurrender : Bool
     , playerHand : List String
     , playerScore : Score
-    , playerState : ScoreState
     , playerPocket : Int
     , round : Int
     , wager : Int
@@ -82,7 +80,6 @@ init =
     ( { dealerHandVisible = False
       , dealerHand = []
       , dealerScore = Score.zero
-      , dealerState = Flash.initState
       , deck = []
       , deckVisible = False
       , flash = Start "Welcome to Blackjack - Click NewGame below to start!"
@@ -93,7 +90,6 @@ init =
       , playerCanSurrender = False
       , playerHand = []
       , playerScore = Score.zero
-      , playerState = Flash.initState
       , playerPocket = 1000
       , round = 0
       , wager = 100
@@ -196,19 +192,15 @@ update msg model =
                 dealerScore =
                     Score.fromHand dealerHand
 
-                dealerState =
-                    Flash.makeState dealerScore
-
                 flash =
-                    Flash.standFlash model.playerScore dealerScore dealerState
+                    Flash.standFlash model.playerScore dealerScore
             in
                 ( { model
                     | dealerHand = dealerHand
                     , dealerHandVisible = True
                     , dealerScore = dealerScore
-                    , dealerState = dealerState
                     , deck = newDeck
-                    , flash = Flash.standFlash model.playerScore dealerScore dealerState
+                    , flash = flash
                     , playerCanHit = False
                     , playerCanStand = False
                     , playerCanSurrender = False
@@ -238,7 +230,6 @@ update msg model =
                     , playerCanSurrender = Flash.playerCanHit score
                     , playerHand = playerHand
                     , playerScore = score
-                    , playerState = Flash.makeState score
                     , playerPocket = Flash.disburse flash model.playerPocket model.wager
                   }
                 , Cmd.none
@@ -261,7 +252,6 @@ update msg model =
                 ( { model
                     | dealerHand = dealerHand
                     , dealerScore = Score.fromHand dealerHand
-                    , dealerState = Flash.makeStateFromHand dealerHand
                     , deck = newDeck
                     , flash = Flash.shuffleDeckFlash playerHand dealerHand
                     , playerCanHit = not isBlackJack
@@ -270,7 +260,6 @@ update msg model =
                     , playerCanNewGame = isBlackJack
                     , playerHand = playerHand
                     , playerScore = Score.fromHand playerHand
-                    , playerState = Flash.makeStateFromHand playerHand
                     , round = model.round + 1
                     , playerPocket = Flash.disburse flash model.playerPocket model.wager
                   }

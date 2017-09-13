@@ -81,9 +81,9 @@ initFlash =
     "Welcome To BlackJack!"
 
 
-standFlash : Score -> Score -> ScoreState -> PlayerState
-standFlash playerScore dealerScore dealerState =
-    case dealerState of
+standFlash : Score -> Score -> PlayerState
+standFlash playerScore dealerScore =
+    case makeState dealerScore of
         Blackjack ->
             Lose "❌ Dealer has 21 - Dealer Wins! ❌"
 
