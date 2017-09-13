@@ -345,7 +345,7 @@ view model =
                 List.map text <|
                     Card.showPlayerHand model.playerHand
             , h2 [] [ text "Dealer" ]
-            , button [ onClick ToggleShowDealerHand ] [ text "👀" ]
+            , button [ onClick ToggleShowDealerHand ] [ text "cheat" ]
             , div [ attribute "style" "font-size: 102px;" ] <|
                 if model.dealerHandVisible then
                     List.map text <|
