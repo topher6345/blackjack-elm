@@ -328,11 +328,11 @@ view model =
                     ]
             , div [ attribute "style" "margin-top: 20px" ]
                 [ if model.playerCanHit then
-                    button [ onClick Hit, attribute "style" "background:lime; color:black;" ] [ text "HIT" ]
+                    button [ onClick Hit, attribute "style" "background:lightgreen; color:black;" ] [ text "HIT" ]
                   else
                     button [ onClick Hit, attribute "disabled" "true" ] [ text "HIT" ]
                 , if model.playerCanStand then
-                    button [ onClick Stand, attribute "style" "background:red; color:white" ] [ text "STAND" ]
+                    button [ onClick Stand, attribute "style" "background:lightsalmon; color:black" ] [ text "STAND" ]
                   else
                     button [ onClick Stand, attribute "disabled" "true" ] [ text "STAND" ]
                 , if model.playerCanSurrender then
