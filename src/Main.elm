@@ -12,7 +12,7 @@ import Random.Array
 import Card
 import Score exposing (Score)
 import Flash exposing (PlayerState(Start, Continue, Win, Lose, Tie, Surrender))
-import BasicStrategy
+import BasicStrategyView
 import DealerStand
 import Statistics
 
@@ -372,8 +372,8 @@ view model =
             , button [ onClick ToggleBasicStrategy ] [ text "show/hide" ]
             , if model.basicStrategyVisible then
                 div []
-                    [ BasicStrategy.legend
-                    , BasicStrategy.basicStrategy model.playerHand model.dealerHand
+                    [ BasicStrategyView.legend
+                    , BasicStrategyView.basicStrategy model.playerHand model.dealerHand
                     ]
               else
                 div [] []
