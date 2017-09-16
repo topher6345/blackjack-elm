@@ -28,7 +28,8 @@ main =
 
 
 type alias Model =
-    { dealerHand : List String
+    { basicStrategyVisible : Bool
+    , dealerHand : List String
     , cheating : Bool
     , dealerScore : Score
     , deck : List String
@@ -77,7 +78,8 @@ type History
 
 init : ( Model, Cmd Msg )
 init =
-    ( { cheating = False
+    ( { basicStrategyVisible = False
+      , cheating = False
       , dealerHand = []
       , dealerScore = Score.zero
       , deck = []
@@ -107,6 +109,7 @@ type Msg
     | UpdateBet String
     | Cheat
     | ToggleShowDeck
+    | ToggleBasicStrategy
 
 
 shuffleDeck : Cmd Msg
@@ -136,6 +139,13 @@ update msg model =
         UpdateBet amount ->
             ( { model
                 | wager = allowedWager model.playerPocket amount
+              }
+            , Cmd.none
+            )
+
+        ToggleBasicStrategy ->
+            ( { model
+                | basicStrategyVisible = not model.basicStrategyVisible
               }
             , Cmd.none
             )
@@ -359,8 +369,14 @@ view model =
         , div [ attribute "style" " flex-grow:1; background: OLIVE; color: white; padding-left: 20px;" ]
             [ h1 []
                 [ text "Basic Strategy" ]
-            , BasicStrategy.legend
-            , BasicStrategy.basicStrategy model.playerHand model.dealerHand
+            , button [ onClick ToggleBasicStrategy ] [ text "show/hide" ]
+            , if model.basicStrategyVisible then
+                div []
+                    [ BasicStrategy.legend
+                    , BasicStrategy.basicStrategy model.playerHand model.dealerHand
+                    ]
+              else
+                div [] []
             ]
         ]
 
