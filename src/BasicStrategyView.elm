@@ -7,7 +7,6 @@ module BasicStrategyView
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Score exposing (Score)
-import Array exposing (Array)
 
 
 -- https://mbylstra.github.io/html-to-elm/
@@ -97,49 +96,6 @@ ds : Html msg
 ds =
     td [ attribute "style" "background:lightsalmon; color:black" ]
         [ text "S" ]
-
-
-type Tactic
-    = Stand
-    | Hit
-    | SplitHit
-    | Surrender
-    | DoubleHit
-    | DoubleStand
-
-
-
--- [ Stand, Stand, Stand, Stand, Stand, Hit, Hit, Surrender, Surrender, Surrender ]
-
-
-type alias StrategyRow =
-    Array Tactic
-
-
-type alias StrategyMatrix =
-    Array StrategyRow
-
-
-hard17to20 : StrategyRow
-hard17to20 =
-    Array.fromList [ Stand, Stand, Stand, Stand, Stand, Stand, Stand, Stand, Stand, Stand ]
-
-
-hardMatrix : StrategyMatrix
-hardMatrix =
-    Array.fromList
-        [ Array.fromList [ Stand, Stand, Stand, Stand, Stand, Hit, Hit, Surrender, Surrender, Surrender ]
-        ]
-
-
-getStrategyMatix : Int -> Int -> Array (Array a) -> Maybe a
-getStrategyMatix x y matrix =
-    case Array.get x matrix of
-        Just row ->
-            Array.get y row
-
-        Nothing ->
-            Nothing
 
 
 selectedStyle : Attribute msg
