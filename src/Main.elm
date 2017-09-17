@@ -402,7 +402,7 @@ rejectStart history =
 
 showPeak : List Game -> Int
 showPeak history =
-    Maybe.withDefault 0 <| List.maximum <| List.map (\x -> x.pocket) history
+    Maybe.withDefault 0 <| List.maximum <| List.map .pocket history
 
 
 basicTactic : List String -> List String -> String
@@ -410,7 +410,7 @@ basicTactic playerHand dealerHand =
     toString <|
         BasicStrategy.getHardStrategy
             (Score.fromHand playerHand).hard
-            (Score.fromHand <| List.singleton <| Maybe.withDefault "Joker" <| List.head dealerHand).hard
+            (Score.fromHand <| List.singleton <| Maybe.withDefault "Joker" <| List.head <| List.reverse dealerHand).hard
 
 
 showHistory : List Game -> Html msg
@@ -418,5 +418,5 @@ showHistory history =
     ol [ attribute "reversed" "true" ] <|
         List.map (\x -> li [] [ text x ]) <|
             List.map Flash.toString <|
-                List.map (\x -> x.winner) <|
+                List.map .winner <|
                     rejectStart history
