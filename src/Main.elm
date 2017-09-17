@@ -85,7 +85,7 @@ init =
       , dealerScore = Score.zero
       , deck = []
       , deckVisible = False
-      , flash = Start "Welcome to Blackjack - Click NewGame below to start!"
+      , flash = Start "Welcome to Blackjack - Place a bet and Click Deal below to start!"
       , history = []
       , playerCanHit = False
       , playerCanNewGame = True
@@ -300,7 +300,7 @@ zeroFloor x =
 view : Model -> Html Msg
 view model =
     div [ attribute "style" "display: flex; min-width: 100%; min-height: 100%; font-family: Palatino;" ]
-        [ div [ attribute "style" "flex-grow:1; max-width: 20%; min-width: 20%; background: DARKGREEN; color: white; padding: 20px" ]
+        [ div [ attribute "style" "flex-grow:1; max-width: 20%; min-width: 20%; background: black; color: white; padding: 0 20px" ]
             [ h1 [ attribute "style" "text-align: center;" ] [ text "Game history" ]
             , p []
                 [ text "Total Games: "
@@ -322,19 +322,19 @@ view model =
             , p [] [ text <| "Peak: " ++ (toString <| showPeak model.history) ]
             , showHistory model.history
             ]
-        , div [ attribute "style" "flex-grow:1; min-width: 40%; max-width: 40%; padding-left: 5%;" ]
-            [ h1 [] [ text "♠️ ♥️ BlackJack ♣️ ♦️" ]
-            , div [] [ text ("Round: " ++ (toString model.round)) ]
-            , pre [] [ text <| Flash.toString model.flash ]
+        , div [ attribute "style" "flex-grow:1; min-width: 40%; max-width: 40%; padding: 0 5% 0 5%;" ]
+            [ h1 [ attribute "style" "text-align: center" ] [ text "♠️ ♥️ BlackJack ♣️ ♦️" ]
+            , div [ attribute "style" "font-size: 102px; text-align: center" ] [ text <| "💲" ++ (toString model.playerPocket) ]
+            , hr [] []
             , div [] <|
                 if model.playerCanNewGame then
-                    [ button [ onClick NewGame ] [ text "Deal" ]
-                    , label [] [ text "wager: $ " ]
+                    [ button [ onClick NewGame, attribute "style" "width: 100%; font-size: 35px; font-family: Palatino" ] [ text "Deal" ]
+                    , label [ attribute "style" "font-size: 35px" ] [ text "wager: $ " ]
                     , input [ type_ "text", onInput UpdateBet, attribute "autofocus" "true", value <| toString model.wager ] []
                     ]
                 else
-                    [ button [ onClick NewGame, attribute "disabled" "true" ] [ text "Deal" ]
-                    , label [] [ text "wager: $ " ]
+                    [ button [ onClick NewGame, attribute "style" "width: 100%; font-size: 35px; font-family: Palatino", attribute "disabled" "true" ] [ text "Deal" ]
+                    , label [ attribute "style" "font-size: 35px" ] [ text "wager: $ " ]
                     , input [ type_ "text", attribute "disabled" "true", value <| toString model.wager ] []
                     ]
             , div [ attribute "style" "margin-top: 20px" ]
@@ -352,7 +352,7 @@ view model =
                     button [ onClick Surrender, attribute "disabled" "true" ] [ text "SURRENDER" ]
                 ]
             , h2 [] [ text "Player" ]
-            , div [ attribute "style" "font-size: 102px;" ] [ text <| "💲" ++ (toString model.playerPocket) ]
+            , pre [] [ text <| Flash.toString model.flash ]
             , div [ attribute "style" "font-size: 102px;" ] <|
                 List.map text <|
                     Card.showPlayerHand model.playerHand
@@ -367,8 +367,8 @@ view model =
                         Card.showDealerHand model.dealerHand
                     ]
             ]
-        , div [ attribute "style" " flex-grow:1; background: OLIVE; color: white; padding-left: 20px;" ]
-            [ h1 []
+        , div [ attribute "style" " flex-grow:1; background: black; color: white; padding-left: 20px;" ]
+            [ h1 [ attribute "style" "text-align: center;" ]
                 [ text "Basic Strategy" ]
             , button [ onClick ToggleBasicStrategy ] [ text "show/hide" ]
             , if model.basicStrategyVisible then
