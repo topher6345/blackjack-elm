@@ -291,12 +291,17 @@ subscriptions model =
 -- VIEW
 
 
-zeroFloor : Int -> Int
-zeroFloor x =
-    if x /= 0 then
-        x - 1
-    else
-        0
+totalGames : List a -> String
+totalGames history =
+    let
+        zeroFloor : Int -> Int
+        zeroFloor x =
+            if x /= 0 then
+                x - 1
+            else
+                0
+    in
+        List.length history |> zeroFloor |> toString
 
 
 view : Model -> Html Msg
@@ -306,10 +311,7 @@ view model =
             [ h1 [ attribute "style" "text-align: center;" ] [ text "Game history" ]
             , p []
                 [ text "Total Games: "
-                , text <|
-                    toString <|
-                        zeroFloor <|
-                            List.length model.history
+                , text <| totalGames model.history
                 ]
             , p []
                 [ text "Wins: "
@@ -410,10 +412,18 @@ showPeak history =
 basicTactic : List String -> List String -> String
 basicTactic playerHand dealerHand =
     let
+        hardScore =
+            case dealerHand of
+                [ n, last ] ->
+                    (Score.fromHand [ last ]).hard
+
+                _ ->
+                    0
+
         result =
             BasicStrategy.getHardStrategy
                 (Score.fromHand playerHand).hard
-                (Score.fromHand <| List.singleton <| Maybe.withDefault "Joker" <| List.head <| List.reverse dealerHand).hard
+                hardScore
     in
         case result of
             Just string ->
