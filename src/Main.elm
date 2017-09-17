@@ -407,10 +407,18 @@ showPeak history =
 
 basicTactic : List String -> List String -> String
 basicTactic playerHand dealerHand =
-    toString <|
-        BasicStrategy.getHardStrategy
-            (Score.fromHand playerHand).hard
-            (Score.fromHand <| List.singleton <| Maybe.withDefault "Joker" <| List.head <| List.reverse dealerHand).hard
+    let
+        result =
+            BasicStrategy.getHardStrategy
+                (Score.fromHand playerHand).hard
+                (Score.fromHand <| List.singleton <| Maybe.withDefault "Joker" <| List.head <| List.reverse dealerHand).hard
+    in
+        case result of
+            Just string ->
+                toString string
+
+            Nothing ->
+                ""
 
 
 showHistory : List Game -> Html msg
