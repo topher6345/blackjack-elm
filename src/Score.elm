@@ -138,32 +138,14 @@ fromHandMinusAce cards =
     Maybe.withDefault 0 <| List.head <| List.map scoreHard <| handMinusAce cards
 
 
-isPair : Hand -> Bool
-isPair xs =
-    let
-        safeHead z =
-            Maybe.withDefault "" <| List.head z
-
-        x =
-            safeHead xs
-
-        safeTail z =
-            Maybe.withDefault [] <| List.tail z
-
-        y =
-            safeHead <| safeTail xs
-    in
-        x == y
-
-
 hasPair : Hand -> Bool
-hasPair fullCards =
-    if not ((List.length fullCards) == 2) then
-        False
-    else if isPair <| List.map Card.extractFace fullCards then
-        True
-    else
-        False
+hasPair xs =
+    case List.map Card.extractFace xs of
+        [ a, b ] ->
+            a == b
+
+        _ ->
+            False
 
 
 hasAce : Score -> Bool
