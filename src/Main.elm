@@ -57,6 +57,7 @@ type alias Game =
     , playerScore : Score
     , round : Int
     , winner : PlayerState
+    , winPercentage : String
     , pocket : Int
     }
 
@@ -69,6 +70,7 @@ gameFromModel model =
     , playerScore = model.playerScore
     , round = model.round
     , winner = model.flash
+    , winPercentage = Statistics.safeWinPercentage <| Statistics.winPercentage model.history
     , pocket = model.playerPocket
     }
 
@@ -424,7 +426,5 @@ basicTactic playerHand dealerHand =
 showHistory : List Game -> Html msg
 showHistory history =
     ol [ attribute "reversed" "true" ] <|
-        List.map (\x -> li [] [ text x ]) <|
-            List.map Flash.toString <|
-                List.map .winner <|
-                    rejectStart history
+        List.map (\x -> li [] [ text ((Flash.toString x.winner) ++ "  " ++ (x.winPercentage) ++ "%") ]) <|
+            rejectStart history
