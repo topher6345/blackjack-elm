@@ -12,6 +12,7 @@ import Random.Array
 import Card
 import Score exposing (Score)
 import Flash exposing (PlayerState(Start, Continue, Win, Lose, Tie, Surrender))
+import BasicStrategy
 import BasicStrategyView
 import DealerStand
 import Statistics
@@ -372,7 +373,11 @@ view model =
             , button [ onClick ToggleBasicStrategy ] [ text "show/hide" ]
             , if model.basicStrategyVisible then
                 div []
-                    [ BasicStrategyView.legend
+                    [ div []
+                        [ text <|
+                            basicTactic model.playerHand model.dealerHand
+                        ]
+                    , BasicStrategyView.legend
                     , BasicStrategyView.basicStrategy model.playerHand model.dealerHand
                     ]
               else
@@ -398,6 +403,14 @@ rejectStart history =
 showPeak : List Game -> Int
 showPeak history =
     Maybe.withDefault 0 <| List.maximum <| List.map (\x -> x.pocket) history
+
+
+basicTactic : List String -> List String -> String
+basicTactic playerHand dealerHand =
+    toString <|
+        BasicStrategy.getHardStrategy
+            (Score.fromHand playerHand).hard
+            (Score.fromHand <| List.singleton <| Maybe.withDefault "Joker" <| List.head dealerHand).hard
 
 
 showHistory : List Game -> Html msg

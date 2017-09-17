@@ -24,6 +24,43 @@ type alias StrategyRow =
     }
 
 
+fromStrategyRow : StrategyRow -> Int -> Maybe Tactic
+fromStrategyRow row score =
+    case score of
+        11 ->
+            Just row.iA
+
+        10 ->
+            Just row.i10
+
+        9 ->
+            Just row.i9
+
+        8 ->
+            Just row.i8
+
+        7 ->
+            Just row.i7
+
+        6 ->
+            Just row.i6
+
+        5 ->
+            Just row.i5
+
+        4 ->
+            Just row.i4
+
+        3 ->
+            Just row.i3
+
+        2 ->
+            Just row.i2
+
+        _ ->
+            Nothing
+
+
 type alias HardStrategy =
     { hard17to20 : StrategyRow
     , hard16 : StrategyRow
@@ -60,9 +97,46 @@ type alias PairStrategy =
     }
 
 
-rowToList : StrategyRow -> List Tactic
-rowToList { i2, i3, i4, i5, i6, i7, i8, i9, i10, iA } =
-    [ i2, i3, i4, i5, i6, i7, i8, i9, i10, iA ]
+getHardStrategy : Int -> Int -> Maybe Tactic
+getHardStrategy playerScore dealerScore =
+    case fromHardStrategy hardStrategy playerScore of
+        Just row ->
+            fromStrategyRow row dealerScore
+
+        _ ->
+            Nothing
+
+
+fromHardStrategy : HardStrategy -> Int -> Maybe StrategyRow
+fromHardStrategy table playerScore =
+    case playerScore of
+        16 ->
+            Just table.hard16
+
+        15 ->
+            Just table.hard15
+
+        12 ->
+            Just table.hard12
+
+        11 ->
+            Just table.hard11
+
+        10 ->
+            Just table.hard10
+
+        9 ->
+            Just table.hard10
+
+        score ->
+            if score >= 17 && score <= 20 then
+                Just table.hard17to20
+            else if score >= 13 && score <= 14 then
+                Just table.hard17to20
+            else if score >= 5 && score <= 8 then
+                Just table.hard17to20
+            else
+                Nothing
 
 
 hardStrategy : HardStrategy
