@@ -25,4 +25,10 @@ suite =
             , test "isPair Not Pair" <|
                 \_ -> Score.hasPair [ "Five Hearts", "Ace Spades" ] |> Expect.equal False
             ]
+        , describe "showDealerHand"
+            [ test "showDealerHand Aces" <|
+                \_ -> Card.showDealerHand [ "Ace Hearts", "Ace Spades" ] |> Expect.equal "🂠🂡"
+            , test "showDealerHand empty" <|
+                \_ -> Card.showDealerHand [] |> Expect.equal ""
+            ]
         ]

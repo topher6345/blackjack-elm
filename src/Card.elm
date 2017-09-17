@@ -197,17 +197,12 @@ showPlayerHand hand =
 
 showDealerHand : List String -> String
 showDealerHand hand =
-    let
-        tail =
-            Maybe.withDefault [] <| List.tail hand
+    case hand of
+        _ :: tail ->
+            "🂠" ++ (List.map stringToGlyph tail |> List.foldl (++) "")
 
-        headOfTail =
-            Maybe.withDefault "" <| List.head tail
-
-        dealerCards =
-            stringToGlyph headOfTail
-    in
-        "🂠" ++ dealerCards
+        _ ->
+            ""
 
 
 stringToGlyph : String -> String
