@@ -4,7 +4,6 @@ module Card
         , dealShuffled
         , extractFace
         , initDeck
-        , stringToCard
         , showDealerHand
         , showPlayerHand
         )
@@ -45,21 +44,6 @@ initDeck =
 cardToString : Card -> String
 cardToString card =
     (toString card.face) ++ " " ++ (toString card.suit)
-
-
-stringToCard : String -> Card
-stringToCard string =
-    let
-        words =
-            String.words string
-
-        face =
-            List.head words |> Maybe.withDefault ""
-
-        suit =
-            List.tail words |> Maybe.withDefault [] |> List.head |> Maybe.withDefault ""
-    in
-        { face = stringToFace face, suit = stringToSuit suit }
 
 
 stringToFace : String -> Face
