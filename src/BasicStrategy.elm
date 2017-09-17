@@ -99,7 +99,7 @@ type alias PairStrategy =
 
 getHardStrategy : Int -> Int -> Maybe Tactic
 getHardStrategy playerScore dealerScore =
-    case fromHardStrategy hardStrategy playerScore of
+    case fromHardStrategy playerScore of
         Just row ->
             fromStrategyRow row dealerScore
 
@@ -107,34 +107,34 @@ getHardStrategy playerScore dealerScore =
             Nothing
 
 
-fromHardStrategy : HardStrategy -> Int -> Maybe StrategyRow
-fromHardStrategy table playerScore =
+fromHardStrategy : Int -> Maybe StrategyRow
+fromHardStrategy playerScore =
     case playerScore of
         16 ->
-            Just table.hard16
+            Just hardStrategy.hard16
 
         15 ->
-            Just table.hard15
+            Just hardStrategy.hard15
 
         12 ->
-            Just table.hard12
+            Just hardStrategy.hard12
 
         11 ->
-            Just table.hard11
+            Just hardStrategy.hard11
 
         10 ->
-            Just table.hard10
+            Just hardStrategy.hard10
 
         9 ->
-            Just table.hard10
+            Just hardStrategy.hard9
 
         score ->
             if score >= 17 && score <= 20 then
-                Just table.hard17to20
+                Just hardStrategy.hard17to20
             else if score >= 13 && score <= 14 then
-                Just table.hard17to20
+                Just hardStrategy.hard13to14
             else if score >= 5 && score <= 8 then
-                Just table.hard17to20
+                Just hardStrategy.hard5to8
             else
                 Nothing
 
