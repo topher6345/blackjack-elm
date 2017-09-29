@@ -306,9 +306,9 @@ totalGames history =
 
 view : Model -> Html Msg
 view model =
-    div [ attribute "style" "display: flex; min-width: 100%; min-height: 100%; font-family: Palatino;" ]
-        [ div [ attribute "style" "flex-grow:1; max-width: 20%; min-width: 20%; background: black; color: white; padding: 0 20px" ]
-            [ h1 [ attribute "style" "text-align: center;" ] [ text "Game history" ]
+    div [ attribute "class" "fullscreen" ]
+        [ div [ attribute "class" "history-column" ]
+            [ h1 [] [ text "Game history" ]
             , p []
                 [ text "Total Games: "
                 , text <| totalGames model.history
@@ -326,34 +326,34 @@ view model =
             , p [] [ text <| "Peak: " ++ (toString <| showPeak model.history) ]
             , showHistory model.history
             ]
-        , div [ attribute "style" "flex-grow:1; min-width: 40%; max-width: 40%; padding: 0 5% 0 5%;" ]
-            [ h1 [ attribute "style" "text-align: center" ] [ text "♠️ ♥️ BlackJack ♣️ ♦️" ]
-            , div [ attribute "style" "font-size: 102px; text-align: center" ] [ text <| "💲" ++ (toString model.playerPocket) ]
+        , div [ attribute "class" "play-table-column" ]
+            [ h1 [] [ text "♠️ ♥️ BlackJack ♣️ ♦️" ]
+            , div [ attribute "class" "player-pocket" ] [ text <| "💲" ++ (toString model.playerPocket) ]
             , hr [] []
-            , div [] <|
+            , div [ attribute "class" "new-game" ] <|
                 if model.playerCanNewGame then
-                    [ button [ onClick NewGame, attribute "style" "width: 100%; font-size: 35px; font-family: Palatino" ] [ text "Deal" ]
-                    , label [ attribute "style" "font-size: 35px" ] [ text "wager: $ " ]
+                    [ button [ onClick NewGame ] [ text "Deal" ]
+                    , label [] [ text "wager: $ " ]
                     , input [ type_ "text", onInput UpdateBet, attribute "autofocus" "true", value <| toString model.wager ] []
                     ]
                 else
-                    [ button [ onClick NewGame, attribute "style" "width: 100%; font-size: 35px; font-family: Palatino", attribute "disabled" "true" ] [ text "Deal" ]
-                    , label [ attribute "style" "font-size: 35px" ] [ text "wager: $ " ]
+                    [ button [ onClick NewGame, attribute "disabled" "true" ] [ text "Deal" ]
+                    , label [] [ text "wager: $ " ]
                     , input [ type_ "text", attribute "disabled" "true", value <| toString model.wager ] []
                     ]
-            , div [ attribute "style" "margin-top: 20px" ]
+            , div [ attribute "class" "action-buttons" ]
                 [ if model.playerCanHit then
-                    button [ onClick Hit, attribute "style" "background:lightgreen; color:black;" ] [ text "HIT" ]
+                    button [ onClick Hit, attribute "class" "hit-button" ] [ text "HIT" ]
                   else
-                    button [ onClick Hit, attribute "disabled" "true" ] [ text "HIT" ]
+                    button [ onClick Hit, attribute "class" "hit-button", attribute "disabled" "true" ] [ text "HIT" ]
                 , if model.playerCanStand then
-                    button [ onClick Stand, attribute "style" "background:lightsalmon; color:black" ] [ text "STAND" ]
+                    button [ onClick Stand, attribute "class" "stand-button" ] [ text "STAND" ]
                   else
-                    button [ onClick Stand, attribute "disabled" "true" ] [ text "STAND" ]
+                    button [ onClick Stand, attribute "class" "stand-button", attribute "disabled" "true" ] [ text "STAND" ]
                 , if model.playerCanSurrender then
-                    button [ onClick Surrender, attribute "style" "background:white; color:black" ] [ text "SURRENDER" ]
+                    button [ onClick Surrender, attribute "class" "surrender-button" ] [ text "SURRENDER" ]
                   else
-                    button [ onClick Surrender, attribute "disabled" "true" ] [ text "SURRENDER" ]
+                    button [ onClick Surrender, attribute "class" "surrender-button", attribute "disabled" "true" ] [ text "SURRENDER" ]
                 ]
             , h2 [] [ text "Player" ]
             , pre [] [ text <| Flash.toString model.flash ]
@@ -371,8 +371,8 @@ view model =
                         Card.showDealerHand model.dealerHand
                     ]
             ]
-        , div [ attribute "style" " flex-grow:1; background: black; color: white; padding-left: 20px;" ]
-            [ h1 [ attribute "style" "text-align: center;" ]
+        , div [ attribute "class" "strategy-column" ]
+            [ h1 []
                 [ text "Basic Strategy" ]
             , button [ onClick ToggleBasicStrategy ] [ text "show/hide" ]
             , if model.basicStrategyVisible then

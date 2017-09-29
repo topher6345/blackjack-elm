@@ -4,9 +4,83 @@
     <meta charset="UTF-8">
     <title>Simple Blackjack in Elm</title>
     <script type="text/javascript" src="elm.js"></script>
+    <style>
+      html{
+        height: 100%;
+      }
+
+      body {
+        margin: 0px;
+      }
+
+      .fullscreen {
+        display: flex;
+        min-width: 100%;
+        min-height: 100vh;
+        font-family: Palatino;
+      }
+
+      .history-column {
+        flex-grow: 1;
+        max-width: 20%;
+        min-width: 20%;
+        background: black;
+        color: white;
+        padding: 0 20px;
+      }
+
+      h1 {
+        text-align: center
+      }
+
+      .play-table-column {
+        flex-grow: 1;
+        min-width: 40%;
+        max-width: 40%;
+        padding: 0 5% 0 5%;
+      }
+
+      .play-table-column > .player-pocket {
+        font-size: 102px;
+        text-align: center;
+      }
+
+      .new-game > button {
+        width: 100%;
+        font-size: 35px;
+        font-family: Palatino;
+      }
+
+      .new-game > label {
+        font-size: 35px;
+      }
+
+      .action-buttons {
+        margin-top: 20px;
+        color:black;
+      }
+
+      .action-buttons > .hit-button {
+        background: lightgreen;
+      }
+
+      .action-buttons > .stand-button {
+        background: lightsalmon;
+      }
+
+      .action-buttons > .surrender-button {
+        background: white;
+      }
+      .strategy-column {
+        flex-grow:1;
+        background: black;
+        color: white;
+        padding-left: 20px;
+      }
+    </style>
   </head>
 
-  <body style="margin: 0px">
+  <body>
     <div id="blackjack"></div>
   </body>
 
