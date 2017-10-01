@@ -77,10 +77,10 @@ standFlash : Score -> Score -> PlayerState
 standFlash playerScore dealerScore =
     case makeState dealerScore of
         Blackjack ->
-            Lose "❌ Dealer has 21 - Dealer Wins! ❌"
+            Lose "❌ - Dealer has 21 - Dealer Wins! - ❌"
 
         Bust ->
-            Win "💰Dealer Busts! You Win!💰"
+            Win "💰 - Dealer Busts! You Win! 💰"
 
         Under ->
             maybeDealerWin playerScore dealerScore
@@ -90,51 +90,51 @@ maybeDealerWin : Score -> Score -> PlayerState
 maybeDealerWin playerScore dealerScore =
     if playerScore.hard < 22 then
         if dealerScore.soft > playerScore.hard then
-            Lose "❌Dealer has a higher hand - You Lose!"
+            Lose "❌ - Dealer has a higher hand - You Lose!"
         else if dealerScore.soft == playerScore.hard then
-            Tie "\x1F937\x200D♂️Its a tie!"
+            Tie "\x1F937\x200D♂️ - Its a tie!"
         else
-            Win "💰You have a higher hand - You Win!"
+            Win "💰 - You have a higher hand - You Win!"
     else if dealerScore.soft > playerScore.soft then
-        Lose "❌Dealer has a higher hand - You Lose!"
+        Lose "❌  - Dealer has a higher hand - You Lose!"
     else if dealerScore.soft == playerScore.soft then
-        Tie "\x1F937\x200D♂️Its a tie!"
+        Tie "\x1F937\x200D♂️ - Its a tie!"
     else
-        Win "💰You have a higher hand - You Win!"
+        Win "💰 - You have a higher hand - You Win!"
 
 
 hitFlash : Score -> String -> PlayerState
 hitFlash score passthrough =
     case makeState score of
         Blackjack ->
-            Win "💰21 - You Win!"
+            Win "💰 - 21 - You Win!"
 
         Under ->
             Continue
 
         Bust ->
-            Lose "❌ Bust! - You Lose!"
+            Lose "❌ - Bust! - You Lose!"
 
 
 shuffleDeckFlash : List String -> List String -> PlayerState
 shuffleDeckFlash playerHand dealerHand =
     case makeStateFromHand playerHand of
         Blackjack ->
-            Win "💰Blackjack on deal! - You Win!"
+            Win "💰 - Blackjack on deal! - You Win!"
 
         Under ->
             case makeStateFromHand dealerHand of
                 Blackjack ->
-                    Lose "❌ Dealer Blackjack on deal! - You Lose!"
+                    Lose "❌ - Dealer Blackjack on deal! - You Lose!"
 
                 Under ->
                     Start "Welcome To BlackJack!"
 
                 Bust ->
-                    Start "\x1F937\x200D♂️Dealer Bust on Deal, this should never happen!"
+                    Start "\x1F937\x200D♂️ - Dealer Bust on Deal, this should never happen!"
 
         Bust ->
-            Start "\x1F937\x200D♂️Player Bust on Deal, this should never happen!"
+            Start "\x1F937\x200D♂️ - Player Bust on Deal, this should never happen!"
 
 
 makeState : Score -> ScoreState

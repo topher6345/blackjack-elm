@@ -328,12 +328,12 @@ view model =
             ]
         , div [ attribute "class" "play-table-column" ]
             [ h1 [] [ text "♠️ ♥️ BlackJack ♣️ ♦️" ]
-            , div [ attribute "class" "player-pocket" ] [ text <| "💲" ++ (toString model.playerPocket) ]
-            , hr [] []
+            , div [ attribute "class" "player-pocket" ] [ text <| "$" ++ (toString model.playerPocket) ]
+            , div [ attribute "class" "flash" ] [ text <| Flash.toString model.flash ]
             , div [ attribute "class" "new-game" ] <|
                 if model.playerCanNewGame then
                     [ button [ onClick NewGame ] [ text "Deal" ]
-                    , label [] [ text "wager: $ " ]
+                    , label [] [ text "Wager: $ " ]
                     , input [ type_ "text", onInput UpdateBet, attribute "autofocus" "true", value <| toString model.wager ] []
                     ]
                 else
@@ -342,21 +342,19 @@ view model =
                     , input [ type_ "text", attribute "disabled" "true", value <| toString model.wager ] []
                     ]
             , div [ attribute "class" "action-buttons" ]
-                [ if model.playerCanHit then
-                    button [ onClick Hit, attribute "class" "hit-button" ] [ text "HIT" ]
-                  else
-                    button [ onClick Hit, attribute "class" "hit-button", attribute "disabled" "true" ] [ text "HIT" ]
-                , if model.playerCanStand then
+                [ if model.playerCanStand then
                     button [ onClick Stand, attribute "class" "stand-button" ] [ text "STAND" ]
                   else
                     button [ onClick Stand, attribute "class" "stand-button", attribute "disabled" "true" ] [ text "STAND" ]
+                , if model.playerCanHit then
+                    button [ onClick Hit, attribute "class" "hit-button" ] [ text "HIT" ]
+                  else
+                    button [ onClick Hit, attribute "class" "hit-button", attribute "disabled" "true" ] [ text "HIT" ]
                 , if model.playerCanSurrender then
                     button [ onClick Surrender, attribute "class" "surrender-button" ] [ text "SURRENDER" ]
                   else
                     button [ onClick Surrender, attribute "class" "surrender-button", attribute "disabled" "true" ] [ text "SURRENDER" ]
                 ]
-            , h2 [] [ text "Player" ]
-            , pre [] [ text <| Flash.toString model.flash ]
             , div [ attribute "style" "font-size: 102px;" ] <|
                 List.map text <|
                     Card.showPlayerHand model.playerHand

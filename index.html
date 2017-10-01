@@ -15,68 +15,126 @@
 
       .fullscreen {
         display: flex;
-        min-width: 100%;
-        min-height: 100vh;
         font-family: Palatino;
+        min-height: 100vh;
+        min-width: 100%;
       }
 
       .history-column {
+        background: black;
+        color: white;
         flex-grow: 1;
         max-width: 20%;
         min-width: 20%;
-        background: black;
-        color: white;
         padding: 0 20px;
       }
 
       h1 {
-        text-align: center
+        text-align: center;
       }
 
       .play-table-column {
+        background-image: url('media/felt.png');
         flex-grow: 1;
-        min-width: 40%;
         max-width: 40%;
+        min-width: 40%;
         padding: 0 5% 0 5%;
+        position: relative;
+        z-index: 2;
       }
+
 
       .play-table-column > .player-pocket {
         font-size: 102px;
         text-align: center;
+        background: white;
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+      }
+
+      .new-game {
+        text-align: center;
       }
 
       .new-game > button {
-        width: 100%;
-        font-size: 35px;
+        background: gold;
         font-family: Palatino;
+        font-size: 35px;
+        border-size: 0;
+        padding: 10px;
+        width: 100%;
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+        margin-bottom: 15px;
+      }
+      .new-game > button:disabled {
+        cursor: not-allowed;
       }
 
       .new-game > label {
         font-size: 35px;
       }
 
+      .new-game > input {
+        font-size: 35px;
+        font-family: Palatino;
+      }
+
+      .new-game > input:disabled {
+        font-size: 35px;
+        font-family: Palatino;
+        cursor: not-allowed;
+        cursor: not-allowed;
+      }
+
       .action-buttons {
-        margin-top: 20px;
         color:black;
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        min-width: 100%;
+      }
+      .action-buttons > button {
+        font-family: Palatino;
+        padding: 10px;
+        font-size: 35px;
+      }
+
+      .action-buttons > button:disabled {
+        cursor: not-allowed;
       }
 
       .action-buttons > .hit-button {
         background: lightgreen;
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
       }
 
       .action-buttons > .stand-button {
         background: lightsalmon;
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
       }
 
       .action-buttons > .surrender-button {
         background: white;
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
       }
+
+      .flash {
+        color: gold;
+        background-color: black;
+        text-align: center;
+        min-height: 1em;
+        max-height: 1em;
+        padding: 15px;
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+      }
+
       .strategy-column {
-        flex-grow:1;
         background: black;
         color: white;
+        flex-grow:1;
         padding-left: 20px;
       }
+
     </style>
   </head>
 
