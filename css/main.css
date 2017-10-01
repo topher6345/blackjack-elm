@@ -1,0 +1,192 @@
+html{
+  height: 100%;
+}
+
+body {
+  margin: 0px;
+}
+
+.fullscreen {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-flow: row wrap;
+  flex-flow: row wrap;
+  font-family: Palatino;
+  min-height: 100vh;
+  min-width: 100%;
+}
+
+  .fullscreen > * {
+    flex: 1 100%;
+    padding: 10px;
+  }
+
+.history-column {
+  background: url("https://www.toptal.com/designers/subtlepatterns/patterns/dark_wood.png");
+  color: white;
+  padding: 0 20px;
+}
+
+h1 {
+  text-align: center;
+}
+
+.play-table-column {
+  background-image: url('media/felt.png');
+  padding: 0 5% 0 5%;
+  position: relative;
+  z-index: 2;
+}
+
+.play-table-column > h1 {
+  width: 500px;
+}
+
+
+.play-table-column > .player-pocket {
+  font-size: 102px;
+  width: 500px;
+  text-align: center;
+  background: white;
+  background: url("https://www.toptal.com/designers/subtlepatterns/patterns/regal.png");
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+.new-game {
+  width: 100%;
+  /*width: 500px;*/
+  /*float: left;*/
+}
+
+.new-game > div {
+  width: 500px;
+  display: flex;
+  margin-bottom: 15px;
+  font-size: 35px;
+  white-space: nowrap;
+}
+
+.new-game  > div > button {
+  background: gold;
+  font-family: Palatino;
+  font-size: 35px;
+  border-size: 0;
+  padding: 10px;
+  width: 100%;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+.new-game > button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.new-game > div > input[type=text] {
+  font-size: 35px;
+  font-family: Palatino;
+  background-color: rgba(255, 255, 255, .75);
+  display: inline-block;
+
+}
+
+.new-game > div > input[type=text]:focus {
+  background-color: white;
+  background-color: rgba(255, 255, 255, .85);
+}
+
+.new-game > div > input[type=text]:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.action-buttons {
+  color:black;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 500px;
+}
+.action-buttons > button {
+  font-family: Palatino;
+  padding: 10px;
+  font-size: 35px;
+  margin: 0 10px 0 10px;
+}
+
+.action-buttons > button:disabled {
+  cursor: not-allowed;
+}
+
+.action-buttons > .hit-button {
+  background: lightgreen;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+.action-buttons > .stand-button {
+  background: lightsalmon;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+.action-buttons > .surrender-button {
+  background: white;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+.flash {
+  color: gold;
+  background-color: black;
+  background: url("https://www.toptal.com/designers/subtlepatterns/patterns/dark_wood.png");
+  font-family: Georgia;
+  letter-spacing: .75px;
+  text-align: center;
+  min-height: 2em;
+  max-height: 2em;
+  width: 470px;
+  padding: 15px;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+.strategy-column {
+  background: url("https://www.toptal.com/designers/subtlepatterns/patterns/dark_wood.png");
+  color: white;
+  flex-grow:1;
+  padding-left: 20px;
+}
+
+.show-cards {
+  width: 100%;
+  text-align: center;
+  table-layout: fixed;
+  width: 500px;
+}
+
+.show-cards > tbody > tr > td {
+  background-color: white;
+  font-size: 125px;
+  max-width: 50%;
+  vertical-align: top;
+  height: 2em;
+
+}
+
+.show-cards > tbody > tr > td {
+
+}
+
+.play-table-column { order: 1; flex:; 1;  }
+.strategy-column { order: 2; }
+.history-column { order: 3; }
+
+@media all and (min-width: 600px) {
+  .history-column, .strategy-column { flex: 1 auto; }
+}
+
+@media all and (min-width: 800px) {
+  .play-table-column    { flex: 3 0px; }
+  .history-column { order: 1; }
+  .play-table-column    { order: 2; }
+  .strategy-column { order: 3; }
+}
