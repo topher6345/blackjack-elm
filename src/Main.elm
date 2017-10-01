@@ -313,14 +313,19 @@ view model =
             , div [ attribute "class" "flash" ] [ text <| Flash.toString model.flash ]
             , div [ attribute "class" "new-game" ] <|
                 if model.playerCanNewGame then
-                    [ button [ onClick NewGame ] [ text "Deal" ]
-                    , label [] [ text "Wager: $ " ]
-                    , input [ type_ "text", onInput UpdateBet, attribute "autofocus" "true", value <| toString model.wager ] []
+                    [ div [] [ button [ onClick NewGame ] [ text "Deal" ] ]
+                    , div []
+                        [ text "wager: $ "
+                        , input [ type_ "text", onInput UpdateBet, attribute "autofocus" "true", value <| toString model.wager ] []
+                        ]
                     ]
                 else
-                    [ button [ onClick NewGame, attribute "disabled" "true" ] [ text "Deal" ]
-                    , label [] [ text "wager: $ " ]
-                    , input [ type_ "text", attribute "disabled" "true", value <| toString model.wager ] []
+                    [ div []
+                        [ button [ onClick NewGame, attribute "disabled" "true" ] [ text "Deal" ] ]
+                    , div []
+                        [ text "wager: $ "
+                        , input [ type_ "text", attribute "disabled" "true", value <| toString model.wager ] []
+                        ]
                     ]
             , div [ attribute "class" "action-buttons" ]
                 [ if model.playerCanStand then

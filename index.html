@@ -48,9 +48,14 @@
         z-index: 2;
       }
 
+      .play-table-column > h1 {
+        width: 500px;
+      }
+
 
       .play-table-column > .player-pocket {
         font-size: 102px;
+        width: 500px;
         text-align: center;
         background: white;
         background: url("https://www.toptal.com/designers/subtlepatterns/patterns/regal.png");
@@ -58,10 +63,20 @@
       }
 
       .new-game {
-        text-align: center;
+        width: 100%;
+        /*width: 500px;*/
+        /*float: left;*/
       }
 
-      .new-game > button {
+      .new-game > div {
+        width: 500px;
+        display: flex;
+        margin-bottom: 15px;
+        font-size: 35px;
+        white-space: nowrap;
+      }
+
+      .new-game  > div > button {
         background: gold;
         font-family: Palatino;
         font-size: 35px;
@@ -69,30 +84,26 @@
         padding: 10px;
         width: 100%;
         box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
-        margin-bottom: 15px;
       }
       .new-game > button:disabled {
         cursor: not-allowed;
         opacity: 0.5;
       }
 
-      .new-game > label {
-        font-size: 35px;
-      }
-
-      .new-game > input[type=text] {
+      .new-game > div > input[type=text] {
         font-size: 35px;
         font-family: Palatino;
-        transition: ease-in-out, width .35s ease-in-out;
         background-color: rgba(255, 255, 255, .75);
+        display: inline-block;
+
       }
 
-      .new-game > input[type=text]:focus {
+      .new-game > div > input[type=text]:focus {
         background-color: white;
         background-color: rgba(255, 255, 255, .85);
       }
 
-      .new-game > input[type=text]:disabled {
+      .new-game > div > input[type=text]:disabled {
         cursor: not-allowed;
         opacity: 0.5;
       }
@@ -103,7 +114,7 @@
         justify-content: center;
         margin-top: 20px;
         margin-bottom: 20px;
-        min-width: 100%;
+        width: 500px;
       }
       .action-buttons > button {
         font-family: Palatino;
@@ -140,6 +151,7 @@
         text-align: center;
         min-height: 2em;
         max-height: 2em;
+        width: 470px;
         padding: 15px;
         box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
       }
@@ -155,6 +167,7 @@
         width: 100%;
         text-align: center;
         table-layout: fixed;
+        width: 500px;
       }
 
       .show-cards > tbody > tr > td {
@@ -170,7 +183,7 @@
 
       }
 
-      .play-table-column { order: 1; }
+      .play-table-column { order: 1; flex:; 1;  }
       .strategy-column { order: 2; }
       .history-column { order: 3; }
 
