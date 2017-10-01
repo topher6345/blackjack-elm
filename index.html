@@ -14,18 +14,26 @@
       }
 
       .fullscreen {
+        display: -webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
         display: flex;
+        -webkit-flex-flow: row wrap;
+        flex-flow: row wrap;
         font-family: Palatino;
         min-height: 100vh;
         min-width: 100%;
       }
 
+        .fullscreen > * {
+          flex: 1 100%;
+          padding: 10px;
+        }
+
       .history-column {
         background: url("https://www.toptal.com/designers/subtlepatterns/patterns/dark_wood.png");
         color: white;
-        flex-grow: 1;
-        max-width: 20%;
-        min-width: 20%;
         padding: 0 20px;
       }
 
@@ -35,9 +43,6 @@
 
       .play-table-column {
         background-image: url('media/felt.png');
-        flex-grow: 1;
-        max-width: 40%;
-        min-width: 40%;
         padding: 0 5% 0 5%;
         position: relative;
         z-index: 2;
@@ -133,8 +138,8 @@
         font-family: Georgia;
         letter-spacing: .75px;
         text-align: center;
-        min-height: 1em;
-        max-height: 1em;
+        min-height: 2em;
+        max-height: 2em;
         padding: 15px;
         box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
       }
@@ -163,6 +168,21 @@
 
       .show-cards > tbody > tr > td {
 
+      }
+
+      .play-table-column { order: 1; }
+      .strategy-column { order: 2; }
+      .history-column { order: 3; }
+
+      @media all and (min-width: 600px) {
+        .history-column, .strategy-column { flex: 1 auto; }
+      }
+
+      @media all and (min-width: 800px) {
+        .play-table-column    { flex: 3 0px; }
+        .history-column { order: 1; }
+        .play-table-column    { order: 2; }
+        .strategy-column { order: 3; }
       }
     </style>
   </head>

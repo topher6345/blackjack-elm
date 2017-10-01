@@ -307,26 +307,7 @@ totalGames history =
 view : Model -> Html Msg
 view model =
     div [ attribute "class" "fullscreen" ]
-        [ div [ attribute "class" "history-column" ]
-            [ h1 [] [ text "Game history" ]
-            , p []
-                [ text "Total Games: "
-                , text <| totalGames model.history
-                ]
-            , p []
-                [ text "Wins: "
-                , text <| toString <| Statistics.wins model.history
-                ]
-            , text "Win Percentage: "
-            , text <| Statistics.safeWinPercentage <| Statistics.winPercentage model.history
-            , if (Statistics.wins model.history) > 0 then
-                text "%"
-              else
-                text ""
-            , p [] [ text <| "Peak: " ++ (toString <| showPeak model.history) ]
-            , showHistory model.history
-            ]
-        , div [ attribute "class" "play-table-column" ]
+        [ div [ attribute "class" "play-table-column" ]
             [ h1 [] [ text "♠️ ♥️ BlackJack ♣️ ♦️" ]
             , div [ attribute "class" "player-pocket" ] [ text <| "$" ++ (toString model.playerPocket) ]
             , div [ attribute "class" "flash" ] [ text <| Flash.toString model.flash ]
@@ -378,6 +359,25 @@ view model =
                         ]
                     ]
                 ]
+            ]
+        , div [ attribute "class" "history-column" ]
+            [ h1 [] [ text "Game history" ]
+            , p []
+                [ text "Total Games: "
+                , text <| totalGames model.history
+                ]
+            , p []
+                [ text "Wins: "
+                , text <| toString <| Statistics.wins model.history
+                ]
+            , text "Win Percentage: "
+            , text <| Statistics.safeWinPercentage <| Statistics.winPercentage model.history
+            , if (Statistics.wins model.history) > 0 then
+                text "%"
+              else
+                text ""
+            , p [] [ text <| "Peak: " ++ (toString <| showPeak model.history) ]
+            , showHistory model.history
             ]
         , div [ attribute "class" "strategy-column" ]
             [ h1 []
