@@ -21,7 +21,7 @@
       }
 
       .history-column {
-        background: url("https://www.toptal.com/designers/subtlepatterns/patterns/tweed.png");
+        background: url("https://www.toptal.com/designers/subtlepatterns/patterns/dark_wood.png");
         color: white;
         flex-grow: 1;
         max-width: 20%;
@@ -48,6 +48,7 @@
         font-size: 102px;
         text-align: center;
         background: white;
+        background: url("https://www.toptal.com/designers/subtlepatterns/patterns/regal.png");
         box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
       }
 
@@ -67,22 +68,28 @@
       }
       .new-game > button:disabled {
         cursor: not-allowed;
+        opacity: 0.5;
       }
 
       .new-game > label {
         font-size: 35px;
       }
 
-      .new-game > input {
+      .new-game > input[type=text] {
         font-size: 35px;
         font-family: Palatino;
+        transition: ease-in-out, width .35s ease-in-out;
+        background-color: rgba(255, 255, 255, .75);
       }
 
-      .new-game > input:disabled {
-        font-size: 35px;
-        font-family: Palatino;
+      .new-game > input[type=text]:focus {
+        background-color: white;
+        background-color: rgba(255, 255, 255, .85);
+      }
+
+      .new-game > input[type=text]:disabled {
         cursor: not-allowed;
-        cursor: not-allowed;
+        opacity: 0.5;
       }
 
       .action-buttons {
@@ -97,6 +104,7 @@
         font-family: Palatino;
         padding: 10px;
         font-size: 35px;
+        margin: 0 10px 0 10px;
       }
 
       .action-buttons > button:disabled {
@@ -121,6 +129,9 @@
       .flash {
         color: gold;
         background-color: black;
+        background: url("https://www.toptal.com/designers/subtlepatterns/patterns/dark_wood.png");
+        font-family: Georgia;
+        letter-spacing: .75px;
         text-align: center;
         min-height: 1em;
         max-height: 1em;
@@ -129,7 +140,7 @@
       }
 
       .strategy-column {
-        background: url("https://www.toptal.com/designers/subtlepatterns/patterns/tweed.png");
+        background: url("https://www.toptal.com/designers/subtlepatterns/patterns/dark_wood.png");
         color: white;
         flex-grow:1;
         padding-left: 20px;
