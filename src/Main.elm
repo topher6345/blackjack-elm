@@ -355,19 +355,21 @@ view model =
                   else
                     button [ onClick Surrender, attribute "class" "surrender-button", attribute "disabled" "true" ] [ text "SURRENDER" ]
                 ]
-            , div [ attribute "style" "font-size: 102px;" ] <|
-                List.map text <|
-                    Card.showPlayerHand model.playerHand
-            , h2 [] [ text "Dealer" ]
-            , button [ onClick Cheat ] [ text "cheat" ]
-            , div [ attribute "style" "font-size: 102px;" ] <|
-                if model.cheating then
+            , div [ attribute "class" "show-cards" ]
+                [ div [ attribute "style" "font-size: 102px;" ] <|
                     List.map text <|
-                        Card.showPlayerHand model.dealerHand
-                else
-                    [ text <|
-                        Card.showDealerHand model.dealerHand
-                    ]
+                        Card.showPlayerHand model.playerHand
+                , h2 [] [ text "Dealer" ]
+                , button [ onClick Cheat ] [ text "cheat" ]
+                , div [ attribute "style" "font-size: 102px;" ] <|
+                    if model.cheating then
+                        List.map text <|
+                            Card.showPlayerHand model.dealerHand
+                    else
+                        [ text <|
+                            Card.showDealerHand model.dealerHand
+                        ]
+                ]
             ]
         , div [ attribute "class" "strategy-column" ]
             [ h1 []
