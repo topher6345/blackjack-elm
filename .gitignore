@@ -3,5 +3,5 @@ elm-stuff
 # elm-repl generated files
 repl-temp-*
 .DS_Store
-elm.js
+js/elm.js
 index.html

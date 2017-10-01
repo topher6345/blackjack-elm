@@ -25,9 +25,11 @@ body {
   }
 
 .history-column {
-  background: url("https://www.toptal.com/designers/subtlepatterns/patterns/dark_wood.png");
+  background: black;
+  background: url("media/dark_wood.png");
   color: white;
   padding: 0 20px;
+  max-width: 362px;
 }
 
 h1 {
@@ -51,7 +53,7 @@ h1 {
   width: 500px;
   text-align: center;
   background: white;
-  background: url("https://www.toptal.com/designers/subtlepatterns/patterns/regal.png");
+  background: url("media/regal.png");
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }
 
@@ -138,7 +140,7 @@ h1 {
 .flash {
   color: gold;
   background-color: black;
-  background: url("https://www.toptal.com/designers/subtlepatterns/patterns/dark_wood.png");
+  background: url("media/dark_wood.png");
   font-family: Georgia;
   letter-spacing: .75px;
   text-align: center;
@@ -150,7 +152,8 @@ h1 {
 }
 
 .strategy-column {
-  background: url("https://www.toptal.com/designers/subtlepatterns/patterns/dark_wood.png");
+  background: black;
+  background: url("media/dark_wood.png");
   color: white;
   flex-grow:1;
   padding-left: 20px;
