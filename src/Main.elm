@@ -377,10 +377,6 @@ view model =
                 ]
             , text "Win Percentage: "
             , text <| Statistics.safeWinPercentage <| Statistics.winPercentage model.history
-            , if (Statistics.wins model.history) > 0 then
-                text "%"
-              else
-                text ""
             , p [] [ text <| "Peak: " ++ (toString <| showPeak model.history) ]
             , showHistory model.history
             ]
@@ -448,6 +444,16 @@ basicTactic playerHand dealerHand =
 
 showHistory : List Game -> Html msg
 showHistory history =
-    ol [ attribute "reversed" "true" ] <|
-        List.map (\x -> li [] [ text ((Flash.toString x.winner) ++ "  " ++ (x.winPercentage) ++ "%") ]) <|
-            rejectStart history
+    let
+        winPercentage x =
+            case String.toFloat x.winPercentage of
+                Ok float ->
+                    x.winPercentage ++ "%"
+
+                Err _ ->
+                    ""
+
+        f x =
+            li [] [ text ((Flash.toString x.winner) ++ "  " ++ (winPercentage x)) ]
+    in
+        ol [ attribute "reversed" "true" ] <| List.map f <| rejectStart history
