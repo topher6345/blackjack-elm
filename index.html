@@ -4,22 +4,39 @@
     <meta charset="UTF-8">
     <title>Simple Blackjack in Elm</title>
     <style>
-      html{
-        height: 100%;
+      button,
+      input { /* 1 */
+        overflow: visible;
+      }
+
+      input { /* 1 */
+        border: 0;
+      }
+
+      html {
+        -ms-text-size-adjust: 100%; /* 2 */
+        -webkit-text-size-adjust: 100%; /* 2 */
         background-color:black;
+        height: 100%;
+        line-height: 1.15; /* 1 */
       }
 
       body {
         margin: 0px;
       }
 
+      h1 {
+        font-size: 2em;
+        margin: 0.67em 0;
+      }
+
       .fullscreen {
-        display: -webkit-box;
+        -webkit-flex-flow: row wrap;
         display: -moz-box;
         display: -ms-flexbox;
+        display: -webkit-box;
         display: -webkit-flex;
         display: flex;
-        -webkit-flex-flow: row wrap;
         flex-flow: row wrap;
         font-family: Palatino;
         min-height: 100vh;
@@ -54,47 +71,52 @@
 
 
       .play-table-column > .player-pocket {
-        font-size: 102px;
-        width: 500px;
-        text-align: center;
         background: white;
         background: url("media/regal.png");
         box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+        font-size: 102px;
+        text-align: center;
+        text-shadow: -1px -1px gold;
+        width: 500px;
       }
 
       .new-game {
         width: 100%;
-        /*width: 500px;*/
-        /*float: left;*/
       }
 
       .new-game > div {
-        width: 500px;
         display: flex;
-        margin-bottom: 15px;
         font-size: 35px;
+        margin-bottom: 15px;
         white-space: nowrap;
+        width: 500px;
       }
 
       .new-game  > div > button {
         background: gold;
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
         font-family: Palatino;
         font-size: 35px;
-        border-size: 0;
         padding: 10px;
         width: 100%;
-        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
       }
-      .new-game > button:disabled {
+      .new-game > div > button:hover {
+        background: 0xffe820;
+        cursor: pointer;
+      }
+
+      .new-game > div > button:disabled {
+        box-shadow: none;
         cursor: not-allowed;
         opacity: 0.5;
       }
 
+
       .new-game > div > input[type=text] {
-        font-size: 35px;
-        font-family: Palatino;
         background-color: rgba(255, 255, 255, .75);
         display: inline-block;
+        font-family: Palatino;
+        font-size: 35px;
 
       }
 
@@ -112,18 +134,23 @@
         color:black;
         display: flex;
         justify-content: center;
-        margin-top: 20px;
         margin-bottom: 20px;
+        margin-top: 20px;
         width: 500px;
       }
       .action-buttons > button {
         font-family: Palatino;
-        padding: 10px;
         font-size: 35px;
         margin: 0 10px 0 10px;
+        padding: 10px;
+      }
+
+      .action-buttons > button:hover {
+        cursor: pointer;
       }
 
       .action-buttons > button:disabled {
+        box-shadow: none;
         cursor: not-allowed;
       }
 
@@ -132,9 +159,17 @@
         box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
       }
 
+      .action-buttons > .hit-button:hover {
+        background: palegreen;
+      }
+
       .action-buttons > .stand-button {
-        background: lightsalmon;
+        background: darksalmon;
         box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+      }
+
+      .action-buttons > .stand-button:hover {
+        background: lightsalmon;
       }
 
       .action-buttons > .surrender-button {
@@ -143,17 +178,17 @@
       }
 
       .flash {
-        color: gold;
         background-color: black;
         background: url("media/dark_wood.png");
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+        color: gold;
         font-family: Georgia;
         letter-spacing: .75px;
-        text-align: center;
-        min-height: 2em;
         max-height: 2em;
-        width: 470px;
+        min-height: 2em;
         padding: 15px;
-        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+        text-align: center;
+        width: 470px;
       }
 
       .strategy-column {
@@ -172,18 +207,19 @@
 
       .show-cards > tbody > tr > td {
         background-color: white;
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
         font-size: 125px;
-        max-width: 50%;
-        vertical-align: top;
         height: 2em;
-
+        max-width: 50%;
+        text-shadow: -1px -1px #EEEEEE;
+        vertical-align: top;
       }
 
-      .show-cards > tbody > tr > td {
-
+      tbody > tr > td:nth-child(2):hover {
+        cursor: pointer;
       }
 
-      .play-table-column { order: 1; flex:; 1;  }
+      .play-table-column { order: 1; flex: 1;  }
       .strategy-column { order: 2; }
       .history-column { order: 3; }
 
@@ -192,9 +228,9 @@
       }
 
       @media all and (min-width: 800px) {
-        .play-table-column    { flex: 3 0px; }
-        .history-column { order: 1; }
-        .play-table-column    { order: 2; }
+        .play-table-column { flex: 3 0px; max-width: 500px; min-width: 500px;}
+        .history-column { order: 1; max-width: 385px; min-width: 385px;}
+        .play-table-column { order: 2; }
         .strategy-column { order: 3; }
       }
     </style>

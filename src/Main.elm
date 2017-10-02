@@ -353,7 +353,7 @@ view model =
                         [ td [] <|
                             List.map text <|
                                 Card.showPlayerHand model.playerHand
-                        , td [ onClick Cheat ] <|
+                        , td [ onClick Cheat, attribute "title" "Click to see dealer's card you cheater!" ] <|
                             if model.cheating then
                                 List.map text <|
                                     Card.showPlayerHand model.dealerHand
