@@ -351,16 +351,13 @@ view model =
                 , tbody []
                     [ tr []
                         [ td [] <|
-                            List.map text <|
+                            makeSpans <|
                                 Card.showPlayerHand model.playerHand
                         , td [ onClick Cheat, attribute "title" "Click to see dealer's card you cheater!" ] <|
                             if model.cheating then
-                                List.map text <|
-                                    Card.showPlayerHand model.dealerHand
+                                makeSpans <| Card.showPlayerHand model.dealerHand
                             else
-                                [ text <|
-                                    Card.showDealerHand model.dealerHand
-                                ]
+                                makeSpans <| Card.showDealerHand model.dealerHand
                         ]
                     ]
                 ]
@@ -397,6 +394,18 @@ view model =
                 div [] []
             ]
         ]
+
+
+makeSpans : List String -> List (Html msg)
+makeSpans hand =
+    let
+        length =
+            List.length hand
+
+        n =
+            toString (100 + (50 - (length * 25)))
+    in
+        List.map (\x -> span [ attribute "style" ("font-size: " ++ n ++ "px;") ] [ text x ]) hand
 
 
 rejectStart : List Game -> List Game

@@ -179,14 +179,14 @@ showPlayerHand hand =
     List.map stringToGlyph hand
 
 
-showDealerHand : List String -> String
+showDealerHand : List String -> List String
 showDealerHand hand =
     case hand of
         _ :: tail ->
-            "🂠" ++ (List.map stringToGlyph tail |> List.foldl (++) "")
+            [ "🂠" ] ++ (List.map stringToGlyph tail)
 
         _ ->
-            ""
+            []
 
 
 stringToGlyph : String -> String
