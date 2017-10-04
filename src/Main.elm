@@ -385,7 +385,8 @@ view model =
                 div []
                     [ div []
                         [ text <|
-                            basicTactic model.playerHand model.dealerHand
+                            "You should "
+                                ++ basicTactic model.playerHand model.dealerHand
                         ]
                     , BasicStrategyView.legend
                     , BasicStrategyView.basicStrategy model.playerHand model.dealerHand
@@ -402,10 +403,13 @@ makeSpans hand =
         length =
             List.length hand
 
-        n =
-            toString (100 + (50 - (length * 25)))
+        size =
+            if length < 4 then
+                toString (100 + (50 - (length * 17)))
+            else
+                "100"
     in
-        List.map (\x -> span [ attribute "style" ("font-size: " ++ n ++ "px;") ] [ text x ]) hand
+        List.map (\x -> span [ attribute "style" ("font-size: " ++ size ++ "px;") ] [ text x ]) hand
 
 
 rejectStart : List Game -> List Game
