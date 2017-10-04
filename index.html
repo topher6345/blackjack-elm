@@ -250,6 +250,9 @@
   </body>
 
   <script type="text/javascript">
+    window.onbeforeunload = function() {
+      return "Your score will be lost";
+    };
     var node = document.getElementById('blackjack');
     var app = Elm.Main.embed(node);
   </script>
