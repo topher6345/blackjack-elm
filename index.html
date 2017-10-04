@@ -162,6 +162,10 @@
         background: palegreen;
       }
 
+      .action-buttons > button:disabled.hit-button:hover {
+        background: lightgreen;
+      }
+
       .action-buttons > .stand-button {
         background: darksalmon;
         box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
@@ -169,6 +173,10 @@
 
       .action-buttons > .stand-button:hover {
         background: lightsalmon;
+      }
+
+      .action-buttons > button:disabled.stand-button:hover {
+        background: darksalmon;
       }
 
       .action-buttons > .surrender-button {
@@ -205,13 +213,15 @@
       }
 
       .show-cards > tbody > tr > td {
-        background-color: white;
-        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
         font-size: 125px;
         height: 2em;
         max-width: 50%;
         text-shadow: -1px -1px #EEEEEE;
         vertical-align: top;
+      }
+
+      .show-cards > tbody > tr > td > span {
+        background-color: white;
       }
 
       tbody > tr > td:nth-child(2):hover {
