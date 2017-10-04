@@ -292,19 +292,6 @@ subscriptions model =
 -- VIEW
 
 
-totalGames : List a -> String
-totalGames history =
-    let
-        zeroFloor : Int -> Int
-        zeroFloor x =
-            if x /= 0 then
-                x - 1
-            else
-                0
-    in
-        List.length history |> zeroFloor |> toString
-
-
 view : Model -> Html Msg
 view model =
     div [ attribute "class" "fullscreen" ]
@@ -355,10 +342,11 @@ view model =
                             makeSpans <|
                                 Card.showPlayerHand model.playerHand
                         , td [ onClick Cheat, attribute "title" "Click to see dealer's card you cheater!" ] <|
-                            if model.cheating then
-                                makeSpans <| Card.showPlayerHand model.dealerHand
-                            else
-                                makeSpans <| Card.showDealerHand model.dealerHand
+                            makeSpans <|
+                                if model.cheating then
+                                    Card.showPlayerHand model.dealerHand
+                                else
+                                    Card.showDealerHand model.dealerHand
                         ]
                     ]
                 ]
@@ -367,7 +355,7 @@ view model =
             [ h1 [] [ text "Game history" ]
             , p []
                 [ text "Total Games: "
-                , text <| totalGames model.history
+                , text <| StrLib.totalGames model.history
                 ]
             , p []
                 [ text "Wins: "
@@ -452,8 +440,8 @@ basicTactic playerHand dealerHand =
                 hardScore
     in
         case result of
-            Just string ->
-                toString string
+            Just tactic ->
+                toString tactic
 
             Nothing ->
                 ""

@@ -1,4 +1,4 @@
-module StrLib exposing (..)
+module StrLib exposing (commaize, totalGames)
 
 
 commaize : String -> String
@@ -17,3 +17,16 @@ commaizeLetters list count =
 
         _ ->
             ""
+
+
+totalGames : List a -> String
+totalGames history =
+    let
+        zeroFloor : Int -> Int
+        zeroFloor x =
+            if x /= 0 then
+                x - 1
+            else
+                0
+    in
+        List.length history |> zeroFloor |> toString
