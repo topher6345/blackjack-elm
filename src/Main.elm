@@ -16,6 +16,7 @@ import BasicStrategy
 import BasicStrategyView
 import DealerStand
 import Statistics
+import StrLib
 
 
 main : Program Never Model Msg
@@ -309,7 +310,7 @@ view model =
     div [ attribute "class" "fullscreen" ]
         [ div [ attribute "class" "play-table-column" ]
             [ h1 [] [ text "♠️ ♥️ BlackJack ♣️ ♦️" ]
-            , div [ attribute "class" "player-pocket" ] [ text <| "$" ++ (toString model.playerPocket) ]
+            , div [ attribute "class" "player-pocket" ] [ text <| "$" ++ (StrLib.commaize <| toString model.playerPocket) ]
             , div [ attribute "class" "flash" ] [ text <| Flash.toString model.flash ]
             , div [ attribute "class" "new-game" ] <|
                 if model.playerCanNewGame then
@@ -408,8 +409,11 @@ makeSpans hand =
                 toString (100 + (50 - (length * 17)))
             else
                 "100"
+
+        spanMaker x =
+            span [ attribute "style" ("font-size: " ++ size ++ "px;") ] [ text x ]
     in
-        List.map (\x -> span [ attribute "style" ("font-size: " ++ size ++ "px;") ] [ text x ]) hand
+        List.map spanMaker hand
 
 
 rejectStart : List Game -> List Game

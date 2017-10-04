@@ -2,6 +2,7 @@ module BlackjackTest exposing (..)
 
 import Card
 import Score
+import StrLib
 import Expect exposing (Expectation)
 import Test exposing (..)
 
@@ -27,8 +28,16 @@ suite =
             ]
         , describe "showDealerHand"
             [ test "showDealerHand Aces" <|
-                \_ -> Card.showDealerHand [ "Ace Hearts", "Ace Spades" ] |> Expect.equal "🂠🂡"
+                \_ -> (Card.showDealerHand [ "Ace Hearts", "Ace Spades" ]) |> Expect.equal [ "🂠", "🂡" ]
             , test "showDealerHand empty" <|
-                \_ -> Card.showDealerHand [] |> Expect.equal ""
+                \_ -> (Card.showDealerHand []) |> Expect.equal []
+            ]
+        , describe "StrLib"
+            [ test "commaize 4 digits" <|
+                \_ -> StrLib.commaize "1234" |> Expect.equal "1,234"
+            , test "commaize 5 digits" <|
+                \_ -> StrLib.commaize "10234" |> Expect.equal "10,234"
+            , test "commaize 3 digits" <|
+                \_ -> StrLib.commaize "123" |> Expect.equal "123"
             ]
         ]
