@@ -288,6 +288,14 @@ subscriptions model =
     Sub.none
 
 
+showHand : (List a -> List String) -> List a -> List String
+showHand f hand =
+    if List.length hand > 0 then
+        f hand
+    else
+        [ "🂠", "🂠" ]
+
+
 
 -- VIEW
 
@@ -340,13 +348,13 @@ view model =
                     [ tr []
                         [ td [] <|
                             makeSpans <|
-                                Card.showPlayerHand model.playerHand
+                                showHand Card.showPlayerHand model.playerHand
                         , td [ onClick Cheat, attribute "title" "Click to see dealer's card you cheater!" ] <|
                             makeSpans <|
                                 if model.cheating then
-                                    Card.showPlayerHand model.dealerHand
+                                    showHand Card.showPlayerHand model.dealerHand
                                 else
-                                    Card.showDealerHand model.dealerHand
+                                    showHand Card.showDealerHand model.dealerHand
                         ]
                     ]
                 ]
