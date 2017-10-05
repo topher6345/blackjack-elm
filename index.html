@@ -43,10 +43,9 @@
         min-width: 100%;
       }
 
-        .fullscreen > * {
-          flex: 1 100%;
-          padding: 10px;
-        }
+      .fullscreen > * {
+        flex: 1 100%;
+      }
 
       .history-column {
         background: url("media/dark_wood.png");
@@ -60,13 +59,15 @@
 
       .play-table-column {
         background-image: url('media/felt.png');
-        padding: 0 5% 0 5%;
+        padding: 0;
         position: relative;
         z-index: 2;
+        width: 100%;
       }
 
       .play-table-column > h1 {
-        width: 500px;
+        /*width: 500px;*/
+        max-width: 100%;
       }
 
 
@@ -74,10 +75,9 @@
         background: white;
         background: url("media/regal.png");
         box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
-        font-size: 102px;
+        font-size: 5em;
         text-align: center;
         text-shadow: -1px -1px gold;
-        width: 500px;
       }
 
       .new-game {
@@ -89,7 +89,6 @@
         font-size: 35px;
         margin-bottom: 15px;
         white-space: nowrap;
-        width: 500px;
       }
 
       .new-game  > div > button {
@@ -105,6 +104,10 @@
         cursor: pointer;
       }
 
+      .new-game > div:nth-child(2) {
+        justify-content: center;
+      }
+
       .new-game > div > button:disabled {
         box-shadow: none;
         cursor: not-allowed;
@@ -117,6 +120,7 @@
         display: inline-block;
         font-family: Palatino;
         font-size: 35px;
+        width: 3em;
       }
 
       .new-game > div > input[type=text]:focus {
@@ -133,15 +137,16 @@
         color:black;
         display: flex;
         justify-content: center;
+        flex-wrap: wrap;
         margin-bottom: 20px;
         margin-top: 20px;
-        width: 500px;
       }
       .action-buttons > button {
         font-family: Palatino;
-        font-size: 35px;
-        margin: 0 10px 0 10px;
-        padding: 10px;
+        font-size: 1.75em;
+        margin: 0.2em;
+        padding: 0.2em;
+        width: 100%;
       }
 
       .action-buttons > button:hover {
@@ -195,7 +200,6 @@
         min-height: 2em;
         padding: 15px;
         text-align: center;
-        width: 470px;
       }
 
       .strategy-column {
@@ -209,7 +213,6 @@
         width: 100%;
         text-align: center;
         table-layout: fixed;
-        width: 500px;
       }
 
       .show-cards > tbody > tr > td {
@@ -227,22 +230,30 @@
         cursor: pointer;
       }
 
-      .play-table-column { order: 1; flex: 1;  }
+      .play-table-column {order: 1; flex: 1; }
       .strategy-column { order: 2; }
       .history-column { order: 3; }
 
-      @media all and (min-width: 600px) {
+      @media all and (min-width: 800px) {
+        .play-table-column {order: 1; flex: 1; min-width: 50%; max-width: 50%; }
+        .strategy-column { order: 2; max-width: 50%;}
+        .history-column { order: 3; max-width: 100%; }
+        .play-table-column {
+          padding: 0 1em 0 1em;
+        }
         .history-column, .strategy-column { flex: 1 auto; }
       }
 
-      @media all and (min-width: 800px) {
-        .play-table-column { flex: 3 0px; max-width: 500px; min-width: 500px;}
-        .history-column { order: 1; max-width: 385px; min-width: 385px;}
+      @media all and (min-width: 1000px) {
+        .history-column { order: 1; min-width: 30%; max-width: 30%;}
         .play-table-column { order: 2; }
-        .strategy-column { order: 3; }
+        .play-table-column { flex: 3 0px; min-width: 35%; max-width: 35%;}
+        .strategy-column { order: 3; max-width: 35%; }
       }
     </style>
     <script type="text/javascript" src="js/elm.js"></script>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+
   </head>
 
   <body>
