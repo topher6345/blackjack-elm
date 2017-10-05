@@ -17,7 +17,7 @@ legend : Html msg
 legend =
     dl []
         [ dd []
-            [ span [ attribute "style" "background:lightsalmon; color:black" ]
+            [ span [ attribute "style" "background: #fe5656; color:black" ]
                 [ b []
                     [ text "S" ]
                 ]
@@ -38,7 +38,7 @@ legend =
           --    , text "= Hit (Double if allowed)"
           --    ]
           --, dd []
-          --    [ span [ attribute "style" "background:lightsalmon; color:black" ]
+          --    [ span [ attribute "style" "background:#fe5656; color:black" ]
           --        [ b []
           --            [ text "Ds" ]
           --        ]
@@ -64,7 +64,7 @@ legend =
 
 stand : Html msg
 stand =
-    td [ attribute "style" "background:lightsalmon; color:black" ]
+    td [ attribute "style" "background:#fe5656; color:black" ]
         [ text "S" ]
 
 
@@ -94,7 +94,7 @@ dh =
 
 ds : Html msg
 ds =
-    td [ attribute "style" "background:lightsalmon; color:black" ]
+    td [ attribute "style" "background:#fe5656; color:black" ]
         [ text "S" ]
 
 
