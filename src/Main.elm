@@ -467,6 +467,6 @@ showHistory history =
                     ""
 
         f x =
-            li [] [ text ((Flash.toString x.winner) ++ "  " ++ (winPercentage x)) ]
+            li [] [ text ((toString x.pocket) ++ "$" ++ " " ++ (Flash.toString x.winner) ++ "  " ++ (winPercentage x)) ]
     in
         ol [ attribute "reversed" "true" ] <| List.map f <| rejectStart history
