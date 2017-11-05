@@ -325,17 +325,17 @@ view model =
                     ]
             , div [ attribute "class" "action-buttons" ]
                 [ if model.playerCanStand then
-                    button [ onClick Stand, attribute "class" "stand-button" ] [ text "STAND" ]
+                    button [ onClick Stand, attribute "class" "stand-button" ] [ text "stand" ]
                   else
-                    button [ onClick Stand, attribute "class" "stand-button", attribute "disabled" "true" ] [ text "STAND" ]
+                    button [ onClick Stand, attribute "class" "stand-button", attribute "disabled" "true" ] [ text "stand" ]
                 , if model.playerCanHit then
-                    button [ onClick Hit, attribute "class" "hit-button" ] [ text "HIT" ]
+                    button [ onClick Hit, attribute "class" "hit-button" ] [ text "hit" ]
                   else
-                    button [ onClick Hit, attribute "class" "hit-button", attribute "disabled" "true" ] [ text "HIT" ]
+                    button [ onClick Hit, attribute "class" "hit-button", attribute "disabled" "true" ] [ text "hit" ]
                 , if model.playerCanSurrender then
-                    button [ onClick Surrender, attribute "class" "surrender-button" ] [ text "SURRENDER" ]
+                    button [ onClick Surrender, attribute "class" "surrender-button" ] [ text "surrender" ]
                   else
-                    button [ onClick Surrender, attribute "class" "surrender-button", attribute "disabled" "true" ] [ text "SURRENDER" ]
+                    button [ onClick Surrender, attribute "class" "surrender-button", attribute "disabled" "true" ] [ text "surrender" ]
                 ]
             , table [ attribute "class" "show-cards" ]
                 [ thead []
