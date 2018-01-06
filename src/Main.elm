@@ -118,16 +118,19 @@ type Msg
 
 shuffleDeck : Cmd Msg
 shuffleDeck =
-    Random.generate ShuffleDeck <|
-        Random.Array.shuffle <|
-            Array.fromList Card.initDeck
+    Card.initDeck
+        |> Array.fromList
+        |> Random.Array.shuffle
+        |> Random.generate ShuffleDeck
 
 
 allowedWager : Int -> String -> Int
 allowedWager pocket amount =
     let
         wager =
-            Result.withDefault 1 <| String.toInt amount
+            amount
+                |> String.toInt
+                |> Result.withDefault 1
     in
         if pocket < 10 then
             0
