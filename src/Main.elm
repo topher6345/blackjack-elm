@@ -41,6 +41,7 @@ type alias Model =
     , playerCanHit : Bool
     , playerCanNewGame : Bool
     , playerCanStand : Bool
+    , playerCanSplit : Bool
     , playerCanSurrender : Bool
     , playerHand : List String
     , playerScore : Score
@@ -92,6 +93,7 @@ init =
       , history = []
       , playerCanHit = False
       , playerCanNewGame = True
+      , playerCanSplit = False
       , playerCanStand = False
       , playerCanSurrender = False
       , playerHand = []
@@ -110,6 +112,7 @@ type Msg
     | ShuffleDeck (Array.Array String)
     | Stand
     | Surrender
+    | Split
     | UpdateBet String
     | Cheat
     | ToggleShowDeck
@@ -190,11 +193,15 @@ update msg model =
                 , history = (gameFromModel model) :: model.history
                 , playerCanHit = True
                 , playerCanNewGame = False
+                , playerCanSplit = Score.hasPair model.playerHand
                 , playerCanSurrender = True
                 , wager = allowedWager model.playerPocket (toString model.wager)
               }
             , shuffleDeck
             )
+
+        Split ->
+            ( model, Cmd.none )
 
         Stand ->
             let
@@ -271,6 +278,7 @@ update msg model =
                     , flash = Flash.shuffleDeckFlash playerHand dealerHand
                     , playerCanHit = not isBlackJack
                     , playerCanStand = not isBlackJack
+                    , playerCanSplit = Score.hasPair model.playerHand
                     , playerCanSurrender = not isBlackJack
                     , playerCanNewGame = isBlackJack
                     , playerHand = playerHand
@@ -330,15 +338,19 @@ view model =
                 [ if model.playerCanStand then
                     button [ onClick Stand, attribute "class" "stand-button" ] [ text "stand" ]
                   else
-                    button [ onClick Stand, attribute "class" "stand-button", attribute "disabled" "true" ] [ text "stand" ]
+                    button [ attribute "class" "stand-button", attribute "disabled" "true" ] [ text "stand" ]
                 , if model.playerCanHit then
                     button [ onClick Hit, attribute "class" "hit-button" ] [ text "hit" ]
                   else
-                    button [ onClick Hit, attribute "class" "hit-button", attribute "disabled" "true" ] [ text "hit" ]
+                    button [ attribute "class" "hit-button", attribute "disabled" "true" ] [ text "hit" ]
+                , if model.playerCanSplit then
+                    button [ onClick Split, attribute "class" "surrender-button" ] [ text "split" ]
+                  else
+                    button [ attribute "class" "surrender-button", attribute "disabled" "true" ] [ text "split" ]
                 , if model.playerCanSurrender then
                     button [ onClick Surrender, attribute "class" "surrender-button" ] [ text "surrender" ]
                   else
-                    button [ onClick Surrender, attribute "class" "surrender-button", attribute "disabled" "true" ] [ text "surrender" ]
+                    button [ attribute "class" "surrender-button", attribute "disabled" "true" ] [ text "surrender" ]
                 ]
             , table [ attribute "class" "show-cards" ]
                 [ thead []
