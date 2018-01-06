@@ -415,20 +415,6 @@ makeSpans hand =
         List.map spanMaker hand
 
 
-rejectStart : List Game -> List Game
-rejectStart history =
-    let
-        f x =
-            case x.winner of
-                Start _ ->
-                    False
-
-                _ ->
-                    True
-    in
-        List.filter f history
-
-
 basicTactic : List String -> List String -> String
 basicTactic playerHand dealerHand =
     let
@@ -467,4 +453,4 @@ showHistory history =
         f x =
             li [] [ text ((toString x.pocket) ++ "$" ++ " " ++ (Flash.toString x.winner) ++ "  " ++ (winPercentage x)) ]
     in
-        ol [ attribute "reversed" "true" ] <| List.map f <| rejectStart history
+        ol [ attribute "reversed" "true" ] <| List.map f <| Statistics.rejectStart history

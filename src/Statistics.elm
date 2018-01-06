@@ -36,3 +36,19 @@ safeWinPercentage float =
 showPeak : List { b | pocket : Int } -> Int
 showPeak history =
     Maybe.withDefault 0 <| List.maximum <| List.map .pocket history
+
+
+rejectStart :
+    List { a | winner : PlayerState }
+    -> List { a | winner : PlayerState }
+rejectStart history =
+    let
+        f x =
+            case x.winner of
+                Start _ ->
+                    False
+
+                _ ->
+                    True
+    in
+        List.filter f history
