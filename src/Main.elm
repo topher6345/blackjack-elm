@@ -374,7 +374,7 @@ view model =
                 ]
             , text "Win Percentage: "
             , text <| Statistics.safeWinPercentage <| Statistics.winPercentage model.history
-            , p [] [ text <| "Peak: " ++ (toString <| showPeak model.history) ]
+            , p [] [ text <| "Peak: " ++ (toString <| Statistics.showPeak model.history) ]
             , showHistory model.history
             ]
         , div [ attribute "class" "strategy-column" ]
@@ -427,11 +427,6 @@ rejectStart history =
                     True
     in
         List.filter f history
-
-
-showPeak : List Game -> Int
-showPeak history =
-    Maybe.withDefault 0 <| List.maximum <| List.map .pocket history
 
 
 basicTactic : List String -> List String -> String

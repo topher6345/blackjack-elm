@@ -31,3 +31,8 @@ safeWinPercentage float =
         ""
     else
         toString <| round (float * 100)
+
+
+showPeak : List { b | pocket : Int } -> Int
+showPeak history =
+    Maybe.withDefault 0 <| List.maximum <| List.map .pocket history
