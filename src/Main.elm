@@ -384,9 +384,7 @@ view model =
             , if model.basicStrategyVisible then
                 div []
                     [ div []
-                        [ text <|
-                            "You should "
-                                ++ basicTactic model.playerHand model.dealerHand
+                        [ text <| basicTactic model.playerHand model.dealerHand
                         ]
                     , BasicStrategyView.legend
                     , BasicStrategyView.basicStrategy model.playerHand model.dealerHand
@@ -417,18 +415,9 @@ makeSpans hand =
 
 basicTactic : List String -> List String -> String
 basicTactic playerHand dealerHand =
-    let
-        result =
-            BasicStrategy.getHardStrategy
-                (Score.fromHandHard playerHand)
-                (Score.hardDealerScore dealerHand)
-    in
-        case result of
-            Just tactic ->
-                toString tactic
-
-            Nothing ->
-                ""
+    BasicStrategy.basicTactic
+        (Score.fromHandHard playerHand)
+        (Score.hardDealerScore dealerHand)
 
 
 gameHistoryOl : List Game -> Html msg
