@@ -1,8 +1,10 @@
 module Score
     exposing
-        ( hasPair
+        ( hardDealerScore
+        , hasPair
         , hasAce
         , fromHand
+        , fromHandHard
         , fromHandMinusAce
         , makeScore
         , Score
@@ -85,6 +87,11 @@ makeScore string =
         Score soft hard
 
 
+fromHandHard : Hand -> Int
+fromHandHard hand =
+    (fromHand hand).hard
+
+
 fromHand : Hand -> Score
 fromHand hand =
     let
@@ -155,3 +162,13 @@ hasPair xs =
 hasAce : Score -> Bool
 hasAce score =
     score.hard /= score.soft
+
+
+hardDealerScore : List String -> Int
+hardDealerScore dealerHand =
+    case dealerHand of
+        [ n, last ] ->
+            (fromHand [ last ]).hard
+
+        _ ->
+            0

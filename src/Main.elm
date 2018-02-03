@@ -375,7 +375,7 @@ view model =
             , text "Win Percentage: "
             , text <| Statistics.safeWinPercentage <| Statistics.winPercentage model.history
             , p [] [ text <| "Peak: " ++ (toString <| Statistics.showPeak model.history) ]
-            , showHistory model.history
+            , gameHistoryOl model.history
             ]
         , div [ attribute "class" "strategy-column" ]
             [ h1 []
@@ -418,18 +418,10 @@ makeSpans hand =
 basicTactic : List String -> List String -> String
 basicTactic playerHand dealerHand =
     let
-        hardScore =
-            case dealerHand of
-                [ n, last ] ->
-                    (Score.fromHand [ last ]).hard
-
-                _ ->
-                    0
-
         result =
             BasicStrategy.getHardStrategy
-                (Score.fromHand playerHand).hard
-                hardScore
+                (Score.fromHandHard playerHand)
+                (Score.hardDealerScore dealerHand)
     in
         case result of
             Just tactic ->
@@ -439,8 +431,8 @@ basicTactic playerHand dealerHand =
                 ""
 
 
-showHistory : List Game -> Html msg
-showHistory history =
+gameHistoryOl : List Game -> Html msg
+gameHistoryOl history =
     let
         makeLi string =
             li [] [ text string ]
