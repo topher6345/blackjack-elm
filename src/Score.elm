@@ -135,7 +135,11 @@ handMinusAce cards =
 
 fromHandMinusAce : Hand -> Int
 fromHandMinusAce cards =
-    Maybe.withDefault 0 <| List.head <| List.map scoreHard <| handMinusAce cards
+    cards
+        |> handMinusAce
+        |> List.map scoreHard
+        |> List.head
+        |> Maybe.withDefault 0
 
 
 hasPair : Hand -> Bool
