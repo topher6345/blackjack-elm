@@ -1,4 +1,11 @@
-module Statistics exposing (..)
+module Statistics
+    exposing
+        ( safeWinPercentage
+        , winPercentage
+        , wins
+        , showPeak
+        , histories
+        )
 
 import Flash exposing (PlayerState(Start, Continue, Win, Lose, Tie))
 
@@ -15,7 +22,9 @@ isWin state =
 
 wins : List { a | winner : PlayerState } -> Int
 wins history =
-    List.length <| List.filter isWin <| List.map (\x -> x.winner) history
+    List.map .winner history
+        |> List.filter isWin
+        |> List.length
 
 
 winPercentage : List { a | winner : PlayerState } -> Float
@@ -35,20 +44,58 @@ safeWinPercentage float =
 
 showPeak : List { b | pocket : Int } -> Int
 showPeak history =
-    Maybe.withDefault 0 <| List.maximum <| List.map .pocket history
+    List.map .pocket history
+        |> List.maximum
+        |> Maybe.withDefault 0
+
+
+isStart : { a | winner : PlayerState } -> Bool
+isStart game =
+    case game.winner of
+        Start _ ->
+            False
+
+        _ ->
+            True
 
 
 rejectStart :
     List { a | winner : PlayerState }
     -> List { a | winner : PlayerState }
 rejectStart history =
-    let
-        f x =
-            case x.winner of
-                Start _ ->
-                    False
+    history |> List.filter isStart
 
-                _ ->
-                    True
-    in
-        List.filter f history
+
+histories :
+    List { b | pocket : a, winPercentage : String, winner : PlayerState }
+    -> List String
+histories history =
+    rejectStart history |> List.map gameLi
+
+
+gameLi :
+    { b
+        | pocket : a
+        , winPercentage : String
+        , winner : PlayerState
+    }
+    -> String
+gameLi game =
+    liText (toString game.pocket)
+        (Flash.toString game.winner)
+        (winPercentageString game.winPercentage)
+
+
+liText : String -> String -> String -> String
+liText pocket winner percentage =
+    " $" ++ pocket ++ " " ++ winner ++ "  " ++ percentage
+
+
+winPercentageString : String -> String
+winPercentageString percentage =
+    case String.toFloat percentage of
+        Ok _ ->
+            percentage ++ "%"
+
+        Err _ ->
+            ""

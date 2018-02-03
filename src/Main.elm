@@ -442,26 +442,9 @@ basicTactic playerHand dealerHand =
 showHistory : List Game -> Html msg
 showHistory history =
     let
-        makeLi game =
-            li [] [ gameLi game |> text ]
+        makeLi string =
+            li [] [ text string ]
     in
-        ol [ attribute "reversed" "true" ] <| List.map makeLi <| Statistics.rejectStart history
-
-
-gameLi : Game -> String
-gameLi game =
-    let
-        winPercentage =
-            case String.toFloat game.winPercentage of
-                Ok _ ->
-                    game.winPercentage ++ "%"
-
-                Err _ ->
-                    ""
-    in
-        liText (toString game.pocket) (Flash.toString game.winner) winPercentage
-
-
-liText : String -> String -> String -> String
-liText pocket winner percentage =
-    " $" ++ pocket ++ " " ++ winner ++ "  " ++ percentage
+        Statistics.histories history
+            |> List.map makeLi
+            |> ol [ attribute "reversed" "true" ]
