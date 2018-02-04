@@ -1,6 +1,7 @@
 module Score
     exposing
-        ( hardDealerScore
+        ( addScores
+        , hardDealerScore
         , hasPair
         , hasAce
         , fromHand
@@ -172,3 +173,8 @@ hardDealerScore dealerHand =
 
         _ ->
             0
+
+
+addScores : Score -> Score -> Score
+addScores x y =
+    { soft = x.soft + y.soft, hard = x.hard + y.hard }
