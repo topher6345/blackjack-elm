@@ -99,18 +99,12 @@ type alias PairStrategy =
 
 basicTactic : Int -> Int -> String
 basicTactic playerScoreHard dealerScoreHard =
-    let
-        result =
-            getHardStrategy
-                playerScoreHard
-                dealerScoreHard
-    in
-        case result of
-            Just tactic ->
-                "You should " ++ toString tactic
+    case getHardStrategy playerScoreHard dealerScoreHard of
+        Just tactic ->
+            "You should " ++ toString tactic
 
-            Nothing ->
-                ""
+        Nothing ->
+            ""
 
 
 getHardStrategy : Int -> Int -> Maybe Tactic

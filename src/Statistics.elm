@@ -67,7 +67,7 @@ rejectStart :
     List { a | winner : PlayerState }
     -> List { a | winner : PlayerState }
 rejectStart history =
-    history |> List.filter isStart
+    List.filter isStart history
 
 
 histories :
