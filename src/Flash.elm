@@ -169,9 +169,9 @@ isBlackjack score =
 
 isBlackjackHand : List String -> Bool
 isBlackjackHand hand =
-    isBlackjack <| makeState <| Score.fromHand hand
+    Score.fromHand hand |> makeState |> isBlackjack
 
 
 makeStateFromHand : List String -> ScoreState
 makeStateFromHand playerHand =
-    makeState <| Score.fromHand playerHand
+    Score.fromHand playerHand |> makeState
