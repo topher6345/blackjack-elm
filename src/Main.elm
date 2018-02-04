@@ -42,6 +42,7 @@ type alias Model =
     , playerCanNewGame : Bool
     , playerCanStand : Bool
     , playerCanSplit : Bool
+    , playerDidSplit : Bool
     , playerCanSurrender : Bool
     , playerHand : List String
     , playerSplitHand : List String
@@ -95,6 +96,7 @@ init =
       , playerCanHit = False
       , playerCanNewGame = True
       , playerCanSplit = False
+      , playerDidSplit = False
       , playerCanStand = False
       , playerCanSurrender = False
       , playerHand = []
@@ -203,11 +205,27 @@ update msg model =
 
         Split ->
             let
-                ( playerHand, newDeck ) =
-                    ( model.playerHand, model.deck )
+                ( playerHand, playerSplitHand ) =
+                    case model.playerHand of
+                        x :: xs ->
+                            ( [ x ], xs )
+
+                        _ ->
+                            ( [], [] )
+
+                ( newPlayerHand, deck ) =
+                    Card.dealN playerHand model.deck 1
+
+                ( newPlayerSplitHand, newDeck ) =
+                    Card.dealN playerSplitHand deck 1
             in
                 ( { model
-                    | playerHand = model.playerHand
+                    | playerHand = newPlayerHand
+                    , playerSplitHand = newPlayerSplitHand
+                    , deck = newDeck
+                    , wager = model.wager * 2
+                    , playerDidSplit = True
+                    , playerCanSplit = False
                   }
                 , Cmd.none
                 )
@@ -380,6 +398,12 @@ view model =
                                 else
                                     showHand Card.showDealerHand model.dealerHand
                         ]
+                    , td [] <|
+                        if model.playerDidSplit then
+                            makeSpans <|
+                                showHand Card.showPlayerHand model.playerSplitHand
+                        else
+                            []
                     ]
                 ]
             ]
