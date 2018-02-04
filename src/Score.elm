@@ -1,13 +1,13 @@
 module Score
     exposing
-        ( addScores
-        , hardDealerScore
+        ( hardDealerScore
         , hasPair
         , hasAce
         , fromHand
         , fromHandHard
         , fromHandMinusAce
         , makeScore
+        , scoresUnderBust
         , Score
         , zero
         )
@@ -178,3 +178,28 @@ hardDealerScore dealerHand =
 addScores : Score -> Score -> Score
 addScores x y =
     { soft = x.soft + y.soft, hard = x.hard + y.hard }
+
+
+under22 : Score -> Bool
+under22 x =
+    x.soft < 22
+
+
+scoresUnderBust : Hand -> List Score
+scoresUnderBust deck =
+    List.map makeScore deck |> scanlScores |> List.filter under22
+
+
+scanlScores : List Score -> List Score
+scanlScores list =
+    let
+        score =
+            { soft = 0, hard = 0 }
+
+        head =
+            List.head list |> Maybe.withDefault score
+
+        tail =
+            List.tail list |> Maybe.withDefault []
+    in
+        List.scanl addScores head tail
