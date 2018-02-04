@@ -1,6 +1,6 @@
 module DealerStand exposing (dealStand)
 
-import Card
+import Card exposing (dealN)
 import Score exposing (Score)
 
 
@@ -24,42 +24,39 @@ dealDealerStand dealerHand deck standunder =
 
 dealerStandHand : Hand -> Hand -> Int
 dealerStandHand dealerHand deck =
-    dealerStandUnder (dealerHand ++ deck)
-        - 2
+    dealerStandUnder (dealerHand ++ deck) - 2
 
 
 dealerStandUnder : Hand -> Int
 dealerStandUnder deck =
-    List.length <| scoresUnderBust deck
+    scoresUnderBust deck |> List.length
+
+
+under22 : Score -> Bool
+under22 x =
+    x.soft < 22
 
 
 scoresUnderBust : Hand -> List Score
 scoresUnderBust deck =
-    let
-        under22 : Score -> Bool
-        under22 x =
-            x.soft < 22
-    in
-        List.filter under22 <| scanlScores <| List.map Score.makeScore deck
+    List.map Score.makeScore deck |> scanlScores |> List.filter under22
+
+
+addScores : Score -> Score -> Score
+addScores x y =
+    { soft = x.soft + y.soft, hard = x.hard + y.hard }
 
 
 scanlScores : List Score -> List Score
 scanlScores list =
     let
-        score : Score
         score =
             { soft = 0, hard = 0 }
 
-        head : Score
         head =
-            Maybe.withDefault score <| List.head list
+            List.head list |> Maybe.withDefault score
 
-        tail : List Score
         tail =
-            Maybe.withDefault [] <| List.tail list
-
-        add : Score -> Score -> Score
-        add x y =
-            { soft = x.soft + y.soft, hard = x.hard + y.hard }
+            List.tail list |> Maybe.withDefault []
     in
-        List.scanl add head tail
+        List.scanl addScores head tail
