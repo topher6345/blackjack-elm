@@ -361,24 +361,33 @@ view model =
                         , input [ type_ "text", attribute "disabled" "true", value <| toString model.wager ] []
                         ]
                     ]
-            , div [ attribute "class" "action-buttons" ]
+            , div [ attribute "class" "action-buttons" ] <|
                 [ if model.playerCanStand then
                     button [ onClick Stand, attribute "class" "stand-button" ] [ text "stand" ]
                   else
                     button [ attribute "class" "stand-button", attribute "disabled" "true" ] [ text "stand" ]
-                , if model.playerCanHit then
-                    button [ onClick Hit, attribute "class" "hit-button" ] [ text "hit" ]
-                  else
-                    button [ attribute "class" "hit-button", attribute "disabled" "true" ] [ text "hit" ]
-                , if model.playerCanSplit then
-                    button [ onClick Split, attribute "class" "surrender-button" ] [ text "split" ]
-                  else
-                    button [ attribute "class" "surrender-button", attribute "disabled" "true" ] [ text "split" ]
-                , if model.playerCanSurrender then
-                    button [ onClick Surrender, attribute "class" "surrender-button" ] [ text "surrender" ]
-                  else
-                    button [ attribute "class" "surrender-button", attribute "disabled" "true" ] [ text "surrender" ]
                 ]
+                    ++ (case ( model.playerCanHit, model.playerDidSplit ) of
+                            ( True, False ) ->
+                                [ button [ onClick Hit, attribute "class" "hit-button" ] [ text "hit" ] ]
+
+                            ( True, True ) ->
+                                [ button [ onClick Hit, attribute "class" "hit-button" ] [ text "hit" ]
+                                , button [ onClick Hit, attribute "class" "hit-button" ] [ text "hit" ]
+                                ]
+
+                            ( False, _ ) ->
+                                [ button [ attribute "class" "hit-button", attribute "disabled" "true" ] [ text "hit" ] ]
+                       )
+                    ++ [ if model.playerCanSplit then
+                            button [ onClick Split, attribute "class" "surrender-button" ] [ text "split" ]
+                         else
+                            button [ attribute "class" "surrender-button", attribute "disabled" "true" ] [ text "split" ]
+                       , if model.playerCanSurrender then
+                            button [ onClick Surrender, attribute "class" "surrender-button" ] [ text "surrender" ]
+                         else
+                            button [ attribute "class" "surrender-button", attribute "disabled" "true" ] [ text "surrender" ]
+                       ]
             , table [ attribute "class" "show-cards" ]
                 [ thead []
                     [ tr []
