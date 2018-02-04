@@ -2,11 +2,15 @@
 
 ## Getting started
 
-You need to have [Elm](http://elm-lang.org/) 0.18 installed on your machine.
+1. You need to have [Elm](http://elm-lang.org/) 0.18 installed on your machine.
 
 Compile this project with:
 
-    elm make src/Main.elm
+    elm make src/Main.elm --output js/elm.js
+
+Run the tests:
+
+    elm test
 
 Then view it:
 
@@ -14,12 +18,14 @@ Then view it:
 
 ## Key Elm Modules and Types
 in `src/`
- * `Main` - Entry Point for Elm App
+ * `BasicStrategy` - [Basic Strategy](https://en.wikipedia.org/wiki/Blackjack#Basic_strategy) Engine
+ * `BasicStrategyView` - Html elements of the Basic Strategy
  * `Card` - Dealing and Card manipulations
- * `Score.Score` - (hard, soft)
- * `Score` - operations over `Score`s
+ * `DealerStand` - Logic for Dealer to stand at 17
  * `Flash` - Status and Results of Game displayed to user
- * `Flash.ScoreState` - Enum of s
+ * `Main` - Entry Point for Elm App
+ * `Score` - operations over `Score`s
+ * `Score.Score` - (hard, soft)
 
 ## TODO
 - [x] Hit
