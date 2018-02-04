@@ -1,32 +1,37 @@
 module StrLib exposing (commaize, totalGames)
 
 
+reverseLetters : String -> List String
+reverseLetters string =
+    String.reverse string |> String.split ""
+
+
 commaize : String -> String
 commaize string =
-    String.reverse <| commaizeLetters (String.split "" (String.reverse string)) 0
+    reverseLetters string |> commaizeLetters 0 |> String.reverse
 
 
-commaizeLetters : List String -> Int -> String
-commaizeLetters list count =
+commaizeLetters : Int -> List String -> String
+commaizeLetters count list =
     case list of
         x :: xs ->
             if (count > 2) && (count % 3 == 0) then
-                "," ++ x ++ commaizeLetters xs (count + 1)
+                "," ++ x ++ commaizeLetters (count + 1) xs
             else
-                x ++ commaizeLetters xs (count + 1)
+                x ++ commaizeLetters (count + 1) xs
 
         _ ->
             ""
 
 
+zeroFloor : Int -> Int
+zeroFloor x =
+    if x /= 0 then
+        x - 1
+    else
+        0
+
+
 totalGames : List a -> String
 totalGames history =
-    let
-        zeroFloor : Int -> Int
-        zeroFloor x =
-            if x /= 0 then
-                x - 1
-            else
-                0
-    in
-        List.length history |> zeroFloor |> toString
+    List.length history |> zeroFloor |> toString
