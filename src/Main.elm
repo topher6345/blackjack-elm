@@ -398,12 +398,14 @@ view model =
                                 else
                                     showHand Card.showDealerHand model.dealerHand
                         ]
-                    , td [] <|
-                        if model.playerDidSplit then
-                            makeSpans <|
-                                showHand Card.showPlayerHand model.playerSplitHand
-                        else
-                            []
+                    , tr []
+                        [ td [] <|
+                            if model.playerDidSplit then
+                                makeSpans <|
+                                    showHand Card.showPlayerHand model.playerSplitHand
+                            else
+                                []
+                        ]
                     ]
                 ]
             ]
