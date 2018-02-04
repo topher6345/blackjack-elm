@@ -1,10 +1,9 @@
 module Statistics
     exposing
-        ( safeWinPercentage
-        , winPercentage
-        , wins
+        ( wins
         , showPeak
         , histories
+        , winPercentageDisplay
         )
 
 import Flash exposing (PlayerState(Start, Continue, Win, Lose, Tie))
@@ -25,6 +24,11 @@ wins history =
     List.map .winner history
         |> List.filter isWin
         |> List.length
+
+
+winPercentageDisplay : List { a | winner : PlayerState } -> String
+winPercentageDisplay history =
+    winPercentage history |> safeWinPercentage
 
 
 winPercentage : List { a | winner : PlayerState } -> Float

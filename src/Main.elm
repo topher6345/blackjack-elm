@@ -71,7 +71,7 @@ gameFromModel model =
     , playerScore = model.playerScore
     , round = model.round
     , winner = model.flash
-    , winPercentage = Statistics.safeWinPercentage <| Statistics.winPercentage model.history
+    , winPercentage = Statistics.winPercentageDisplay model.history
     , pocket = model.playerPocket
     }
 
@@ -373,7 +373,7 @@ view model =
                 , text <| toString <| Statistics.wins model.history
                 ]
             , text "Win Percentage: "
-            , text <| Statistics.safeWinPercentage <| Statistics.winPercentage model.history
+            , text <| Statistics.winPercentageDisplay model.history
             , p [] [ text <| "Peak: " ++ (toString <| Statistics.showPeak model.history) ]
             , gameHistoryOl model.history
             ]
