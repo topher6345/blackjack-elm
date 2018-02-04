@@ -44,6 +44,7 @@ type alias Model =
     , playerCanSplit : Bool
     , playerCanSurrender : Bool
     , playerHand : List String
+    , playerSplitHand : List String
     , playerScore : Score
     , playerPocket : Int
     , round : Int
@@ -97,6 +98,7 @@ init =
       , playerCanStand = False
       , playerCanSurrender = False
       , playerHand = []
+      , playerSplitHand = []
       , playerScore = Score.zero
       , playerPocket = 1000
       , round = 0
@@ -193,7 +195,6 @@ update msg model =
                 , history = (gameFromModel model) :: model.history
                 , playerCanHit = True
                 , playerCanNewGame = False
-                , playerCanSplit = Score.hasPair model.playerHand
                 , playerCanSurrender = True
                 , wager = allowedWager model.playerPocket (toString model.wager)
               }
@@ -201,7 +202,15 @@ update msg model =
             )
 
         Split ->
-            ( model, Cmd.none )
+            let
+                ( playerHand, newDeck ) =
+                    ( model.playerHand, model.deck )
+            in
+                ( { model
+                    | playerHand = model.playerHand
+                  }
+                , Cmd.none
+                )
 
         Stand ->
             let
@@ -278,7 +287,7 @@ update msg model =
                     , flash = Flash.shuffleDeckFlash playerHand dealerHand
                     , playerCanHit = not isBlackJack
                     , playerCanStand = not isBlackJack
-                    , playerCanSplit = Score.hasPair model.playerHand
+                    , playerCanSplit = Score.hasPair playerHand
                     , playerCanSurrender = not isBlackJack
                     , playerCanNewGame = isBlackJack
                     , playerHand = playerHand
