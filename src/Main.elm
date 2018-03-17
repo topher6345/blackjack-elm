@@ -17,6 +17,7 @@ import BasicStrategyView
 import DealerStand
 import Statistics
 import StrLib
+import Task
 
 
 main : Program Never Model Msg
@@ -112,6 +113,7 @@ init =
 
 type Msg
     = Hit
+    | HitSplit
     | NewGame
     | ShuffleDeck (Array.Array String)
     | Stand
@@ -129,6 +131,11 @@ shuffleDeck =
         |> Array.fromList
         |> Random.Array.shuffle
         |> Random.generate ShuffleDeck
+
+
+unshuffleDeck : Cmd Msg
+unshuffleDeck =
+    Task.succeed (ShuffleDeck (Array.fromList Card.initDeck)) |> Task.perform identity
 
 
 allowedWager : Int -> String -> Int
@@ -284,6 +291,9 @@ update msg model =
                 , Cmd.none
                 )
 
+        HitSplit ->
+            ( model, Cmd.none )
+
         ShuffleDeck cards ->
             let
                 ( newDeck, dealerHand, playerHand ) =
@@ -372,8 +382,8 @@ view model =
                                 [ button [ onClick Hit, attribute "class" "hit-button" ] [ text "hit" ] ]
 
                             ( True, True ) ->
-                                [ button [ onClick Hit, attribute "class" "hit-button" ] [ text "hit" ]
-                                , button [ onClick Hit, attribute "class" "hit-button" ] [ text "hit" ]
+                                [ button [ onClick Hit, attribute "class" "hit-button" ] [ text "hit top" ]
+                                , button [ onClick HitSplit, attribute "class" "hit-button" ] [ text "hit bottom" ]
                                 ]
 
                             ( False, _ ) ->

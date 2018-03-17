@@ -21,6 +21,10 @@ suite =
         , describe "isPair"
             [ test "isPair Aces" <|
                 \_ -> Score.hasPair [ "Ace Hearts", "Ace Spades" ] |> Expect.equal True
+            , test "isPair Eights" <|
+                \_ -> Score.hasPair [ "Eight Spades", "Eight Diamonds" ] |> Expect.equal True
+            , test "isPair Threes" <|
+                \_ -> Score.hasPair [ "Three Clubs", "Three Hearts" ] |> Expect.equal True
             , test "isPair Three Cards" <|
                 \_ -> Score.hasPair [ "Ace Hearts", "Ace Spades", "Ace Diamonds" ] |> Expect.equal False
             , test "isPair Not Pair" <|
