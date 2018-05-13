@@ -48,6 +48,7 @@ type alias Model =
     , playerHand : List String
     , playerSplitHand : List String
     , playerScore : Score
+    , playerSplitScore : Score
     , playerPocket : Int
     , round : Int
     , wager : Int
@@ -103,6 +104,7 @@ init =
       , playerHand = []
       , playerSplitHand = []
       , playerScore = Score.zero
+      , playerSplitScore = Score.zero
       , playerPocket = 1000
       , round = 0
       , wager = 100
@@ -204,6 +206,7 @@ update msg model =
                 , history = (gameFromModel model) :: model.history
                 , playerCanHit = True
                 , playerCanNewGame = False
+                , playerDidSplit = False
                 , playerCanSurrender = True
                 , wager = allowedWager model.playerPocket (toString model.wager)
               }
@@ -292,7 +295,30 @@ update msg model =
                 )
 
         HitSplit ->
-            ( model, Cmd.none )
+            let
+                ( playerHand, newDeck ) =
+                    Card.dealN model.playerHand model.deck 1
+
+                score =
+                    Score.fromHand playerHand
+
+                flash =
+                    Flash.hitFlash score (Flash.toString model.flash)
+            in
+                ( { model
+                    | deck = newDeck
+                    , flash = Flash.hitFlash score (Flash.toString model.flash)
+                    , playerCanHit = Flash.playerCanHit score
+                    , playerCanNewGame = not <| Flash.playerCanHit score
+                    , playerCanStand = Flash.playerCanHit score
+                    , playerCanSurrender = Flash.playerCanHit score
+                    , playerSplitHand = playerHand
+                    , playerScore = Score.fromHand playerHand
+                    , playerSplitScore = score
+                    , playerPocket = Flash.disburse flash model.playerPocket model.wager
+                  }
+                , Cmd.none
+                )
 
         ShuffleDeck cards ->
             let
