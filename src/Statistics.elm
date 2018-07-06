@@ -7,6 +7,7 @@ module Statistics
         )
 
 import Flash exposing (PlayerState(Start, Continue, Win, Lose, Tie))
+import StrLib exposing (commaize)
 
 
 isWin : PlayerState -> Bool
@@ -85,7 +86,7 @@ gameLi :
     }
     -> String
 gameLi game =
-    liText (toString game.pocket)
+    liText (toString game.pocket |> StrLib.commaize)
         (Flash.toString game.winner)
         (winPercentageString game.winPercentage)
 

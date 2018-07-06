@@ -374,7 +374,7 @@ view model =
                 ]
             , text "Win Percentage: "
             , text <| Statistics.winPercentageDisplay model.history
-            , p [] [ text <| "Peak: " ++ (toString <| Statistics.showPeak model.history) ]
+            , p [] [ text <| "Peak: $" ++ (StrLib.commaize <| toString <| Statistics.showPeak model.history) ]
             , gameHistoryOl model.history
             ]
         , div [ attribute "class" "strategy-column" ]
